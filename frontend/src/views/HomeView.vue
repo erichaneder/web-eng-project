@@ -1,18 +1,18 @@
 <template>
   <div class="home">
-    <Login />
+    <Home />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Login from '@/components/LoginComponent.vue'
+import Home from '@/components/HomeComponent.vue'
 
 
 export default {
   name: 'HomeView',
   components: {
-    Login
+    Home
   }
 }
 </script>

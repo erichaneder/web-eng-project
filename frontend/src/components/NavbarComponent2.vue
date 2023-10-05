@@ -72,6 +72,7 @@
     { name: 'About', href: '/about', current: false },
     { name: 'Login', href: '/login', current: false },
     { name: 'Register', href: '/register', current: false },
+    { name: 'Contact', href: '/contact', current: false },
   ]
   </script>
 
