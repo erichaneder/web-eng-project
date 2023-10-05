@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import Navbar from './components/NavbarComponent2.vue'
+  import Navbar from './components/NavbarComponent.vue'
   import Footer from './components/FooterComponent.vue'
 
   export default {
