@@ -1,15 +1,15 @@
 package at.technikum.webengbackend.model;
 
-/*
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-*/
+import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 
-//@Entity
+@Entity
+@Table
 public class Product {
-    //@Id
+    @Id
     private Long id;
     private String name;
     private float price;

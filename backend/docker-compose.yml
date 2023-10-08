@@ -28,7 +28,6 @@ services:
   db:
     image: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: spring
       MYSQL_USER: springuser
       MYSQL_PASSWORD: springpw
