@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table
-public class Product {
+public class Product { // können hier eventuell mit Lombok diesen Boilerplate wegbekommen
     @Id
     private Long id;
     private String name;
