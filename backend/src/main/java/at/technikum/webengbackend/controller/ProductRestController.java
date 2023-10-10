@@ -30,7 +30,7 @@ public class ProductRestController {
 
     @DeleteMapping(path="{productId}")
     public void deleteProduct(@PathVariable("productId") Long productId) {
-        productService.deleteStudent(productId);
+        productService.deleteProduct(productId);
     }
 
     @PutMapping(path = "{productId}")
@@ -38,6 +38,6 @@ public class ProductRestController {
                               @RequestParam String name,
                               @RequestParam float price,
                               @RequestParam Integer amount) {
-        productService.updateStudent(productId,name,price,amount);
+        productService.updateProduct(productId,name,price,amount);
     }
 }
