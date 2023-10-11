@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Table
 public class Product { // können hier eventuell mit Lombok diesen Boilerplate wegbekommen
     @Id
-    private Long id;
+    private Long id; //change to UUID
     private String name;
     private float price;
     private Integer amount;
