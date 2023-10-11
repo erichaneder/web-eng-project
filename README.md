@@ -4,14 +4,19 @@
 
 -npm, vue.js, java, docker, maven
 
-# Setuo
+# Setup
 
-Frontend: run "npm run serve" inside the frontend folder
+**Frontend:** 
 
-Backend: run "docker-compose up -d" inside the backend folder 
-         run the SpringApplication -> WebEngBackendApplication.java
+    run "npm run serve" inside the frontend folder
 
-Database Setup:
+**Backend:** 
+
+    run "docker-compose up -d" inside the backend folder 
+
+    run the SpringApplication -> WebEngBackendApplication.java
+
+# Database Setup:
 
     <insert sql script to setup the tables>
 
