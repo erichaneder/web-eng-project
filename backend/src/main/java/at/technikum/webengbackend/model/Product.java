@@ -1,23 +1,28 @@
 package at.technikum.webengbackend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
+
 @Entity
 @Table
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Product { // können hier eventuell mit Lombok diesen Boilerplate wegbekommen
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; //change to UUID
     private String name;
     private float price;
     private Integer amount;
     private LocalDate uploadDate;
-
-    public Product() {
-    }
 
     public Product(Long id, String name, float price,Integer amount) {
         this.id = id;
@@ -27,54 +32,4 @@ public class Product { // können hier eventuell mit Lombok diesen Boilerplate w
         this.amount = amount;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public LocalDate getUploadDate() {
-        return uploadDate;
-    }
-
-    public void setUploadDate(LocalDate uploadDate) {
-        this.uploadDate = uploadDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", amount=" + amount +
-                ", uploadDate=" + uploadDate +
-                '}';
-    }
 }
