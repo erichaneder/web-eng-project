@@ -15,10 +15,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class Product { // können hier eventuell mit Lombok diesen Boilerplate wegbekommen
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; //change to UUID
+    private Long id;
     private String name;
     private float price;
     private Integer amount;
