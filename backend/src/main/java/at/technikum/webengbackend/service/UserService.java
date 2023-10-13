@@ -1,5 +1,6 @@
 package at.technikum.webengbackend.service;
 
+import at.technikum.webengbackend.model.Address;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.repository.UserRepository;
 import at.technikum.webengbackend.util.Role;
@@ -28,8 +29,7 @@ public class UserService {
     public List<User> getProducts() { return userRepository.findAll(); }
 
     @Transactional
-    public void updateUserData(Long userId,String name,String password,String mail, Role role, String phonenumber,
-                           String address,String zipcode,String city, String country) {
+    public void updateUserData(Long userId, String name, String password, String mail, Role role, String phonenumber, Address address) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id "+userId+ "does not exist"));
 
         // Tests

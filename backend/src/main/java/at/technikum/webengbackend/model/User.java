@@ -1,6 +1,7 @@
 package at.technikum.webengbackend.model;
 
 import at.technikum.webengbackend.util.Role;
+import at.technikum.webengbackend.model.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,21 +23,16 @@ public class User {
     private String mail;
     private Role role;
     private String phonenumber;
-    private String address;
-    private String zipcode;
-    private String city;
-    private String country;
+    @Embedded
+    private Address address;
 
-    public User(String name, String password, String mail, Role role, String phonenumber, String address, String zipcode, String city, String country) {
+    public User(String name, String password, String mail, Role role, String phonenumber, Address address) {
         this.name = name;
         this.password = password;
         this.mail = mail;
         this.role = role;
         this.phonenumber = phonenumber;
         this.address = address;
-        this.zipcode = zipcode;
-        this.city = city;
-        this.country = country;
     }
 
 }
