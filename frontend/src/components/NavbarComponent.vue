@@ -1,5 +1,5 @@
 <template>
-    <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
+    <Disclosure as="nav" class="bg-teal-900" v-slot="{ open }">
       <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-6 items-center justify-between">
           <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -34,7 +34,7 @@
                 <MenuButton class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span class="absolute -inset-1.5" />
                   <span class="sr-only">Open user menu</span>
-                  <img class="h-8 w-8 rounded-full" src="https://rugby.vlaanderen/wp-content/uploads/2018/03/Anonymous-Profile-pic.jpg" alt="" />
+                  <UserIcon class="h-8 w-8 text-gray-400" />
                 </MenuButton>
               </div>
               <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
@@ -67,7 +67,7 @@
   import { ref, watchEffect } from 'vue'
   import { useRoute } from 'vue-router'
   import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-  import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+  import { Bars3Icon, ShoppingCartIcon, XMarkIcon, UserIcon } from '@heroicons/vue/24/outline'
   
   const navigation = ref([
     { name: 'Home', href: '/', current: false },

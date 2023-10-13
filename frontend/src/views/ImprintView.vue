@@ -1,6 +1,6 @@
 <template>
     <div class="p-4 min-h-screen bg-gray-100">
-      <h1 class="text-4xl font-bold mb-4">Imprint</h1>
+      <NormalHeading text="Imprint" />
       <p>Company Name: SneakerShop Inc.</p>
       <p>Address: 123 Shoe Street, Sneaker City, SC 12345</p>
       <!-- Add other legal information and details here -->
@@ -8,7 +8,12 @@
   </template>
   
   <script>
+  import NormalHeading from "@/components/atoms/NormalHeading.vue";
+
   export default {
-    name: 'ImprintView'
+    name: 'ImprintView',
+    components: {
+      NormalHeading
+    }
   }
   </script>
