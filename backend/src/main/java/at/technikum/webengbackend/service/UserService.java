@@ -26,8 +26,6 @@ public class UserService {
         }
         userRepository.deleteById(userId);
     }
-    public List<User> getProducts() { return userRepository.findAll(); }
-
     @Transactional
     public void updateUserData(Long userId, String name, String password, String mail, Role role, String phonenumber, Address address) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id "+userId+ "does not exist"));

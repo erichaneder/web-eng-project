@@ -18,7 +18,7 @@ public class UserController {
 
     @GetMapping
     public List<User> getUser() {
-        return userService.getProducts();
+        return userService.getUser();
     }
 
     @PostMapping

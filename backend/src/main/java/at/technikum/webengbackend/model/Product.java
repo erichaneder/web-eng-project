@@ -1,12 +1,14 @@
 package at.technikum.webengbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 
 @Entity
@@ -22,13 +24,12 @@ public class Product {
     private String name;
     private float price;
     private Integer amount;
-    private LocalDate uploadDate;
+    private Date upload_date;
 
-    public Product(Long id, String name, float price,Integer amount) {
-        this.id = id;
+    public Product(String name, float price, Integer amount) {
         this.name = name;
         this.price = price;
-        this.uploadDate = LocalDate.now();
+        this.upload_date = new Date();
         this.amount = amount;
     }
 

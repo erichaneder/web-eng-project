@@ -33,7 +33,6 @@ public class ProductService {
             throw new IllegalStateException("product with id: "+productId + " does not exist!");
         }
         productRepository.deleteById(productId);
-
     }
 
     @Transactional
