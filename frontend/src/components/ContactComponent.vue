@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-5">
+    <div class="min-h-screen flex flex-col items-center bg-gray-100 p-5">
       <div class="bg-white p-8 rounded-lg shadow-md w-96">
         <NormalHeading text="Contact Us" />
         <form @submit.prevent="submitForm">

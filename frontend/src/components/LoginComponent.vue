@@ -1,6 +1,6 @@
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-gray-100">
-      <div class="w-96 bg-white p-8 rounded shadow mt-[-150px]">
+    <div class="min-h-screen flex flex-col items-center px-5 bg-gray-100">
+      <div class="w-96 bg-white p-8 rounded shadow mt-20">
         <NormalHeading text="Login" />
         <div class="h-0.5 bg-gray-200 w-36 mx-auto mt-2.5 mb-4"></div>
         <form>

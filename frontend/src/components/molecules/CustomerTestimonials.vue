@@ -1,7 +1,7 @@
 <template>
     <SubHeading text="What Our Customers Say" />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl">
-        <div v-for="testimonial in testimonials" :key="testimonial.name" class="bg-white p-5 rounded-lg shadow-md">
+        <div v-for="testimonial in testimonials" :key="testimonial.name" class="bg-white p-5 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-lg">
           <p class="text-gray-600 italic mb-4">"{{ testimonial.quote }}"</p>
           <div class="flex items-center">
             <img :src="testimonial.image" alt="" class="w-10 h-10 rounded-full mr-4">
