@@ -43,11 +43,14 @@ public class ProductService {
             product.setName(name);
         }
 
-        if(price > 0 && !Objects.equals(product.getPrice(),price)) {
+        if(price > 0 && price < 10000) {
             product.setPrice(price);
         }
 
-        // ToDo: Was ist mit price und amount? Wie soll es geregelt werden?
+        //ToDo: Maximalmenge oder nicht?
+        if (amount != null && amount > 0) {
+            product.setAmount(amount);
+        }
 
     }
 }

@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -30,6 +31,29 @@ public class UserService {
     public void updateUserData(Long userId, String name, String password, String mail, Role role, String phonenumber, Address address) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id "+userId+ "does not exist"));
 
-        // Tests
+        if (name != null && !name.trim().isEmpty() && !Objects.equals(user.getName(), name)) {
+            user.setName(name);
+        }
+
+        // ToDo: Passwörter hashen?
+        if (password != null && !password.trim().isEmpty()) {
+            user.setPassword(password);
+        }
+
+        if (mail != null && !mail.trim().isEmpty() && !Objects.equals(user.getMail(), mail)) {
+            user.setMail(mail);
+        }
+
+        if (role != null) {
+            user.setRole(role);
+        }
+
+        if (phonenumber != null && !phonenumber.trim().isEmpty()) {
+            user.setPhonenumber(phonenumber);
+        }
+
+        if (address != null) {
+            user.setAddress(address);
+        }
     }
 }
