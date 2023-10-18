@@ -21,4 +21,12 @@
     <insert sql script to setup the tables>
 
 
-# 
+# MariaDB startup
+
+    Open Terminal in running Docker Container
+    > mariadb -u root -p
+    > root
+    > show databases;
+        Wenn "webshop" noch nicht existiert:
+        > create database webshop;
+    > use webshop;

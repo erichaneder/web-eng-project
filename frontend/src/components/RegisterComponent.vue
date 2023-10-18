@@ -1,10 +1,10 @@
 <template>
-    <div class="min-h-screen flex flex-col items-center bg-gray-100">
+    <div class="min-h-screen flex flex-col items-center">
       <div class="w-96 bg-white p-8 rounded shadow mt-20">
         <NormalHeading text="Register" />
         <div class="h-0.5 bg-gray-200 w-36 mx-auto mt-2.5 mb-4"></div>
         <FormComponent>
-          <button type="submit" class="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Register</button>
+          <button @click="checkRegister()" type="submit" class="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Register</button>
         </FormComponent>
       </div>
     </div>
@@ -16,9 +16,14 @@ import NormalHeading from "./atoms/NormalHeading.vue";
   
   export default {
     components: {
-    FormComponent,
-    NormalHeading
-}
+      FormComponent,
+      NormalHeading
+    },
+    methods: {
+      checkRegister() {
+        this.$router.push({ path: '/' });
+      }
+    },
   }
   </script>
   

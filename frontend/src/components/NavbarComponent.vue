@@ -13,7 +13,7 @@
           </div>
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex flex-shrink-0 items-center">
-              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
+              <img class="h-16 w-auto -mt-6" src='@/assets/shoes.svg' alt="Your Company" />
             </div>
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
@@ -22,19 +22,19 @@
             </div>
           </div>
           <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+            <button type="button" class="relative rounded-full p-1 text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
               <span class="absolute -inset-1.5" />
               <span class="sr-only">View shopping cart</span>
-              <ShoppingCartIcon class="h-6 w-6" aria-hidden="true" />
+              <ShoppingCartIcon class="h-8 w-8" aria-hidden="true" />
             </button>
   
             <!-- Profile dropdown -->
             <Menu as="div" class="relative ml-3">
               <div>
-                <MenuButton class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                <MenuButton class='relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 hover:bg-gray-800'>
                   <span class="absolute -inset-1.5" />
                   <span class="sr-only">Open user menu</span>
-                  <UserIcon class="h-8 w-8 text-gray-400" />
+                  <UserIcon class="h-9 w-9 text-gray-400" />
                 </MenuButton>
               </div>
               <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
@@ -71,14 +71,14 @@
   
   const navigation = ref([
     { name: 'Home', href: '/', current: false },
+    { name: 'Products', href: '/products', current: false },
     { name: 'About', href: '/about', current: false },
     { name: 'Contact', href: '/contact', current: false },
     { name: 'Help', href: '/help', current: false },
     { name: 'Imprint', href: '/imprint', current: false },
   ])
 
-  //{ name: 'Login', href: '/login', current: false },
-  //{ name: 'Register', href: '/register', current: false },
+  //const isLoggedIn = true;
 
   //This is for checking the active Tab ->
   const route = useRoute()

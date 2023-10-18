@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-100 py-10 px-5 flex flex-col items-center">
+  <div class="min-h-screen py-10 px-5 flex flex-col items-center">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl mb-10">
       <NormalHeading text="About Us"/>
       <p class="text-gray-600 mb-4">
