@@ -1,7 +1,8 @@
 <template>
-  <div class="p-4 min-h-screen bg-gray-100 flex flex-col items-center">
-    <NormalHeading text="Help & Support" />
+  <div class="p-4 min-h-screen bg-gray-100 flex flex-col items-center mt-12">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-3xl">
+      <NormalHeading text="Help & Support" />
+      <div class="h-0.5 bg-gray-200 mx-auto mt-2.5 mb-4"></div>
       <SubHeading text="Order Issues" />
       <p>If you have issues with your order, please contact our support team at <a href="mailto:support@sneakershop.com">support@sneakershop.com</a>.</p>
     

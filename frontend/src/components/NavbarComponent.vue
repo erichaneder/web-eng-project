@@ -76,6 +76,7 @@
     { name: 'Contact', href: '/contact', current: false },
     { name: 'Help', href: '/help', current: false },
     { name: 'Imprint', href: '/imprint', current: false },
+    { name: 'Add Product', href: '/addProduct', current: false }
   ])
 
   //const isLoggedIn = true;

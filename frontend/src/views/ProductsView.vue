@@ -21,7 +21,16 @@
   
   <script>
   import NormalHeading from "@/components/atoms/NormalHeading.vue";
-  
+  import axios from 'axios';
+
+  async function fetchData() {
+    return axios.get('https://jsonplaceholder.typicode.com/posts/')
+    .then((response) => response.data)
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   export default {
     components: {
       NormalHeading
@@ -45,6 +54,12 @@
           // ... other products ...
         ],
       };
+    },
+    beforeCreate: async function() {
+      const posts = await fetchData();
+      //this.posts = posts;
+      console.log('posts');
+      console.log(posts);
     },
   };
   </script>

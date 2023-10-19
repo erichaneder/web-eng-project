@@ -1,7 +1,8 @@
 <template>
-  <div class="p-4 min-h-screen bg-gray-100 flex flex-col items-center">
-      <NormalHeading text="Imprint" />
+  <div class="p-4 min-h-screen bg-gray-100 flex flex-col items-center mt-12">
       <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-3xl">
+          <NormalHeading text="Imprint" />
+          <div class="h-0.5 bg-gray-200 mx-auto mt-2.5 mb-4"></div>
           <SubHeading text="Company Information:" />
           <p>Company Name: SneakerShop Inc.</p>
           <p>Address: 123 Shoe Street, Sneaker City, SC 12345</p>
