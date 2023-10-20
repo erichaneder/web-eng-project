@@ -4,6 +4,29 @@
 
 -npm, vue.js, java, docker, maven
 
+# Startup Guide
+
+**Step 1:**
+
+Start the mariadb Container on Docker 
+
+    docker-compose up -d
+
+**Step 2:**
+
+Run the Spring Application "WebEngBackendApplication.java"
+This should then run at http://localhost:8080
+
+**Step 3:**
+
+Start the Frontend Application
+
+    npm run serve
+
+This should then run at http://localhost:8081
+
+
+
 # Setup
 
 **Frontend:** 

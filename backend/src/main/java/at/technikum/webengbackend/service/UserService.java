@@ -1,6 +1,8 @@
 package at.technikum.webengbackend.service;
 
 import at.technikum.webengbackend.model.Address;
+import at.technikum.webengbackend.model.LoginRequest;
+import at.technikum.webengbackend.model.LoginResponse;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.repository.UserRepository;
 import at.technikum.webengbackend.util.Role;
@@ -55,5 +57,13 @@ public class UserService {
         if (address != null) {
             user.setAddress(address);
         }
+    }
+
+    public LoginResponse loginUser(LoginRequest login) {
+
+        //TODO:
+        //check email/password in db if they match a user, if yes return the JWT Token, if not 404 not found
+
+        return new LoginResponse("1232342");
     }
 }

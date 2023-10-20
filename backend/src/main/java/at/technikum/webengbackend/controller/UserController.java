@@ -1,10 +1,13 @@
 package at.technikum.webengbackend.controller;
 
 import at.technikum.webengbackend.model.Address;
+import at.technikum.webengbackend.model.LoginRequest;
+import at.technikum.webengbackend.model.LoginResponse;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.service.UserService;
 import at.technikum.webengbackend.util.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +26,12 @@ public class UserController {
 
     @PostMapping
     public void registerNewUser(@RequestBody User user) {userService.addNewUser(user);}
+
+    @CrossOrigin
+    @PostMapping(path="/login")
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest login) {
+        return ResponseEntity.ok(userService.loginUser(login));
+    }
 
     @DeleteMapping(path="{userId}")
     public void deleteUser(@PathVariable("userId") Long userID) { userService.delete(userID);}

@@ -49,8 +49,11 @@
           };
           //client validation successful
           // make a post request to the server with the json from this.form.values
-          const response = await fetch('http://localhost:8080/api/v1/users/login', {
+          const response = await fetch('http://localhost:8080/api/v1/user/login', {
               method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
               body: JSON.stringify(this.form.values),
             });
             // get the response from the server
