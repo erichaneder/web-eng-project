@@ -2,3 +2,15 @@
 2. In MariaDB Exec Reiter öffnen und "mariadb -u root -p" eingeben
 3. Das Passwort ist root
 4. Dann "create database webshop;" eingeben
+
+
+
+##########
+Notes:
+    @Deprecated Annotations are used to indicate that we have another way of doing things but we dont want to get rid of the old way yet.
+
+
+
+##########
+
+Random Key generieren: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"

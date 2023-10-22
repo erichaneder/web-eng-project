@@ -1,14 +1,15 @@
 package at.technikum.webengbackend.controller;
 
+import at.technikum.webengbackend.config.IAllowPath;
 import at.technikum.webengbackend.model.Product;
 import at.technikum.webengbackend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="api/v1/product")
 public class ProductController {
 
     private final ProductService productService;
@@ -18,26 +19,21 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
-    public List<Product> getProducts() {
-        return productService.getProducts();
-    }
+    @GetMapping(path= IAllowPath.PRODUCT_LIST)
+    public List<Product> getProducts() {return productService.getProducts();}
 
-    @PostMapping
+    @PostMapping(path=IAllowPath.PRODUCT_ADD)
     public void registerNewProduct(@RequestBody Product product) {
-        productService.addNewProduct(product);
+       productService.addNewProduct(product);
     }
 
-    @DeleteMapping(path="{productId}")
+    @DeleteMapping(path=IAllowPath.PRODUCT_DELETE)
     public void deleteProduct(@PathVariable("productId") Long productId) {
         productService.deleteProduct(productId);
     }
 
-    @PutMapping(path = "{productId}")
-    public void updateProduct(@PathVariable("productId") Long productId,
-                              @RequestParam String name,
-                              @RequestParam float price,
-                              @RequestParam Integer amount) {
-        productService.updateProduct(productId,name,price,amount);
+    @PutMapping(path = IAllowPath.PRODUCT_UPDATE)
+    public void updateProduct(@PathVariable("productId") Long productId,@RequestBody Product product) {
+        productService.updateProduct(productId,product.getName(),product.getPrice(),product.getAmount());
     }
 }

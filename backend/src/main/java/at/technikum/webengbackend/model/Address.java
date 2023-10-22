@@ -3,14 +3,13 @@ package at.technikum.webengbackend.model;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Embeddable
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class Address {
     @NotBlank(message = "street is mandatory")
     private String street;
@@ -20,11 +19,4 @@ public class Address {
     private String city;
     @NotBlank(message = "country is mandatory")
     private String country;
-
-    public Address(String street, String zipcode, String city, String country) {
-        this.street = street;
-        this.zipcode = zipcode;
-        this.city = city;
-        this.country = country;
-    }
 }

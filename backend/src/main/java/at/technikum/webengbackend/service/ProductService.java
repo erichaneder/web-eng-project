@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +25,8 @@ public class ProductService {
     }
 
     public void addNewProduct(Product product) {
+        // Uploaddate must be set here
+        product.setUpload_date(new Date());
         productRepository.save(product);
     }
 
