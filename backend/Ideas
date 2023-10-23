@@ -1,8 +1,0 @@
-ToDo:
-* Validation
-
-Ideas:
-* Long id -> UUID id
-* User besser definieren: sollen die Login Daten extra erfasst werden?
-* Repos um einige Methoden erweitern
-* Tests
