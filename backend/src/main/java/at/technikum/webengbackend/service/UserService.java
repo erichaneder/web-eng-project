@@ -38,7 +38,6 @@ public class UserService {
             user.setName(name);
         }
 
-        // ToDo: Passwörter hashen?
         if (password != null && !password.trim().isEmpty()) {
             user.setPassword(password);
         }
