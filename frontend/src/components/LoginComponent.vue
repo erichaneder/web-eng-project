@@ -49,7 +49,7 @@
           };
           //client validation successful
           // make a post request to the server with the json from this.form.values
-          const response = await fetch('http://localhost:8080/api/v1/user/login', {
+          const response = await fetch('http://localhost:8080/api/v1/signin', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +60,7 @@
             const data = await response.json();
 
             // get the token from the data from the server
-            const token = data.accessToken;
+            const token = data.token;
             // save the token in the browser for reuse
             // e.g. for making requests to the servers private reqources
             // e.g. update user, delete user...
