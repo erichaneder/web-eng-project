@@ -30,6 +30,7 @@ public interface IAllowPath {
 
     String TEST = path + "test";
 
+    // Change it to Array?
     String[] allowedPath_GET = List.of(
             USER_LIST,
             PRODUCT_LIST,
