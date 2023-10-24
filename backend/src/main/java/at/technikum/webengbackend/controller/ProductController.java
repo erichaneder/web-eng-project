@@ -1,17 +1,16 @@
 package at.technikum.webengbackend.controller;
 
-import at.technikum.webengbackend.config.IAllowPath;
+import at.technikum.webengbackend.config.AllowedPaths;
 import at.technikum.webengbackend.model.Product;
 import at.technikum.webengbackend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
 public class ProductController {
-
     private final ProductService productService;
 
     @Autowired
@@ -19,21 +18,24 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(path= IAllowPath.PRODUCT_LIST)
-    public List<Product> getProducts() {return productService.getProducts();}
+    @GetMapping(path= AllowedPaths.Product.LIST)
+    public ResponseEntity<List<Product>> getProducts() {return ResponseEntity.ok(productService.getProducts());}
 
-    @PostMapping(path=IAllowPath.PRODUCT_ADD)
-    public void registerNewProduct(@RequestBody Product product) {
+    @PostMapping(path=AllowedPaths.Product.ADD)
+    public ResponseEntity<?> registerNewProduct(@RequestBody Product product) {
        productService.addNewProduct(product);
+       return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(path=IAllowPath.PRODUCT_DELETE)
-    public void deleteProduct(@PathVariable("productId") Long productId) {
+    @DeleteMapping(path=AllowedPaths.Product.DELETE)
+    public ResponseEntity<?> deleteProduct(@PathVariable("productId") Long productId) {
         productService.deleteProduct(productId);
+        return ResponseEntity.ok().build();
     }
 
-    @PutMapping(path = IAllowPath.PRODUCT_UPDATE)
-    public void updateProduct(@PathVariable("productId") Long productId,@RequestBody Product product) {
+    @PutMapping(path = AllowedPaths.Product.UPDATE)
+    public ResponseEntity<?> updateProduct(@PathVariable("productId") Long productId,@RequestBody Product product) {
         productService.updateProduct(productId,product.getName(),product.getPrice(),product.getAmount());
+        return ResponseEntity.ok().build();
     }
 }

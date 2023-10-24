@@ -12,6 +12,7 @@ import java.util.List;
 
     These paths are used in the controllers and in the SecurityConfig file.
 */
+@Deprecated
 public interface IAllowPath {
     String path = "/api/v1/";
 

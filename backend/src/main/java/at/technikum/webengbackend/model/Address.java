@@ -1,7 +1,6 @@
 package at.technikum.webengbackend.model;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 

@@ -1,10 +1,11 @@
 package at.technikum.webengbackend.service;
 
-import at.technikum.webengbackend.model.Address;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.repository.UserRepository;
 import at.technikum.webengbackend.model.Role;
+
 import jakarta.transaction.Transactional;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -19,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Arrays;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -47,13 +45,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
-            /*.cors(AbstractHttpConfigurer::disable)*/
+            .cors(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.POST, IAllowPath.allowedPath_POST).permitAll()
-                    .requestMatchers(HttpMethod.GET, IAllowPath.allowedPath_GET).permitAll()
-                    .requestMatchers(HttpMethod.DELETE, IAllowPath.allowedPath_DELETE).permitAll()
-                    .requestMatchers(HttpMethod.PUT, IAllowPath.allowedPath_PUT).permitAll()
+                    .requestMatchers(HttpMethod.POST, AllowedPaths.allowedPath_POST).permitAll()
+                    .requestMatchers(HttpMethod.GET, AllowedPaths.allowedPath_GET).permitAll()
+                    .requestMatchers(HttpMethod.DELETE, AllowedPaths.allowedPath_DELETE).permitAll()
+                    .requestMatchers(HttpMethod.PUT, AllowedPaths.allowedPath_PUT).permitAll()
                     .anyRequest().authenticated())
             .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -2,7 +2,9 @@ package at.technikum.webengbackend.service;
 
 import at.technikum.webengbackend.model.Product;
 import at.technikum.webengbackend.repository.ProductRepository;
+
 import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +35,7 @@ public class ProductService {
     public void deleteProduct(Long productId) {
         boolean exists = productRepository.existsById(productId);
         if(!exists) {
-            throw new IllegalStateException("product with id: "+productId + " does not exist!");
+            throw new IllegalStateException("product with id: "+ productId + " does not exist!");
         }
         productRepository.deleteById(productId);
     }
@@ -42,7 +44,7 @@ public class ProductService {
     public void updateProduct(Long productId, String name, float price, Integer amount) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("product with id "+productId+ "does not exist"));
 
-        if(name != null && name.length() > 0 && !Objects.equals(product.getName(),name)) {
+        if(name != null && !name.isEmpty() && !Objects.equals(product.getName(),name)) {
             product.setName(name);
         }
 
