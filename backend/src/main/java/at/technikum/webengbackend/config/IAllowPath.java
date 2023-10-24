@@ -28,30 +28,27 @@ public interface IAllowPath {
     String PRODUCT_DELETE = path + "product/delete/{productId}"; // DELETE
     String PRODUCT_UPDATE = path + "product/update/{productId}"; // PUT
 
-    String TEST = path + "test";
-
-    // Change it to Array?
-    String[] allowedPath_GET = List.of(
+    String[] allowedPathGET = {
             USER_LIST,
             PRODUCT_LIST,
             TEST
-    ).toArray(new String[0]);
+    };
 
-    String[] allowedPath_POST = List.of(
+    String[] allowedPath_POST = {
             USER_SIGNIN,
             USER_SIGNUP,
             USER_ADD,
             PRODUCT_ADD
-    ).toArray(new String[0]);
+    };
 
-    String[] allowedPath_DELETE = List.of(
+    String[] allowedPath_DELETE = {
             PRODUCT_DELETE,
             USER_DELETE
-    ).toArray(new String[0]);
+    };
 
-    String[] allowedPath_PUT = List.of(
+    String[] allowedPath_PUT = {
             PRODUCT_UPDATE,
             USER_UPDATE
-    ).toArray(new String[0]);
+    };
 
 }
