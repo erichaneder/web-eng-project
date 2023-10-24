@@ -28,7 +28,7 @@ public interface IAllowPath {
     String PRODUCT_DELETE = path + "product/delete/{productId}"; // DELETE
     String PRODUCT_UPDATE = path + "product/update/{productId}"; // PUT
 
-    String[] allowedPathGET = {
+    String[] allowedPath_GET = {
             USER_LIST,
             PRODUCT_LIST
     };
