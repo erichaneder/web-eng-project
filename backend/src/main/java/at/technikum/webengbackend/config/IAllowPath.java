@@ -30,8 +30,7 @@ public interface IAllowPath {
 
     String[] allowedPathGET = {
             USER_LIST,
-            PRODUCT_LIST,
-            TEST
+            PRODUCT_LIST
     };
 
     String[] allowedPath_POST = {
