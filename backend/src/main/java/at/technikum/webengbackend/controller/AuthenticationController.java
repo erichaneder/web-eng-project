@@ -5,11 +5,11 @@ import at.technikum.webengbackend.dto.JwtAuthenticationResponse;
 import at.technikum.webengbackend.dto.SignInRequest;
 import at.technikum.webengbackend.dto.SignUpRequest;
 import at.technikum.webengbackend.service.AuthenticationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 public class AuthenticationController {

@@ -56,6 +56,10 @@
               },
               body: JSON.stringify(this.form.values),
             });
+
+            if (!response.ok) {
+                console.log("Response was not ok!");
+            }
             // get the response from the server
             const data = await response.json();
 
