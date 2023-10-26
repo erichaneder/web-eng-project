@@ -9,6 +9,7 @@
       <InputField v-model="formData.country" id="country" :errors="fieldErrors.country" label="Country" type="text" placeholder="Your Country"/>
       <InputField v-model="formData.email" id="email" :errors="fieldErrors.email" label="Email" type="email" placeholder="Your Email"/>
       <InputField v-model="formData.password" id="password" :errors="fieldErrors.password" label="Password" type="password" placeholder="Your Password"/>
+      <slot></slot> <!-- slot for submit button -->
     </form>
   </template>
   
