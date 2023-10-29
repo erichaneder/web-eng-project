@@ -8,34 +8,63 @@
         </FormComponent>
       </div>
     </div>
+
+    <ErrorModal 
+      :isVisible="isErrorModalVisible" 
+      :errorMessage="errorMessage"
+      @update:isVisible="isErrorModalVisible = $event"
+    />
   </template>
   
   <script>
   import FormComponent from "@/components/molecules/FormComponent.vue";
   import NormalHeading from "./atoms/NormalHeading.vue";
+  import ErrorModal from '../components/ErrorModal.vue'
   
   export default {
     components: {
       FormComponent,
-      NormalHeading
+      NormalHeading,
+      ErrorModal
+    },
+    data() {
+      return {
+        isErrorModalVisible: false,
+        errorMessage: ''
+      }
     },
     methods: {
       async submit(formData) {
 
+        const payload = {
+          name: formData.name,
+          password: formData.password,
+          email: formData.email,
+          role: "ROLE_CUSTOMER",
+          phonenumber: "+4322342234",
+          address: {
+              street: formData.address, 
+              zipcode: formData.zip,
+              city: formData.city,
+              country: formData.country
+          }
+        };
+        console.log("Sending this data:", JSON.stringify(payload));
+
         try {   
           // Send formData to backend using fetch 
-          const response = await fetch("/api/register", {
+          const response = await fetch("http://localhost:8080/api/v1/signup", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(payload),
           });
           
           // Check if the response is successful
           if (response.ok) {
             console.log("Registration was successful!");
-            const responseData = await response.json();
+            const responseData = response.json();
             console.log("Response from backend:", responseData);
             
             const token = response.token;
@@ -44,8 +73,14 @@
             // Redirect to the home page or any other route if needed
             this.$router.push({ path: '/' });
           } else {
-            const errorData = await response.json();
-            console.error("Error registering user:", errorData.message);
+            if(Object.keys(response).length === 0) {
+              //Response is leer -> wsh 403 Forbidden
+              this.errorMessage = "An error occurred. Please try again later. ("+response.status+" "+response.statusText+")";
+            } else {
+              const errorData = response.json();
+              this.errorMessage = "Error registering user: "+errorData.message;
+            }
+            this.isErrorModalVisible = true;
           }
         } catch (error) {
             console.error("Network error: "+ error);

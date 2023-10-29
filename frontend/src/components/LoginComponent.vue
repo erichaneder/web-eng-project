@@ -23,11 +23,17 @@
       </div>
     </div>
 
+    <ErrorModal 
+    :isVisible="isErrorModalVisible" 
+    :errorMessage="errorMessage"
+    @update:isVisible="isErrorModalVisible = $event"
+    />
   </template>
   
   <script>
   import NormalHeading from "@/components/atoms/NormalHeading.vue";
   //import axios from 'axios';
+  import ErrorModal from '../components/ErrorModal.vue'
   import { object,string } from 'yup';
 
   const loginSchema = object().shape({
@@ -38,7 +44,8 @@
   export default {
     name: 'LoginComponent',
     components: {
-      NormalHeading
+      NormalHeading,
+      ErrorModal
     },
     methods: {
       async submit() {
@@ -48,7 +55,7 @@
             password: ''
           };
           //client validation successful
-          // make a post request to the server with the json from this.form.values
+          
           const response = await fetch('http://localhost:8080/api/v1/signin', {
               method: 'POST',
               headers: {
@@ -57,21 +64,23 @@
               body: JSON.stringify(this.form.values),
             });
 
-            if (!response.ok) {
-                console.log("Response was not ok!");
+            if (response.ok) {
+                console.log("Login successful!");
+                // get the token from the data from the server
+                const token = response.json().token;
+                // save the token in the browser for reuse
+                localStorage.setItem('token', token);
+                this.$router.push({ path: '/' });
+            } else {
+              if(Object.keys(response).length === 0) {
+                //Response is leer -> wsh 403 Forbidden
+                this.errorMessage = "An error occurred. Please try again later. ("+response.status+" "+response.statusText+")";
+              } else {
+                const errorData = response.json();
+                this.errorMessage = "Error registering user: "+errorData.message;
+              }
+              this.isErrorModalVisible = true;
             }
-            // get the response from the server
-            const data = await response.json();
-
-            // get the token from the data from the server
-            const token = data.token;
-            // save the token in the browser for reuse
-            // e.g. for making requests to the servers private reqources
-            // e.g. update user, delete user...
-            // persisted after browser window is closed
-            localStorage.setItem('token', token);
-            this.$router.push({ path: '/' });
-
         }).catch((err) => {
             console.error("Error occurred:", err.message);
             if (err.inner && Array.isArray(err.inner)) {
@@ -98,7 +107,9 @@
           form: {
             values: { email: '', password: '' },
             errors: { email: '', password: '' },
-          }
+          },
+          isErrorModalVisible: false,
+          errorMessage: ''
         }
       },
   }

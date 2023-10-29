@@ -46,6 +46,7 @@
           const hasError = Object.values(fieldErrors.value).some(error => error);
           if (!hasError) {
               console.log("Successful validation!");
+              console.log('Emitting form data:', formData.value);
               context.emit('formSubmit', formData.value);
           } else {
               console.log("Validation failed!");
