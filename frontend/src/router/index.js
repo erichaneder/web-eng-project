@@ -1,11 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: () => import(/* webpackChunkName: "about" */ '@/components/pages/HomeView.vue')
   },
   {
     path: '/about',
@@ -13,57 +12,57 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '@/components/pages/AboutView.vue')
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "login" */ '../views/LoginView.vue')
+    component: () => import(/* webpackChunkName: "login" */ '@/components/pages/LoginView.vue')
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import(/* webpackChunkName: "register" */ '../views/RegisterView.vue')
+    component: () => import(/* webpackChunkName: "register" */ '@/components/pages/RegisterView.vue')
   },
   {
     path: '/contact',
     name: 'contact',
-    component: () => import(/* webpackChunkName: "contact" */ '../views/ContactView.vue')
+    component: () => import(/* webpackChunkName: "contact" */ '@/components/pages/ContactView.vue')
   },
   {
     path: '/imprint',
     name: 'imprint',
-    component: () => import(/* webpackChunkName: "imprint" */ '../views/ImprintView.vue')
+    component: () => import(/* webpackChunkName: "imprint" */ '@/components/pages/ImprintView.vue')
   },
   {
     path: '/help',
     name: 'help',
-    component: () => import(/* webpackChunkName: "help" */ '../views/HelpView.vue')
+    component: () => import(/* webpackChunkName: "help" */ '@/components/pages/HelpView.vue')
   },
   {
     path: '/profile',
     name: 'profile',
-    component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue')
+    component: () => import(/* webpackChunkName: "profile" */ '@/components/pages/ProfileView.vue')
   },
   {
     path: '/product/:id',
     name: 'product',
-    component: () => import(/* webpackChunkName: "product" */ '../views/ProductDetailView.vue')
+    component: () => import(/* webpackChunkName: "product" */ '@/components/pages/ProductDetailView.vue')
   },
   {
     path: '/products',
     name: 'products',
-    component: () => import(/* webpackChunkName: "products" */ '../views/ProductsView.vue')
+    component: () => import(/* webpackChunkName: "products" */ '@/components/pages/ProductsView.vue')
   },
   {
     path: '/addProduct',
     name: 'addProduct',
-    component: () => import(/* webpackChunkName: "addProduct" */ '../views/AddProductView.vue')
+    component: () => import(/* webpackChunkName: "addProduct" */ '@/components/pages/AddProductView.vue')
   },
   {
     path: '/basket',
     name: 'basket',
-    component: () => import(/* webpackChunkName: "basket" */ '../views/BasketView.vue')
+    component: () => import(/* webpackChunkName: "basket" */ '@/components/pages/BasketView.vue')
   }
 ]
 

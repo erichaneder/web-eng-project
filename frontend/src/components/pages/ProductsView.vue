@@ -3,23 +3,14 @@
       <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-6xl">
         <NormalHeading text="All Products" />
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 w-full">
-          <div 
-            v-for="product in products" 
-            :key="product.id" 
-            class="bg-white p-5 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-lg"
-          >
-            <img :src="product.image" :alt="product.name" class="w-full h-52 object-cover rounded mb-4" />
-            <h3 class="text-lg font-semibold text-gray-700 mb-2">{{ product.name }}</h3>
-            <p class="text-gray-600 mb-2">{{ product.description }}</p>
-            <p class="text-pink-800 font-bold">${{ product.price }}</p>
-            <button @click="goToProductDetail(product.id)" type="submit" class="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500 mt-3">View Details</button>
-          </div>
+          <ProductTile v-for="product in products" :key="product.id" :product="product" @goToProductDetail="goToProductDetail" />
         </div>
       </div>
     </div>
-  </template>
+</template>
   
   <script>
+  import ProductTile from '@/components/molecules/ProductTile.vue';
   import NormalHeading from "@/components/atoms/NormalHeading.vue";
   import axios from 'axios';
 
@@ -33,7 +24,8 @@
 
   export default {
     components: {
-      NormalHeading
+      NormalHeading,
+      ProductTile
     },
     methods: {
         goToProductDetail(productId) {

@@ -19,7 +19,7 @@
 
 <script>
   import CustomerTestimonials from "@/components/molecules/CustomerTestimonials.vue";
-  import FeaturedProducts from "@/components/molecules/FeaturedProducts.vue";
+  import FeaturedProducts from "@/components/organisms/FeaturedProducts.vue";
   import NormalHeading from "@/components/atoms/NormalHeading.vue";
   import SubHeading from "@/components/atoms/SubHeading.vue";
 

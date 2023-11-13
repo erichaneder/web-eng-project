@@ -12,7 +12,7 @@
   </template>
   
   <script>
-import SubHeading from '../atoms/SubHeading.vue';
+import SubHeading from '@/components/atoms/SubHeading.vue';
 
   export default {
     name: "CustomerTestimonials",

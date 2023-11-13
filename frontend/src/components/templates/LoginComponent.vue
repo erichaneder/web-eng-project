@@ -18,7 +18,7 @@
               {{ form.errors.password }}
             </p>
           </div>
-          <button type="submit" class="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Login</button>
+          <CustomButton type="submit" CustomButtonStyle="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Login</CustomButton>
         </form>
       </div>
     </div>
@@ -31,9 +31,10 @@
   </template>
   
   <script>
+  import CustomButton from '@/components/atoms/Button.vue';
   import NormalHeading from "@/components/atoms/NormalHeading.vue";
   //import axios from 'axios';
-  import ErrorModal from '../components/ErrorModal.vue'
+  import ErrorModal from '@/components/atoms/ErrorModal.vue'
   import { object,string } from 'yup';
 
   const loginSchema = object().shape({
@@ -45,7 +46,8 @@
     name: 'LoginComponent',
     components: {
       NormalHeading,
-      ErrorModal
+      ErrorModal,
+      CustomButton
     },
     methods: {
       async submit() {

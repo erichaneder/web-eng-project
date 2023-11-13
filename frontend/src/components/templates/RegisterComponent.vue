@@ -4,7 +4,7 @@
         <NormalHeading text="Register" />
         <div class="h-0.5 bg-gray-200 w-36 mx-auto mt-2.5 mb-4"></div>
         <FormComponent @formSubmit="submit">
-          <button type="submit" class="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Register</button>
+          <CustomButton type="sumbit" customButtonStyle="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Register</CustomButton>
         </FormComponent>
       </div>
     </div>
@@ -17,15 +17,17 @@
   </template>
   
   <script>
+  import CustomButton from '@/components/atoms/Button.vue';
   import FormComponent from "@/components/molecules/FormComponent.vue";
-  import NormalHeading from "./atoms/NormalHeading.vue";
-  import ErrorModal from '../components/ErrorModal.vue'
+  import NormalHeading from "@/components/atoms/NormalHeading.vue";
+  import ErrorModal from '@/components/atoms/ErrorModal.vue'
   
   export default {
     components: {
       FormComponent,
       NormalHeading,
-      ErrorModal
+      ErrorModal,
+      CustomButton
     },
     data() {
       return {

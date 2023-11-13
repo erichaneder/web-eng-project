@@ -9,10 +9,10 @@
         
         <div v-if="!isEditing">
           <p class="text-gray-600 mb-4">Email: {{ user.email }}</p>
-          <p class="text-gray-600 mb-4">Adresse: {{ user.adress }}</p>
+          <p class="text-gray-600 mb-4">Adresse: {{ user.address }}</p>
           <p class="text-gray-600 mb-4">Phone: {{ user.phone }}</p>
           <!-- Additional User Info Here -->
-          <button @click="isEditing = true" class="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Edit Profile</button>
+          <CustomButton @click="isEditing = true" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Edit Profile</CustomButton>
         </div>
         
         <!-- Editing Profile View -->
@@ -26,15 +26,15 @@
             <input v-model="user.email" type="email" id="email" class="w-full h-10 px-2 border rounded">
           </div>
           <div class="mb-4">
-            <label for="adress" class="block text-sm mb-1 text-gray-600">Adress:</label>
-            <input v-model="user.adress" type="text" id="adress" class="w-full h-10 px-2 border rounded">
+            <label for="address" class="block text-sm mb-1 text-gray-600">Address:</label>
+            <input v-model="user.address" type="text" id="address" class="w-full h-10 px-2 border rounded">
           </div>
           <div class="mb-4">
             <label for="phone" class="block text-sm mb-1 text-gray-600">Phone:</label>
             <input v-model="user.phone" type="phone" id="phone" class="w-full h-10 px-2 border rounded">
           </div>
-          <button @click="updateProfile" class="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</button>
-          <button @click="isEditing = false" class="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 ml-4">Cancel</button>
+          <CustomButton @click="updateProfile" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
+          <CustomButton @click="isEditing = false" customButtonStyle="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 ml-4">Cancel</CustomButton>
         </div>
       </div>
 
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import CustomButton from '@/components/atoms/Button.vue';
 import NormalHeading from '@/components/atoms/NormalHeading.vue';
 
 export default {
@@ -59,13 +60,16 @@ export default {
               isLoggedIn: true,
               name: 'John Doe',
               email: 'john@example.com',
-              adress: 'Bahnstraße 10, 1030 Wien',
+              address: 'Bahnstraße 10, 1030 Wien',
               phone: '+43892347324'
           },
           isEditing: false
       };
   },
-  components: { NormalHeading },
+  components: { 
+    NormalHeading,
+    CustomButton
+  },
   methods: {
       updateProfile() {
           // logic to update user data goes here.

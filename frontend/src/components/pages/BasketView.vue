@@ -14,9 +14,9 @@
                     <p class="text-gray-600">{{ item.productDescription }}</p>
                     <p class="text-teal-700 mt-2">${{ item.price }}</p>
                 </div>
-                <button @click="removeFromBasket(item.id)" class="p-2 hover:bg-red-500">
-                    <TrashIcon class="h-5 w-5 text-red-400 hover:text-white" />
-                </button>
+                <CustomButton @click="removeFromBasket(item.id)" customButtonStyle="p-2 hover:bg-red-500">
+                    <TrashIcon class="h-5 w-5 text-red-400 hover:text-white"/>
+                </CustomButton>
             </div>
         </div>
         
@@ -28,22 +28,22 @@
         <!-- Basket Total -->
         <div v-if="basketItems.length" class="mt-4 text-right">
             <p class="text-xl">Total: ${{ basketTotal }}</p>
-            <button class="mt-4 w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">
-            Proceed to Checkout
-            </button>
+            <CustomButton customButtonStyle="mt-4 w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Proceed to Checkout</CustomButton>
         </div>
         </div>
     </div>
 </template>
 
 <script>
+    import CustomButton from '@/components/atoms/Button.vue';
     import NormalHeading from "@/components/atoms/NormalHeading.vue";
     import { TrashIcon } from '@heroicons/vue/24/outline'
 
     export default {
     components: {
         NormalHeading,
-        TrashIcon
+        TrashIcon,
+        CustomButton
     },
     data() {
         return {

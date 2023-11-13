@@ -23,20 +23,21 @@
           </div>
 
           <!-- add more fields like product image, sizes, colors, etc. -->
-  
-          <button type="submit" class="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Add Product</button>
+          <CustomButton type="submit" customButtonStyle="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Add Product</CustomButton>
         </form>
       </div>
     </div>
   </template>
   
   <script>
+  import CustomButton from '@/components/atoms/Button.vue';  
   import NormalHeading from "@/components/atoms/NormalHeading.vue";
   
   export default {
     name: 'AdminAddProduct',
     components: {
-      NormalHeading
+      NormalHeading,
+      CustomButton
     },
     data() {
       return {

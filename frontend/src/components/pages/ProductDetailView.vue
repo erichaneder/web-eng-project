@@ -22,8 +22,7 @@
           <input type="number" class="form-control block w-40 border border-gray-200 text-gray-700 py-3 px-4 rounded" id="quantityInput" v-model="quantity" min="1">
         </div>
 
-        <button @click="addToCart" class="btn btn-primary w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500 mb-2">In den Warenkorb</button>
-
+        <CustomButton @click="addToCart" customButtonStyle="btn btn-primary w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500 mb-2">In den Warenkorb</CustomButton>
         <p class="text-gray-500 mt-3">Lieferzeit: 3-5 Werktage</p>
         <hr class="my-4">
         <p class="text-gray-600">Bitte beachten Sie das sich die Lieferzeit aufgrund ihres Standorts ändern kann. Bei Fragen zu diesem oder anderen Produkten können Sie sich an unseren Support wenden.</p>
@@ -33,6 +32,7 @@
 </template>
 
 <script>
+import CustomButton from '@/components/atoms/Button.vue';  
 import NormalHeading from "@/components/atoms/NormalHeading.vue";
 
 export default {
@@ -61,7 +61,8 @@ export default {
     }
   },
   components: {
-    NormalHeading
+    NormalHeading,
+    CustomButton
   },
 };
 </script>

@@ -11,17 +11,18 @@
             <label for="email" class="block text-sm mb-1 text-gray-600">Email:</label>
             <input v-model="email" type="email" id="email" required placeholder="Your email" class="w-full h-10 px-2 border rounded">
           </div>
-          <div class="mb-4">
+          <div>
             <label for="message" class="block text-sm mb-1 text-gray-600">Message:</label>
             <textarea v-model="message" id="message" required placeholder="Your message" class="w-full h-32 px-2 py-2 border rounded"></textarea>
           </div>
-          <button type="submit" class="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Send Message</button>
+          <CustomButton>Submit</CustomButton>
         </form>
       </div>
     </div>
   </template>
   
 <script>
+  import CustomButton from '@/components/atoms/Button.vue';
   import NormalHeading from "@/components/atoms/NormalHeading.vue";
   
   export default {
@@ -33,7 +34,8 @@
       };
     },
     components: {
-      NormalHeading
+      NormalHeading,
+      CustomButton
     },
     methods: {
       submitForm() {

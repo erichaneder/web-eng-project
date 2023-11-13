@@ -25,9 +25,7 @@
       <p>For commonly asked questions, visit our <router-link to="/faqs">Frequently Asked Questions (FAQ)</router-link> page.</p>
     
       <!-- Test Button to trigger Error Modal -->
-      <button @click="showErrorModal" class="mt-4 p-2 bg-red-600 text-white rounded">
-        Contact Support
-      </button>
+      <CustomButton @click="showErrorModal" customButtonStyle="mt-4 p-2 bg-red-600 text-white rounded">Contact Support</CustomButton>
     </div>
       
 
@@ -42,7 +40,8 @@
 </template>
 
 <script>
-import ErrorModal from '../components/ErrorModal.vue'
+import CustomButton from '@/components/atoms/Button.vue';
+import ErrorModal from '@/components/atoms/ErrorModal.vue'
 import NormalHeading from "@/components/atoms/NormalHeading.vue";
 import SubHeading from "@/components/atoms/SubHeading.vue";
 
@@ -51,7 +50,8 @@ export default {
   components: {
       ErrorModal,
       NormalHeading,
-      SubHeading
+      SubHeading,
+      CustomButton
   },
   data() {
   return {
