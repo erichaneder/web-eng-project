@@ -48,7 +48,7 @@
     data() {
         return {
         basketItems: [
-            // This is dummy data. When ready get this from localStorage..
+            // This is dummy data -> when ready get this from localStorage..
             {
             id: 1,
             productName: "Nike Dunk Low Sneakers - Red",

@@ -39,7 +39,7 @@
     },
     methods: {
       submitForm() {
-        // Your form submission logic here
+        // Hier muss noch ne submit logik rein
         console.log({
           name: this.name,
           email: this.email,

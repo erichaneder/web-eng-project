@@ -22,7 +22,7 @@
             <input type="file" ref="productImage" id="productImage" class="w-full p-2 border rounded" @change="onImageChange">
           </div>
 
-          <!-- add more fields like product image, sizes, colors, etc. -->
+          <!-- maybe add mor fields -->
           <CustomButton type="submit" customButtonStyle="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Add Product</CustomButton>
         </form>
       </div>
@@ -46,7 +46,6 @@
           description: '',
           price: 0,
           image: null
-          // add other fields like product image, sizes, colors, etc.
         }
       }
     },

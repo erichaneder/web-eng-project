@@ -1,64 +1,94 @@
 <template>
-    <form @submit.prevent="submit">
-      <InputField v-model="formData.name" id="name" label="Name" :errors="fieldErrors.name" type="text" placeholder="Your Name"/>
-      <InputField v-model="formData.address" id="address" label="Address" :errors="fieldErrors.address" type="text" placeholder="Your Address"/>
-      <div class="flex space-x-4"> <!-- space-x-4 provides spacing between flex children -->
-        <InputField v-model="formData.city" id="city" :errors="fieldErrors.city" label="City" type="text" placeholder="Your City"/>
-        <InputField v-model="formData.zip" id="zip" :errors="fieldErrors.zip" label="Zip" type="text" placeholder="Your Zip"/>
-      </div>
-      <InputField v-model="formData.country" id="country" :errors="fieldErrors.country" label="Country" type="text" placeholder="Your Country"/>
-      <InputField v-model="formData.email" id="email" :errors="fieldErrors.email" label="Email" type="email" placeholder="Your Email"/>
-      <InputField v-model="formData.password" id="password" :errors="fieldErrors.password" label="Password" type="password" placeholder="Your Password"/>
-      <slot></slot> <!-- slot for submit button -->
-    </form>
-  </template>
-  
-  <script>
-  import { ref } from 'vue';
+  <form @submit.prevent="submit">
+    <InputField
+      v-for="field in formFields"
+      :key="field.id"
+      :id="field.id"
+      :type="field.type"
+      :label="field.label"
+      :placeholder="field.placeholder"
+      v-model="formData[field.id]"
+      :validateField="(value) => validateField(value, field.id)"
+      :error="fieldErrors[field.id]"
+    />
+    <slot></slot> <!-- slot for submit button -->
+  </form>
+</template>
 
-  import InputField from "@/components/atoms/InputField.vue";
+<!--Falls mal nebeneinander zum displayn is : <div class="flex space-x-4"> -->
 
-  export default {
-    components: {
-      InputField
+<script>
+import InputField from "@/components/atoms/InputField.vue";
+import { object, string } from "yup";
+
+const formSchema = object().shape({
+  name: string().required('Name is required'),
+  address: string().required('Address is required'),
+  city: string().required('City is required'),
+  zip: string().required('ZIP code is required'),
+  country: string().required('Country is required'),
+  email: string().email('Invalid email format').required('Email is required'),
+  password: string().required('Password is required')
+});
+
+export default {
+components: {
+  InputField
+},
+data() {
+  return {
+    formData: {
+      name: '',
+      address: '',
+      city: '',
+      zip: '',
+      country: '',
+      email: '',
+      password: ''
     },
-    setup(props, context) {
-        const formData = ref({
-            name: '',
-            address: '',
-            city: '',
-            zip: '',
-            country: '',
-            email: '',
-            password: ''
+    fieldErrors: {
+      name: null,
+      address: null,
+      city: null,
+      zip: null,
+      country: null,
+      email: null,
+      password: null
+    },
+    formFields: [
+        { id: "name", type: "text", label: "Name", placeholder: "Your Name" },
+        { id: "address", type: "text", label: "Address", placeholder: "Your Address" },
+        { id: "city", type: "text", label: "City", placeholder: "Your City" },
+        { id: "zip", type: "text", label: "Zip", placeholder: "Your Zip" },
+        { id: "country", type: "text", label: "Country", placeholder: "Your Country" },
+        { id: "email", type: "text", label: "Email", placeholder: "Your Email" },
+        { id: "password", type: "text", label: "Passowrd", placeholder: "Your Password" }
+      ]
+  };
+},
+methods: {
+  validateField(value, fieldName) {
+    console.log("Field: " +fieldName+", Value: "+value);
+    formSchema.validateAt(fieldName, { [fieldName]: value })
+        .then(() => {
+          this.fieldErrors[fieldName] = null;
+        })
+        .catch(error => {
+          this.fieldErrors[fieldName] = error.message;
         });
-        const fieldErrors = ref({
-          name: null,
-          address: null,
-          city: null,
-          zip: null,
-          country: null,
-          email: null,
-          password: null
+  },
+  submit() {
+    formSchema.validate(this.formData, { abortEarly: false })
+      .then(() => {
+        this.$emit('formSubmit', this.formData);
+      })
+      .catch(error => {
+        error.inner.forEach(err => {
+          console.log("Validation failed! "+ err.message);
+          this.fieldErrors[err.path] = err.message;
+        });
       });
-
-        function submit() {
-          const hasError = Object.values(fieldErrors.value).some(error => error);
-          if (!hasError) {
-              console.log("Successful validation!");
-              console.log('Emitting form data:', formData.value);
-              context.emit('formSubmit', formData.value);
-          } else {
-              console.log("Validation failed!");
-          } 
-        }
-
-        return {
-            formData,
-            fieldErrors,
-            submit
-        };
-    }
   }
-  </script>
-  
+}
+};
+</script>

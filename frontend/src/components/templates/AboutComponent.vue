@@ -26,7 +26,7 @@
           John is our marketing lead. When he's not creating campaigns, he loves hiking with his dog. Ever since he was a little boy he dreamt of selling shoes.
         </p>
       </div>
-      <!-- Repeat the above div for each team member -->
+      <!-- Hier noch maybe weitere team member rein geben -->
     </div>
   </div>
 </template>
