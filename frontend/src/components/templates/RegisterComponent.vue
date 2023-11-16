@@ -66,10 +66,11 @@
           // Check if the response is successful
           if (response.ok) {
             console.log("Registration was successful!");
-            const responseData = response.json();
+            const responseData = await response.json();
             console.log("Response from backend:", responseData);
             
-            const token = response.token;
+            const token = responseData.token;
+            console.log("Token: " + token);
             localStorage.setItem('token', token);
 
             // Redirect to the home page or any other route if needed
