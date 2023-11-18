@@ -15,7 +15,10 @@
     components: {
       Navbar,
       Footer
-    }
+    },
+    mounted() {
+    this.$store.dispatch('fetchProducts');
+  }
   }
 </script>
 

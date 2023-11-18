@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto my-12 px-4 mb-[220px]">
+  <div v-if="product" class="container mx-auto my-12 px-4 mb-[220px]">
     <div class="flex flex-wrap -mx-4">
       <div class="w-full md:w-1/2 px-4 mb-6 md:mb-0">
         <img :src="product.image" :alt="product.name" class="w-full h-full object-cover rounded" />
@@ -29,35 +29,63 @@
       </div>
     </div>
   </div>
+  <div v-else class="container mx-auto my-12 px-4 mb-[220px]">
+    <p>Loading product details...</p>
+  </div>
 </template>
 
 <script>
 import CustomButton from '@/components/atoms/Button.vue';  
 import NormalHeading from "@/components/atoms/NormalHeading.vue";
 
-export default {
-  data() {
-    return {
-      product: {
+/*
+{
         name: "Nike Dunk Low Sneakers - White",
         image: "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/d01ef37b-c14a-4edd-8787-534f5732294c/dunk-low-retro-herrenschuh-dd36JB.png",
         sku: "309030",
         price: "€109,99",
         sizes: ["XS", "S", "M", "L", "XL"]
-      },
+
+*/
+
+export default {
+  data() {
+    return {
+      product: null,
       selectedSize: "M",
       quantity: 1
     };
   },
   mounted() {
-    // Fetch product data using the product ID
-    //const productId = this.id;
-    //this.product = this.$store.getters.getProductById(productId); // With Vuex Store or with other data source
+    this.fetchProduct();
   },
   methods: {
     addToCart() {
       //logic to add the product to the cart
       this.$router.push({ path: '/login' });
+    },
+    fetchProduct() {
+      const productId = parseInt(this.$route.params.id);
+      const product = this.$store.getters.getProductById(productId);
+      if (product) {
+        this.product = {
+        ...product, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird das image dann umgsetzt und es werden noch extras hinzugefügt
+        image: require(`@/assets/${product.image}`),
+        sku: 309030,
+        sizes: ["XS", "S", "M", "L", "XL"],
+        price: product.price + ",00 €"
+      };
+      } else {
+        console.error("Product not found, with productId: " + productId);
+        //Wenn das Product nicht gefunden werden konnte, dann einfach default product anzeigen.
+        this.product = {
+          name: "Nike Dunk Low Sneakers - White",
+          image: "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/d01ef37b-c14a-4edd-8787-534f5732294c/dunk-low-retro-herrenschuh-dd36JB.png",
+          sku: "309030",
+          price: "€109,99",
+          sizes: ["XS", "S", "M", "L", "XL"]
+        };
+      }
     }
   },
   components: {

@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -55,13 +57,15 @@ public class SeedDataConfig implements CommandLineRunner {
             Arrays.stream(user).forEach(userService::addNewUser);
         }
         if(productRepository.count()==0) {
-            Product prod1 = Product.builder().name("product1").price(3).amount(2).build();
-            Product prod2 = Product.builder().name("product2").price(33).amount(22).build();
-
-            Product[] prod = {prod1,prod2};
-            Arrays.stream(prod).forEach(prodService::addNewProduct);
-
-
+            List<Product> products = new ArrayList<>();
+            for(int i = 0; i<2; i++) {
+                products.add(Product.builder().name("Nike Dunk Low Sneakers - Red").price(120).amount(120).image("nike_red2.jpg").description("Stylish, comfortable, and durable.").build());
+                products.add(Product.builder().name("Nike Dunk Low Sneakers - Blue").price(120).amount(120).image("dunk_blue1.png").description("Stylish, comfortable, and durable.").build());
+                products.add(Product.builder().name("Nike Dunk Low Sneakers - Black").price(120).amount(120).image("dunk_black1.png").description("Stylish, comfortable, and durable.").build());
+                products.add(Product.builder().name("Nike Dunk Low Sneakers - Green").price(120).amount(120).image("nike_green.jpg").description("Stylish, comfortable, and durable.").build());
+                products.add(Product.builder().name("Nike Dunk Low Sneakers - White").price(120).amount(120).image("dunk_white1.jpg").description("Stylish, comfortable, and durable.").build());
+            }
+            products.stream().forEach(prodService::addNewProduct);
         }
     }
 }

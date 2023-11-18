@@ -24,6 +24,11 @@ public class Product {
     @NotNull(message = "Price is mandatory")
     private float price;
 
+    @NotNull(message = "Image is mandatory")
+    private String image;
+
+    private String description;
+
     @NotNull(message = "Amount is mandatory")
     private Integer amount;
 
