@@ -67,13 +67,12 @@
           if (response.ok) {
             console.log("Registration was successful!");
             const responseData = await response.json();
-            console.log("Response from backend:", responseData);
             
-            const token = responseData.token;
-            console.log("Token: " + token);
-            localStorage.setItem('token', token);
+            localStorage.setItem("token", responseData.token);
+            localStorage.setItem("userId", responseData.userid);
+            localStorage.setItem("role", responseData.role);
 
-            // Redirect to the home page or any other route if needed
+            // Redirect to the home page
             this.$router.push({ path: '/' });
           } else {
             if(Object.keys(response).length === 0) {

@@ -18,6 +18,7 @@ public class AllowedPaths {
         public static final String SIGNIN = API_BASE + "signin"; // POST
         public static final String SIGNUP = API_BASE + "signup"; // POST
         public static final String LIST = API_BASE + USER_BASE + "list/"; // GET
+        public static final String GET_ONE = API_BASE + USER_BASE + "{userId}"; // GET
         public static final String ADD = API_BASE + USER_BASE + "add/"; // POST
         public static final String DELETE = API_BASE + USER_BASE + "delete/{userId}"; // DELETE
         public static final String UPDATE = API_BASE + USER_BASE + "update/{userId}"; // PUT
@@ -33,6 +34,7 @@ public class AllowedPaths {
 
     public static final String[] allowedPath_GET = {
             User.LIST,
+            User.GET_ONE,
             Product.LIST
     };
 

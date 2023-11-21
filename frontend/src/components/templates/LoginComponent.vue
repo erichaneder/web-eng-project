@@ -88,12 +88,10 @@ export default {
             console.log("Login successful!");
             // get the token from the data from the server
             const responseData = await response.json();
-            const token = responseData.token;
             // save the token in the browser for reuse
-            localStorage.setItem("token", token);
-
-            const userRole = responseData.userRole; // Assuming 'userRole' is the key in your response
-            sessionStorage.setItem("role", userRole);
+            localStorage.setItem("token", responseData.token);
+            localStorage.setItem("userId", responseData.userid);
+            localStorage.setItem("role", responseData.role);
             this.$router.push({ path: "/" });
           } else {
             if (Object.keys(response).length === 0) {

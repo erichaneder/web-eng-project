@@ -15,8 +15,13 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) { this.userService = userService; }
     @GetMapping(path= AllowedPaths.User.LIST)
-    public ResponseEntity<List<User>> getUser() {
-        return ResponseEntity.ok(userService.getUser());
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userService.getUsers());
+    }
+
+    @GetMapping(path= AllowedPaths.User.GET_ONE)
+    public ResponseEntity<User> getUser(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(userService.getUser(userId));
     }
 
     @PostMapping(path=AllowedPaths.User.ADD)

@@ -57,57 +57,53 @@
           <!-- Profile dropdown -->
           <Menu as="div" class="relative ml-3">
             <div>
-              <MenuButton
-                class="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 hover:bg-gray-800"
-              >
+              <MenuButton class="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 hover:bg-gray-800">
                 <span class="absolute -inset-1.5"></span>
                 <span class="sr-only">Open user menu</span>
                 <UserIcon class="h-9 w-9 text-gray-400" />
               </MenuButton>
             </div>
-            <transition
-              enter-active-class="transition ease-out duration-100"
-              enter-from-class="transform opacity-0 scale-95"
-              enter-to-class="transform opacity-100 scale-100"
-              leave-active-class="transition ease-in duration-75"
-              leave-from-class="transform opacity-100 scale-100"
-              leave-to-class="transform opacity-0 scale-95"
-            >
-              <MenuItems
-                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-              >
-                <MenuItem v-slot="{ active }">
-                  <router-link
-                    to="/profile"
-                    :class="[
-                      active ? 'bg-gray-100' : '',
-                      'block px-4 py-2 text-sm text-gray-700',
-                    ]"
-                    >Your Profile</router-link
-                  >
+              <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div v-if="isLoggedIn">
+                  <MenuItem v-slot="{ active }">
+                    <router-link
+                      to="/profile"
+                      :class="[
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      ]"
+                      >Your Profile</router-link
+                    >
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <span :class="[active ? 'bg-gray-100' : '','block px-4 py-2 text-sm text-gray-700']" @click="logout()"
+                      >Logout
+                    </span>
                 </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <router-link
-                    to="/login"
-                    :class="[
-                      active ? 'bg-gray-100' : '',
-                      'block px-4 py-2 text-sm text-gray-700',
-                    ]"
-                    >Log in</router-link
-                  >
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <router-link
-                    to="/register"
-                    :class="[
-                      active ? 'bg-gray-100' : '',
-                      'block px-4 py-2 text-sm text-gray-700',
-                    ]"
-                    >Sign up</router-link
-                  >
-                </MenuItem>
+                </div>
+                <div v-else>
+                  <MenuItem v-slot="{ active }">
+                    <router-link
+                      to="/login"
+                      :class="[
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      ]"
+                      >Log in</router-link
+                    >
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <router-link
+                      to="/register"
+                      :class="[
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      ]"
+                      >Sign up</router-link
+                    >
+                  </MenuItem>
+                </div>
               </MenuItems>
-            </transition>
           </Menu>
         </div>
       </div>
@@ -137,21 +133,8 @@
 <script setup>
 import { ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@headlessui/vue";
-import {
-  Bars3Icon,
-  ShoppingCartIcon,
-  XMarkIcon,
-  UserIcon,
-} from "@heroicons/vue/24/outline";
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem,  MenuItems,} from "@headlessui/vue";
+import { Bars3Icon, ShoppingCartIcon, XMarkIcon, UserIcon,} from "@heroicons/vue/24/outline";
 
 const navigation = ref([
   { name: "Home", href: "/", current: false },
@@ -163,8 +146,6 @@ const navigation = ref([
   { name: "Add Product", href: "/addProduct", current: false },
 ]);
 
-//const isLoggedIn = true;
-
 //This is for checking the active Tab ->
 const route = useRoute();
 
@@ -173,11 +154,33 @@ watchEffect(() => {
     item.current = item.href === route.path;
   });
 });
-//useRoute -> get the Current Route from the Router
+//useRoute -> get the Current Route from the Router equals $route
 </script>
 
 <script>
 export default {
-  name: "NavbarComponent2",
+  name: "NavbarComponent",
+  data() {
+    return {
+      isloggedIn: this.checkLoggedIn()
+    };
+  },
+  methods: {
+    checkLoggedIn() {
+      return localStorage.getItem("userId") != null;
+    },
+    logout() {
+      localStorage.removeItem("userId");
+      localStorage.removeItem("role");
+      localStorage.removeItem("token");
+      this.isloggedIn = false;
+      this.$router.push("/");
+    }
+  },
+  watch: {
+    '$route': function() {
+      this.isloggedIn = this.checkLoggedIn();
+    }
+  },
 };
 </script>

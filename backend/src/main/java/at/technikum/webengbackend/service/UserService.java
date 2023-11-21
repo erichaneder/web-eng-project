@@ -20,7 +20,15 @@ public class UserService {
 
     public UserService(UserRepository userRepository) { this.userRepository = userRepository; }
     
-    public List<User> getUser() { return userRepository.findAll(); }
+    public List<User> getUsers() { return userRepository.findAll(); }
+
+    public User getUser(Long userId) {
+        boolean exists = userRepository.existsById(userId);
+        if(!exists) {
+            throw new IllegalStateException("user with id: " + userId + " does not exist.");
+        }
+        return userRepository.findById(userId).get();
+    }
 
     public void addNewUser(User user) {userRepository.save(user);}
     
