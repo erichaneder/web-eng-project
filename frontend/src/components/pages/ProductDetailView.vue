@@ -61,8 +61,19 @@ export default {
   },
   methods: {
     addToCart() {
-      //logic to add the product to the cart
-      this.$router.push({ path: '/login' });
+      if(localStorage.getItem("userId") != null) {
+        //logic to add the product to the cart
+        this.$store.dispatch('addToBasket', {
+          id: this.product.id,
+          productName: this.product.name,
+          productDescription: this.product.description,
+          price: this.product.price,
+          image: this.product.image
+        });
+        this.$router.push({ path: '/basket' });
+      } else {
+        this.$router.push({ path: '/login' });
+      }
     },
     fetchProduct() {
       const productId = parseInt(this.$route.params.id);

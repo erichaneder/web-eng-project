@@ -14,7 +14,7 @@
                     <p class="text-gray-600">{{ item.productDescription }}</p>
                     <p class="text-teal-700 mt-2">${{ item.price }}</p>
                 </div>
-                <CustomButton @click="removeFromBasket(item.id)" customButtonStyle="p-2 hover:bg-red-500">
+                <CustomButton @click="removeItem(item.id)" customButtonStyle="p-2 hover:bg-red-500">
                     <TrashIcon class="h-5 w-5 text-red-400 hover:text-white"/>
                 </CustomButton>
             </div>
@@ -28,7 +28,7 @@
         <!-- Basket Total -->
         <div v-if="basketItems.length" class="mt-4 text-right">
             <p class="text-xl">Total: ${{ basketTotal }}</p>
-            <CustomButton customButtonStyle="mt-4 w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Proceed to Checkout</CustomButton>
+            <CustomButton @click="orderBasket()" customButtonStyle="mt-4 w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Proceed to Checkout</CustomButton>
         </div>
         </div>
     </div>
@@ -37,7 +37,9 @@
 <script>
     import CustomButton from '@/components/atoms/Button.vue';
     import NormalHeading from "@/components/atoms/NormalHeading.vue";
-    import { TrashIcon } from '@heroicons/vue/24/outline'
+    import { TrashIcon } from '@heroicons/vue/24/outline';
+    import axios from 'axios';
+    import { mapGetters, mapActions } from 'vuex';
 
     export default {
     components: {
@@ -45,37 +47,30 @@
         TrashIcon,
         CustomButton
     },
-    data() {
-        return {
-        basketItems: [
-            // This is dummy data -> when ready get this from localStorage..
-            {
-            id: 1,
-            productName: "Nike Dunk Low Sneakers - Red",
-            productDescription: "Stylish, comfortable, and durable.",
-            price: 129.99,
-            image: require('@/assets/nike_red2.jpg'),
-            },
-            {
-            id: 2,
-            productName: "Nike Dunk Low Sneakers - Blue",
-            productDescription: "Stylish, comfortable, and durable.",
-            price: 99.99,
-            image: require('@/assets/nike_blue2.jpg'),
-            }
-        ]
-        }
-    },
     computed: {
-        basketTotal() {
-        return this.basketItems.reduce((total, item) => total + item.price, 0).toFixed(2);
+        ...mapGetters(['basketTotal']),
+        basketItems() {
+            return this.$store.state.basketItems;
         }
     },
     methods: {
-        removeFromBasket(itemId) {
-            const index = this.basketItems.findIndex(item => item.id === itemId);
-            if (index !== -1) {
-                this.basketItems.splice(index, 1);
+        ...mapActions(['removeFromBasket']),
+        removeItem(itemId) {
+            this.removeFromBasket(itemId);
+        },
+        async orderBasket() {
+            console.log("test ");
+            const payload = {
+                orderNo: "RANDOM_ORDERNO_2423423",
+                totalAmount: this.getBasketTotal(),
+                userId: localStorage.getItem("userId"),
+            };
+            try {
+                const response = await axios.post('http://localhost:8080/api/v1/order/add/', payload); 
+                //logic here when ordering basket successful
+                console.log("Response: " + response.data);
+            } catch (error) {
+                console.error('Error ordering basket:', error);
             }
         }
     },
