@@ -1,11 +1,10 @@
 package at.technikum.webengbackend.config;
 
-import at.technikum.webengbackend.model.Address;
-import at.technikum.webengbackend.model.Product;
-import at.technikum.webengbackend.model.Role;
-import at.technikum.webengbackend.model.User;
+import at.technikum.webengbackend.model.*;
+import at.technikum.webengbackend.repository.OrderRepository;
 import at.technikum.webengbackend.repository.ProductRepository;
 import at.technikum.webengbackend.repository.UserRepository;
+import at.technikum.webengbackend.service.OrderService;
 import at.technikum.webengbackend.service.ProductService;
 import at.technikum.webengbackend.service.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -26,9 +26,11 @@ public class SeedDataConfig implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final ProductService prodService;
+    private final OrderService orderService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -36,24 +38,59 @@ public class SeedDataConfig implements CommandLineRunner {
             User admin = User
                     .builder()
                     .name("admin")
+                    .salutation("Male")
                     .password(passwordEncoder.encode("password"))
                     .email("admin@admin.com")
                     .role(Role.ROLE_ADMIN)
-                    .phonenumber("1234")
-                    .address(new Address("ferdestraße 31","1210","vienna","vienna"))
+                    .phonenumber("06704546232")
+                    .address(new Address("Ferdestraße 31","1210","Vienna","Austria"))
                     .build();
 
             User normal = User
                     .builder()
                     .name("Fred")
+                    .salutation("Male")
                     .password(passwordEncoder.encode("fred123"))
                     .email("fred@fred.com")
                     .role(Role.ROLE_CUSTOMER)
-                    .phonenumber("fred123")
-                    .address(new Address("fredstrett 1","1220","vienna","vienna"))
+                    .phonenumber("+43704546232")
+                    .address(new Address("Fredstrett 1","1220","Vienna","Austria"))
                     .build();
 
-            User[] user = {admin,normal};
+            User random1 = User
+                    .builder()
+                    .name("Julia Herrmann")
+                    .salutation("Female")
+                    .password(passwordEncoder.encode("123"))
+                    .email("julia@gmail.com")
+                    .role(Role.ROLE_CUSTOMER)
+                    .phonenumber("+4370456499")
+                    .address(new Address("Bahnstraße 2","98654","Berlin","Germany"))
+                    .build();
+
+            User random2 = User
+                    .builder()
+                    .name("Hawara")
+                    .salutation("Helicopter")
+                    .password(passwordEncoder.encode("123"))
+                    .email("heli@outlook.com")
+                    .role(Role.ROLE_CUSTOMER)
+                    .phonenumber("+43799546455")
+                    .address(new Address("Baumgasse 101","3344","Gaza","Israel"))
+                    .build();
+
+            User random3 = User
+                    .builder()
+                    .name("Boboo")
+                    .salutation("Male")
+                    .password(passwordEncoder.encode("123"))
+                    .email("bobcok@gmail.com")
+                    .role(Role.ROLE_CUSTOMER)
+                    .phonenumber("+43704589989")
+                    .address(new Address("Wallstreet 10","98797","New York","USA"))
+                    .build();
+
+            User[] user = {admin,normal, random1, random2, random3};
             Arrays.stream(user).forEach(userService::addNewUser);
         }
         if(productRepository.count()==0) {
@@ -66,6 +103,14 @@ public class SeedDataConfig implements CommandLineRunner {
                 products.add(Product.builder().name("Nike Dunk Low Sneakers - White").price(120).amount(120).image("dunk_white1.jpg").description("Stylish, comfortable, and durable.").build());
             }
             products.stream().forEach(prodService::addNewProduct);
+        }
+
+        if(orderRepository.count()==0) {
+            List<CustomerOrder> orders = new ArrayList<>();
+            for(int i = 0; i<10; i++) {
+                orders.add(CustomerOrder.builder().orderNo("ORDER93287498").totalAmount(612.99f).upload_date(new Date()).build());
+            }
+            orders.stream().forEach(orderService::addNewOrder);
         }
     }
 }

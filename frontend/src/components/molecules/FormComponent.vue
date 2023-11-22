@@ -1,5 +1,21 @@
 <template>
   <form @submit.prevent="submit">
+    <!-- Salutation Select Field -->
+    <div class="mb-4">
+      <label for="salutation" class="block text-sm mb-1">Salutation:</label>
+      <select id="salutation" v-model="formData.salutation" class="w-full h-10 px-2 border rounded">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <!-- Detailed Information Field (Shown if Salutation is 'other') -->
+    <div v-if="formData.salutation === 'other'" class="mb-4">
+      <label for="otherInfo" class="block text-sm mb-1">Other Information:</label>
+      <input type="text" id="otherInfo" v-model="formData.otherInfo" maxlength="30" class="w-full h-10 px-2 border rounded">
+    </div>
+
     <InputField
       v-for="field in formFields"
       :key="field.id"
@@ -28,7 +44,8 @@ const formSchema = object().shape({
   zip: string().required('ZIP code is required'),
   country: string().required('Country is required'),
   email: string().email('Invalid email format').required('Email is required'),
-  password: string().required('Password is required')
+  password: string().required('Password is required'),
+  password2: string().required('Please repeat your password')
 });
 
 export default {
@@ -38,13 +55,16 @@ components: {
 data() {
   return {
     formData: {
+      salutation: 'male',
+      otherInfo: '',
       name: '',
       address: '',
       city: '',
       zip: '',
       country: '',
       email: '',
-      password: ''
+      password: '',
+      password2: ''
     },
     fieldErrors: {
       name: null,
@@ -53,7 +73,8 @@ data() {
       zip: null,
       country: null,
       email: null,
-      password: null
+      password: null,
+      password2: null
     },
     formFields: [
         { id: "name", type: "text", label: "Name", placeholder: "Your Name" },
@@ -62,7 +83,8 @@ data() {
         { id: "zip", type: "text", label: "Zip", placeholder: "Your Zip" },
         { id: "country", type: "text", label: "Country", placeholder: "Your Country" },
         { id: "email", type: "text", label: "Email", placeholder: "Your Email" },
-        { id: "password", type: "text", label: "Passowrd", placeholder: "Your Password" }
+        { id: "password", type: "text", label: "Passowrd", placeholder: "Your Password" },
+        { id: "password2", type: "text", label: "Repeat Passowrd", placeholder: "Repeat Password" }
       ]
   };
 },

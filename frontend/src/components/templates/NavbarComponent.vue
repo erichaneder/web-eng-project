@@ -20,7 +20,7 @@
             <img
               class="h-16 w-auto -mt-6"
               src="@/assets/shoes.svg"
-              alt="Your Company"
+              alt="Sneaker Shop"
             />
           </div>
           <div class="hidden sm:ml-6 sm:block">
@@ -36,8 +36,8 @@
                   'rounded-md px-3 py-2 text-sm font-medium',
                 ]"
                 :aria-current="item.current ? 'page' : undefined"
-                >{{ item.name }}</router-link
-              >
+                >{{ item.name }}
+              </router-link>
             </div>
           </div>
         </div>
@@ -130,39 +130,31 @@
   </Disclosure>
 </template>
 
-<script setup>
-import { ref, watchEffect } from "vue";
-import { useRoute } from "vue-router";
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem,  MenuItems,} from "@headlessui/vue";
-import { Bars3Icon, ShoppingCartIcon, XMarkIcon, UserIcon,} from "@heroicons/vue/24/outline";
-
-const navigation = ref([
-  { name: "Home", href: "/", current: false },
-  { name: "Products", href: "/products", current: false },
-  { name: "About", href: "/about", current: false },
-  { name: "Contact", href: "/contact", current: false },
-  { name: "Help", href: "/help", current: false },
-  { name: "Imprint", href: "/imprint", current: false },
-  { name: "Add Product", href: "/addProduct", current: false },
-]);
-
-//This is for checking the active Tab ->
-const route = useRoute();
-
-watchEffect(() => {
-  navigation.value.forEach((item) => {
-    item.current = item.href === route.path;
-  });
-});
-//useRoute -> get the Current Route from the Router equals $route
-</script>
-
 <script>
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem,  MenuItems} from "@headlessui/vue";
+import { Bars3Icon, ShoppingCartIcon, XMarkIcon, UserIcon} from "@heroicons/vue/24/outline";
+
 export default {
   name: "NavbarComponent",
+  components: {
+    Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem,  MenuItems,
+    Bars3Icon, ShoppingCartIcon, XMarkIcon, UserIcon
+  },
   data() {
     return {
-      isloggedIn: this.checkLoggedIn()
+      navigation: [
+        { name: "Home", href: "/", current: false },
+        { name: "Products", href: "/products", current: false },
+        { name: "About", href: "/about", current: false },
+        { name: "Contact", href: "/contact", current: false },
+        { name: "Help", href: "/help", current: false },
+        { name: "Imprint", href: "/imprint", current: false },
+        { name: "Add Product", href: "/addProduct", current: false, requiresAdmin: true },
+        { name: "Users", href: "/users", current: false, requiresAdmin: true },
+        { name: "Orders", href: "/orders", current: false, requiresAdmin: true },
+      ],
+      isloggedIn: false,
+      isAdmin: false
     };
   },
   methods: {
@@ -175,11 +167,28 @@ export default {
       localStorage.removeItem("token");
       this.isloggedIn = false;
       this.$router.push("/");
+    },
+    checkIsAdmin() {
+      return localStorage.getItem("role") === "ROLE_ADMIN";
+    }
+  },
+  mounted() {
+    this.isLoggedIn = this.checkLoggedIn();
+    this.isAdmin = this.checkIsAdmin();
+  },
+  computed: {
+    filteredNavigation() {
+      return this.navigation.filter(item => !item.requiresAdmin || this.isAdmin);
     }
   },
   watch: {
-    '$route': function() {
-      this.isloggedIn = this.checkLoggedIn();
+    $route() {
+      this.navigation.forEach(item => {
+        item.current = item.href === this.$route.path;
+      });
+      this.isLoggedIn = this.checkLoggedIn();
+      this.isAdmin = this.checkIsAdmin();
+      this.$forceUpdate(); //maybe useless, should force the component to re-render
     }
   },
 };

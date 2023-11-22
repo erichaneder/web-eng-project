@@ -106,8 +106,7 @@ export default {
                     country: this.user.country
                 }
             };
-
-            const response = await axios.put('http://localhost:8080/api/v1/user/update' + userId, payload);
+            const response = await axios.put('http://localhost:8080/api/v1/user/update/' + userId, payload);
 
             // Check if the response is successful and update local user data
             if (response.status === 200) {
@@ -126,7 +125,13 @@ export default {
         }
     },
       async getUserData() {
-        const userId = parseInt(localStorage.getItem("userId"));
+        var userId;
+        if(this.$route.params.id) {
+          userId = parseInt(this.$route.params.id);
+        } else {
+          userId = parseInt(localStorage.getItem("userId"));
+        }
+  
         try {
           const response = await axios.get('http://localhost:8080/api/v1/user/' + userId);
           const userData = response.data;

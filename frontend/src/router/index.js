@@ -66,6 +66,24 @@ const routes = [
     component: () => import(/* webpackChunkName: "basket" */ '@/components/pages/BasketView.vue')
   },
   {
+    path: '/users',
+    name: 'users',
+    component: () => import(/* webpackChunkName: "users" */ '@/components/pages/UsersView.vue'),
+    meta: { requiresAdmin: true } // This route requires admin access
+  },
+  {
+    path: '/orders',
+    name: 'order',
+    component: () => import(/* webpackChunkName: "orders" */ '@/components/pages/OrdersView.vue'),
+    meta: { requiresAdmin: true } // This route requires admin access
+  },
+  {
+    path: '/profile/:id',
+    name: 'profile1',
+    component: () => import(/* webpackChunkName: "profile1" */ '@/components/pages/ProfileView.vue'),
+    meta: { requiresAdmin: true } // This route requires admin access
+  },
+  {
     path: '/unauthorized',
     name: 'unauthorized',
     component: () => import(/* webpackChunkName: "unauthorized" */ '@/components/pages/UnauthorizedView.vue')
@@ -78,12 +96,12 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const userRole = sessionStorage.getItem('userRole');
+  const userRole = localStorage.getItem('role');
   const isAdmin = userRole === 'ROLE_ADMIN'; // Assuming 'ROLE_ADMIN' is your admin role identifier
 
   if (to.matched.some(record => record.meta.requiresAdmin) && !isAdmin) {
     // If the route requires admin access and the user is not an admin, redirect them
-    next({ path: '/unauthorized' }); // Redirect to an 'unauthorized' route or show a message
+    next({ path: '/unauthorized' });
   } else {
     // Otherwise, proceed as normal
     next();
