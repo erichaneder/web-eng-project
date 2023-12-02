@@ -1,9 +1,7 @@
 package at.technikum.webengbackend.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import lombok.*;
 
@@ -25,14 +23,19 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Size(min = 4, max = 50, message = "Name must be between 4 and 50 characters")
+    @Size(min = 5, max = 50, message = "Name must be between 5 and 50 characters")
     private String name;
 
     @Size(max = 30, message = "Salutation must be max 30 characters")
     private String salutation;
 
-    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
     @NotBlank(message = "Password is mandatory")
+    /*@Pattern.List({
+            @Pattern(regexp = "(?=.*[0-9])", message = "Password must contain at least one digit"),
+            @Pattern(regexp = "(?=.*[a-z])", message = "Password must contain at least one lowercase letter"),
+            @Pattern(regexp = "(?=.*[A-Z])", message = "Password must contain at least one uppercase letter")
+    })*/
     private String password;
 
     @Column(unique = true)
@@ -43,10 +46,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
     private String phonenumber;
 
     @Embedded
     private Address address;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -65,6 +65,8 @@ public class UserService {
 
     }
 
+    // patch
+
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override
