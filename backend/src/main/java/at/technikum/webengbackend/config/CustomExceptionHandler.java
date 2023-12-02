@@ -15,14 +15,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CustomExceptionHandler extends  ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
-    protected ResponseEntity<Object> handleIllegalArgumentException(
-            IllegalArgumentException ex, WebRequest request) {
-
-        // Build a custom error response
+    protected ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse("Forbidden", ex.getMessage());
-
-        return handleExceptionInternal(
-                ex, errorResponse, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+        return handleExceptionInternal(ex,errorResponse,new HttpHeaders(),HttpStatus.FORBIDDEN,request);
     }
 
     @Getter
