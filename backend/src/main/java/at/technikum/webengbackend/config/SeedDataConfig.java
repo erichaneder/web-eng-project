@@ -76,7 +76,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .email("heli@outlook.com")
                     .role(Role.ROLE_CUSTOMER)
                     .phonenumber("+43799546455")
-                    .address(new Address("Baumgasse 101","3344","Gaza","Israel"))
+                    .address(new Address("Baumgasse 101","3344","Ferd","Ferdien"))
                     .build();
 
             User random3 = User

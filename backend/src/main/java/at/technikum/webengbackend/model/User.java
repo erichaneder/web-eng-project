@@ -29,13 +29,6 @@ public class User implements UserDetails {
     @Size(max = 30, message = "Salutation must be max 30 characters")
     private String salutation;
 
-    @Size(min = 8, message = "Password must be at least 8 characters long")
-    @NotBlank(message = "Password is mandatory")
-    /*@Pattern.List({
-            @Pattern(regexp = "(?=.*[0-9])", message = "Password must contain at least one digit"),
-            @Pattern(regexp = "(?=.*[a-z])", message = "Password must contain at least one lowercase letter"),
-            @Pattern(regexp = "(?=.*[A-Z])", message = "Password must contain at least one uppercase letter")
-    })*/
     private String password;
 
     @Column(unique = true)
