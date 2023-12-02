@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @CrossOrigin
@@ -27,12 +29,18 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private static final Set<String> ISO_COUNTRIES = Set.of(Locale.getISOCountries());
 
     public JwtAuthenticationResponse signup(SignUpRequest request) {
-        // Validate the password before we can continue
+        // Validate password
         if (!isValidPassword(request.getPassword())) {
             throw new IllegalArgumentException("Invalid password. Please ensure it has at least 8 characters, numbers, and both lowercase and uppercase letters.");
         }
+        // Validate country code
+        if(!ISO_COUNTRIES.contains(request.getAddress().getCountry())) {
+            throw new IllegalArgumentException(request.getAddress().getCountry() +" -> Invalid country. Please provide a valid country");
+        }
+
         // fill in the rest if the password was valid
         var user = User
                 .builder()

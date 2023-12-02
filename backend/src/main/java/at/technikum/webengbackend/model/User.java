@@ -23,27 +23,26 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Size(min = 5, max = 50, message = "Name must be between 5 and 50 characters")
-    private String name;
-
     @Size(max = 30, message = "Salutation must be max 30 characters")
     private String salutation;
-
-    private String password;
 
     @Column(unique = true)
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email must be valid")
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @Size(min = 5, max = 50, message = "Name must be between 5 and 50 characters")
+    private String name;
 
-
-    private String phonenumber;
+    private String password;
 
     @Embedded
     private Address address;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    private String phonenumber;
 
 
     @Override
