@@ -26,6 +26,7 @@
       v-model="formData[field.id]"
       :validateField="(value) => validateField(value, field.id)"
       :error="fieldErrors[field.id]"
+      :options="field.options"
     />
     <slot></slot> <!-- slot for submit button -->
   </form>
@@ -35,7 +36,7 @@
 
 <script>
 import InputField from "@/components/atoms/InputField.vue";
-import { object, string } from "yup";
+import { object, string, ref } from "yup";
 
 const formSchema = object().shape({
   name: string().required('Name is required'),
@@ -44,8 +45,8 @@ const formSchema = object().shape({
   zip: string().required('ZIP code is required'),
   country: string().required('Country is required'),
   email: string().email('Invalid email format').required('Email is required'),
-  password: string().required('Password is required'),
-  password2: string().required('Please repeat your password')
+  password: string().required('Password is required and be min 12 characers').min(12, 'Password must be min. 12 characters long'),
+  password2: string().oneOf([ref('password'), null], 'Passwords must match')
 });
 
 export default {
@@ -55,7 +56,7 @@ components: {
 data() {
   return {
     formData: {
-      salutation: 'male',
+      salutation: 'Male',
       otherInfo: '',
       name: '',
       address: '',
@@ -81,25 +82,41 @@ data() {
         { id: "address", type: "text", label: "Address", placeholder: "Your Address" },
         { id: "city", type: "text", label: "City", placeholder: "Your City" },
         { id: "zip", type: "text", label: "Zip", placeholder: "Your Zip" },
-        { id: "country", type: "text", label: "Country", placeholder: "Your Country" },
+        { id: "country", type: "select", label: "Country", placeholder: "Your Country",
+          options: [
+          "Germany", "Austria", "Switzerland", // DACH countries
+          "United States", "Canada", "United Kingdom", // Other countries
+          "France", "Italy", "Spain", "Japan", "Australia", "India", "Brazil"
+        ]},
         { id: "email", type: "text", label: "Email", placeholder: "Your Email" },
-        { id: "password", type: "text", label: "Passowrd", placeholder: "Your Password" },
-        { id: "password2", type: "text", label: "Repeat Passowrd", placeholder: "Repeat Password" }
+        { id: "password", type: "password", label: "Passowrd", placeholder: "Your Password" },
+        { id: "password2", type: "password", label: "Repeat Passowrd", placeholder: "Repeat Password" }
       ]
   };
 },
 methods: {
   validateField(value, fieldName) {
     console.log("Field: " +fieldName+", Value: "+value);
-    formSchema.validateAt(fieldName, { [fieldName]: value })
+    formSchema.validateAt(fieldName, { ...this.formData, [fieldName]: value })
         .then(() => {
           this.fieldErrors[fieldName] = null;
+          // If the password field is updated, also validate password2 hack
+          if (fieldName === 'password') {
+          this.validateField(this.formData.password2, 'password2');
+        }
         })
         .catch(error => {
+        if (fieldName === 'password2' && !this.formData.password2) { //this is needed hack
+          // Clear the error for 'password2' if it's empty
+          this.fieldErrors[fieldName] = null;
+        } else {
+          // Set the error for other cases
           this.fieldErrors[fieldName] = error.message;
+        }
         });
   },
   submit() {
+    console.log("FormData: " + JSON.stringify(this.formData));
     formSchema.validate(this.formData, { abortEarly: false })
       .then(() => {
         this.$emit('formSubmit', this.formData);

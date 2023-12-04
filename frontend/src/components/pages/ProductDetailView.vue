@@ -37,23 +37,15 @@
 <script>
 import CustomButton from '@/components/atoms/Button.vue';  
 import NormalHeading from "@/components/atoms/NormalHeading.vue";
-
-/*
-{
-        name: "Nike Dunk Low Sneakers - White",
-        image: "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/d01ef37b-c14a-4edd-8787-534f5732294c/dunk-low-retro-herrenschuh-dd36JB.png",
-        sku: "309030",
-        price: "€109,99",
-        sizes: ["XS", "S", "M", "L", "XL"]
-
-*/
+import { useCompleteStore } from "@/store/store";
 
 export default {
   data() {
     return {
       product: null,
       selectedSize: "M",
-      quantity: 1
+      quantity: 1,
+      store: useCompleteStore()
     };
   },
   mounted() {
@@ -63,7 +55,7 @@ export default {
     addToCart() {
       if(localStorage.getItem("userId") != null) {
         //logic to add the product to the cart
-        this.$store.dispatch('addToBasket', {
+        this.store.addToBasket({
           id: this.product.id,
           productName: this.product.name,
           productDescription: this.product.description,
@@ -77,7 +69,7 @@ export default {
     },
     fetchProduct() {
       const productId = parseInt(this.$route.params.id);
-      const product = this.$store.getters.getProductById(productId);
+      const product = this.store.getProductById(productId);
       if (product) {
         this.product = {
         ...product, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird das image dann umgsetzt und es werden noch extras hinzugefügt

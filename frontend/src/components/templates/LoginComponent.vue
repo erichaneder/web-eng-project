@@ -52,10 +52,11 @@ import NormalHeading from "@/components/atoms/NormalHeading.vue";
 //import axios from 'axios';
 import ErrorModal from "@/components/atoms/ErrorModal.vue";
 import { object, string } from "yup";
+import { useCompleteStore } from "@/store/store";
 
 const loginSchema = object().shape({
-  email: string().required().email(),
-  password: string().required(),
+  email: string().required("Please enter your email!").email("Please enter a valid email!"),
+  password: string().required("Please enter your password!"),
 });
 
 export default {
@@ -90,8 +91,7 @@ export default {
             const responseData = await response.json();
             // save the token in the browser for reuse
             localStorage.setItem("token", responseData.token);
-            localStorage.setItem("userId", responseData.userid);
-            localStorage.setItem("role", responseData.role);
+            this.store.login({email: this.form.values.email, role: responseData.role, userId: responseData.userid});
             this.$router.push({ path: "/" });
           } else {
             if (Object.keys(response).length === 0) {
@@ -144,6 +144,7 @@ export default {
       },
       isErrorModalVisible: false,
       errorMessage: "",
+      store: useCompleteStore()
     };
   },
 };

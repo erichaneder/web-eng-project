@@ -9,6 +9,7 @@
 <script>
   import Navbar from './components/templates/NavbarComponent.vue'
   import Footer from './components/templates/FooterComponent.vue'
+  import { useCompleteStore } from '@/store/store';
 
   export default {
     name: 'App',
@@ -16,8 +17,13 @@
       Navbar,
       Footer
     },
+    data() {
+      return {
+        store: useCompleteStore()
+      }  
+    },
     mounted() {
-    this.$store.dispatch('fetchProducts');
+    this.store.fetchProducts();
   }
   }
 </script>

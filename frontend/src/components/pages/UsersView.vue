@@ -26,7 +26,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in users" :key="user.id" class="hover:bg-gray-100">
+            <tr v-for="user in this.store.getAllUsers" :key="user.id" class="hover:bg-gray-100">
               <td class="py-2 px-3 border-b border-gray-200">{{ user.id }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ user.salutation }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ user.name }}</td>
@@ -48,10 +48,10 @@
   </template>
   
   <script>
-  import axios from 'axios';
   import { TrashIcon, PencilIcon } from '@heroicons/vue/24/outline'
   import CustomButton from '@/components/atoms/Button.vue';
   import NormalHeading from "@/components/atoms/NormalHeading.vue";
+  import { useCompleteStore } from "@/store/store";
   
   export default {
     components: {
@@ -62,31 +62,25 @@
     },
     data() {
       return {
-        users: []
+        users: [],
+        store: useCompleteStore()
       };
     },
     methods: {
-        async deleteUser(userId) {
-            console.log("test " + userId);
-            try {
-                const response = await axios.delete('http://localhost:8080/api/v1/user/delete/' + userId); 
-                //logic here when delete successful
-                console.log("Response: " + response);
-            } catch (error) {
-                console.error('Error deleting users:', error);
-            }
+        deleteUser(userId) {
+            this.store.deleteUser(userId);
         },
         editUser(userId) {
             this.$router.push({ path: '/profile/' + userId });
         }
     },
-    async created() {
-      try {
-        const response = await axios.get('http://localhost:8080/api/v1/user/list/'); 
-        this.users = response.data;
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
+    mounted() {
+      this.store.fetchUsers();
+      //to ensure that the assignment happens after Vue has updated the DOM, 
+      //which is necessary bc the fetching of users leads to immediate changes in the DOM
+      this.$nextTick(() => {
+        this.users = this.store.getAllUsers; 
+      });
     }
   };
   </script>

@@ -39,7 +39,7 @@
     import NormalHeading from "@/components/atoms/NormalHeading.vue";
     import { TrashIcon } from '@heroicons/vue/24/outline';
     import axios from 'axios';
-    import { mapGetters, mapActions } from 'vuex';
+    import { useCompleteStore } from '@/store/store';
 
     export default {
     components: {
@@ -47,16 +47,16 @@
         TrashIcon,
         CustomButton
     },
-    computed: {
-        ...mapGetters(['basketTotal']),
-        basketItems() {
-            return this.$store.state.basketItems;
+    data() {
+        return {
+            basketTotal: "",
+            basketItems: [],
+            store: useCompleteStore()
         }
     },
     methods: {
-        ...mapActions(['removeFromBasket']),
         removeItem(itemId) {
-            this.removeFromBasket(itemId);
+            this.store.removeFromBasket(itemId);
         },
         async orderBasket() {
             console.log("test ");
@@ -74,6 +74,9 @@
             }
         }
     },
+    mounted() {
+        this.basketItems = this.store.getBasketItems;
+    }
     }
 </script>
   
