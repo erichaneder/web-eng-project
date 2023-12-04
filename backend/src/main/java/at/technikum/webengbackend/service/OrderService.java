@@ -5,6 +5,7 @@ import at.technikum.webengbackend.repository.OrderRepository;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,7 +24,10 @@ public class OrderService {
         return orderRepository.findById(orderId).get();
     }
 
-    public void addNewOrder(CustomerOrder order) {orderRepository.save(order);}
+    public void addNewOrder(CustomerOrder order) {
+        // Uploaddate must be set here
+        order.setUpload_date(new Date());
+        orderRepository.save(order);}
 
     public void delete(Long orderId) {
         boolean exists = orderRepository.existsById(orderId);

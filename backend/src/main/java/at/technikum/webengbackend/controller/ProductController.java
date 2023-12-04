@@ -5,11 +5,13 @@ import at.technikum.webengbackend.model.Product;
 import at.technikum.webengbackend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class ProductController {
     private final ProductService productService;
 
@@ -19,6 +21,7 @@ public class ProductController {
     }
 
     @GetMapping(path= AllowedPaths.Product.LIST)
+    @PreAuthorize("isAnonymous()")
     public ResponseEntity<List<Product>> getProducts() {return ResponseEntity.ok(productService.getProducts());}
 
     @PostMapping(path=AllowedPaths.Product.ADD)

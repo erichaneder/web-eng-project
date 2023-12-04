@@ -9,12 +9,14 @@ import at.technikum.webengbackend.service.AuthenticationService;
 import at.technikum.webengbackend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
@@ -30,11 +32,13 @@ public class UserController {
     }
 
     @PostMapping(path= AllowedPaths.User.SIGNUP)
+    @PreAuthorize("isAnonymous()")
     public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
         return ResponseEntity.ok(authenticationService.signup(request));
     }
 
     @PostMapping(path=AllowedPaths.User.SIGNIN)
+    @PreAuthorize("isAnonymous()")
     public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest request) {
         return ResponseEntity.ok(authenticationService.signin(request));
     }

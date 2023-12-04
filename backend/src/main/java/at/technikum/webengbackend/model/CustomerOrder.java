@@ -28,11 +28,4 @@ public class CustomerOrder {
     @Temporal(TemporalType.TIMESTAMP)
     private Date upload_date;
     // maybe a date for change?
-
-    public CustomerOrder(String orderNo, float totalAmount) {
-        this.orderNo = orderNo;
-        this.totalAmount = getTotalAmount();
-        this.upload_date = new Date();
-    }
-
 }

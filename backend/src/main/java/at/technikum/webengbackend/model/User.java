@@ -44,6 +44,7 @@ public class User implements UserDetails {
 
     private String phonenumber;
 
+    private String profilePicture;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

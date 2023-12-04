@@ -36,12 +36,4 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     private Date upload_date;
     // maybe a date for change?
-
-    public Product(String name, float price, Integer amount) {
-        this.name = name;
-        this.price = price;
-        this.upload_date = new Date();
-        this.amount = amount;
-    }
-
 }

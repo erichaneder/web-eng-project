@@ -108,7 +108,7 @@ public class SeedDataConfig implements CommandLineRunner {
         if(orderRepository.count()==0) {
             List<CustomerOrder> orders = new ArrayList<>();
             for(int i = 0; i<10; i++) {
-                orders.add(CustomerOrder.builder().orderNo("ORDER93287498").totalAmount(612.99f).upload_date(new Date()).build());
+                orders.add(CustomerOrder.builder().orderNo("ORDER93287498").totalAmount(612.99f).build());
             }
             orders.stream().forEach(orderService::addNewOrder);
         }
