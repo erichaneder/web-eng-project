@@ -77,7 +77,7 @@ export default {
           };
           //client validation successful
 
-          const response = await fetch("http://localhost:8080/api/v1/signin", {
+          const response = await fetch("http://localhost:8080/api/v1/user/signin", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

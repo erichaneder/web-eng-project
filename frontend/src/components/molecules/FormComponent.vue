@@ -84,9 +84,9 @@ data() {
         { id: "zip", type: "text", label: "Zip", placeholder: "Your Zip" },
         { id: "country", type: "select", label: "Country", placeholder: "Your Country",
           options: [
-          "Germany", "Austria", "Switzerland", // DACH countries
-          "United States", "Canada", "United Kingdom", // Other countries
-          "France", "Italy", "Spain", "Japan", "Australia", "India", "Brazil"
+          "DE", "AT", "CH", // DACH countries
+          "US", "CA", "UK", // Other countries
+          "FR", "IT", "ES", "JP", "AU", "IN", "BR"
         ]},
         { id: "email", type: "text", label: "Email", placeholder: "Your Email" },
         { id: "password", type: "password", label: "Passowrd", placeholder: "Your Password" },

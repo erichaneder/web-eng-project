@@ -47,7 +47,6 @@ export default {
         email: formData.email,
         role: "ROLE_CUSTOMER",
         phonenumber: "+4322342234",
-        country: formData.country,
         address: {
             street: formData.address, 
             zipcode: formData.zip,
@@ -59,7 +58,7 @@ export default {
 
       try {   
         // Send formData to backend using fetch 
-        const response = await fetch("http://localhost:8080/api/v1/signup", {
+        const response = await fetch("http://localhost:8080/api/v1/user/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -77,13 +76,8 @@ export default {
           // Redirect to the home page
           this.$router.push({ path: '/' });
         } else {
-          if(Object.keys(response).length === 0) {
-            //Response is leer -> wsh 403 Forbidden
-            this.errorMessage = "An error occurred. Please try again later. ("+response.status+" "+response.statusText+")";
-          } else {
-            const errorData = response.json();
-            this.errorMessage = "Error registering user: "+errorData.message;
-          }
+          const errorData = await response.json();
+          this.errorMessage = "Error registering user: "+errorData.message;
           this.isErrorModalVisible = true;
         }
       } catch (error) {
