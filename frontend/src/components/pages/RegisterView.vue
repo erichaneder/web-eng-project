@@ -46,6 +46,7 @@ export default {
         password: formData.password,
         email: formData.email,
         role: "ROLE_CUSTOMER",
+        phonenumber: "+4322342234",
         country: formData.country,
         address: {
             street: formData.address, 

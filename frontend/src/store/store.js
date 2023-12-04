@@ -67,7 +67,6 @@ export const useCompleteStore = defineStore('complete', {
           const userData = response.data;
           this.profile = {
           ...userData, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird das image dann umgsetzt und es werden noch extras hinzugefügt
-          test: "123",
           phone: userData.phonenumber,
           zipcode: userData.address.zipcode,
           street: userData.address.street,
