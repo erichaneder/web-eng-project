@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useCompleteStore } from '@/store/store';
 
 const routes = [
   {
@@ -96,8 +97,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const userRole = localStorage.getItem('role');
-  const isAdmin = userRole === 'ROLE_ADMIN'; // Assuming 'ROLE_ADMIN' is your admin role identifier
+  const store = useCompleteStore();
+  const isAdmin = store.isLoggedIn;
 
   if (to.matched.some(record => record.meta.requiresAdmin) && !isAdmin) {
     // If the route requires admin access and the user is not an admin, redirect them

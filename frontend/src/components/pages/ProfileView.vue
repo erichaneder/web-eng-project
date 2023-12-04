@@ -4,17 +4,16 @@
       <NormalHeading text="Your Profile" />
       
       <!-- Logged In View -->
-      <div v-if="isLoggedIn">
+      <div v-if="this.store.isLoggedIn && user">
         <h2 class="text-xl mb-4">Welcome, {{ user.name }}</h2>
         
         <div v-if="!isEditing">
+          <p class="text-gray-600 mb-4">Salutation: {{ user.salutation }}</p>
           <p class="text-gray-600 mb-4">Email: {{ user.email }}</p>
           <p class="text-gray-600 mb-4">Street: {{ user.street }}</p>
           <p class="text-gray-600 mb-4">Zip: {{ user.zipcode }}</p>
           <p class="text-gray-600 mb-4">City: {{ user.city }}</p>
           <p class="text-gray-600 mb-4">Country: {{ user.country }}</p>
-          <p class="text-gray-600 mb-4">Phone: {{ user.phone }}</p>
-          <!-- Additional User Info Here -->
           <CustomButton @click="isEditing = true" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Edit Profile</CustomButton>
         </div>
         
@@ -42,14 +41,31 @@
           </div>
           <div class="mb-4">
             <label for="country" class="block text-sm mb-1 text-gray-600">Country:</label>
-            <input v-model="user.country" type="text" id="country" class="w-full h-10 px-2 border rounded">
+            <select v-model="user.country" id="country" class="w-full h-10 px-2 border rounded">
+              <option disabled value="">Please select one</option>
+              <option>Germany</option>
+              <option>Austria</option>
+              <option>Switzerland</option>
+              <optgroup label="Other Countries">
+                <option>United States</option>
+                <option>Canada</option>
+                <option>United Kingdom</option>
+                <option>France</option>
+                <option>Italy</option>
+                <option>Spain</option>
+                <option>Japan</option>
+                <option>Australia</option>
+                <option>India</option>
+                <option>Brazil</option>
+              </optgroup>
+            </select>
           </div>
           <div class="mb-4">
-            <label for="phone" class="block text-sm mb-1 text-gray-600">Phone:</label>
-            <input v-model="user.phone" type="phone" id="phone" class="w-full h-10 px-2 border rounded">
+            <label for="password" class="block text-sm mb-1 text-gray-600">New Password:</label>
+            <input v-model="user.newPassword" type="password" id="password" class="w-full h-10 px-2 border rounded">
           </div>
-          <CustomButton @click="updateProfile" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
-          <CustomButton @click="isEditing = false" customButtonStyle="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 ml-4">Cancel</CustomButton>
+          <CustomButton @click="updateProfile()" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
+          <CustomButton @click="cancel()" customButtonStyle="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 ml-4">Cancel</CustomButton>
         </div>
       </div>
 
@@ -74,16 +90,16 @@
 import CustomButton from '@/components/atoms/Button.vue';
 import NormalHeading from '@/components/atoms/NormalHeading.vue';
 import ErrorModal from "@/components/atoms/ErrorModal.vue";
-import axios from 'axios';
+import { useCompleteStore } from "@/store/store";
 
 export default {
   data() {
       return {
-          user: null,
-          isEditing: false,
-          isLoggedIn: false,
-          isErrorModalVisible: false,
-          errorMessage: "",
+        user: null,
+        isEditing: false,
+        isErrorModalVisible: false,
+        errorMessage: "",
+        store: useCompleteStore()
       };
   },
   components: { 
@@ -93,76 +109,31 @@ export default {
   },
   methods: {
     async updateProfile() {
-        const userId = localStorage.getItem("userId");
-        try {
-            const payload = {
-                name: this.user.name,
-                email: this.user.email,
-                phonenumber: this.user.phone,
-                address: {
-                    street: this.user.street,
-                    zipcode: this.user.zipcode,
-                    city: this.user.city,
-                    country: this.user.country
-                }
-            };
-            const response = await axios.put('http://localhost:8080/api/v1/user/update/' + userId, payload);
-
-            // Check if the response is successful and update local user data
-            if (response.status === 200) {
-                console.log('User updated successfully:', response.data);
-                this.user = { ...this.user, ...response.data };
-            } else {
-                console.error('Error updating user:', response.status, response.statusText);
-                this.errorMessage = "Error updating user: " + response.status + " " +response.statusText;
-                this.isErrorModalVisible = true;
+        const userId = this.store.getUserId;
+        const payload = {
+            name: this.user.name,
+            email: this.user.email,
+            ...(this.user.newPassword && { password: this.newPassword }), // Include password if it's not empty
+            address: {
+                street: this.user.street,
+                zipcode: this.user.zipcode,
+                city: this.user.city,
+                country: this.user.country
             }
-
-            this.isEditing = false;
-        } catch (error) {
-            console.error('Network error:', error);
-            // Handle errors such as network issues, server down, etc.
-        }
-    },
-      async getUserData() {
-        var userId;
-        if(this.$route.params.id) {
-          userId = parseInt(this.$route.params.id);
-        } else {
-          userId = parseInt(localStorage.getItem("userId"));
-        }
-  
-        try {
-          const response = await axios.get('http://localhost:8080/api/v1/user/' + userId);
-          const userData = response.data;
-          console.log(JSON.stringify(userData, null, 2)); // Formats and prints the object);
-          this.user = {
-          ...userData, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird das image dann umgsetzt und es werden noch extras hinzugefügt
-          test: "123",
-          phone: userData.phonenumber,
-          zipcode: userData.address.zipcode,
-          street: userData.address.street,
-          city: userData.address.city,
-          country: userData.address.country,
         };
-        this.isLoggedIn = true;
-        } catch (error) {
-          console.error('Error fetching user:', error);
-          this.user = {
-            name: "John Doe",
-            email: 'john@example.com',
-            street: 'Bahnstraße 10',
-            zipcode: '1030',
-            city: 'Wien',
-            country: 'Austria',
-            phone: '+43892347324'
-          };
-          this.isLoggedIn = true;
-        }
-      }
+        await this.store.updateProfileData(userId, payload);
+        this.isEditing = false;
+    },
+    cancel() {
+      this.isEditing = false;
+      this.user = this.store.getProfileData;
+    }
   },
-  mounted() {
-    this.getUserData();
+  async mounted() {
+    if(this.store.isLoggedIn) {
+      await this.store.fetchProfileData();
+      this.user = this.store.getProfileData;
+    }
   }
 }
 </script>

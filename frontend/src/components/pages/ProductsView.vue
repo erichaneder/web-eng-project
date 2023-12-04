@@ -12,7 +12,7 @@
   <script>
   import ProductTile from '@/components/molecules/ProductTile.vue';
   import NormalHeading from "@/components/atoms/NormalHeading.vue";
-  import axios from 'axios';
+  import { useCompleteStore } from '@/store/store';
 
   export default {
     components: {
@@ -22,31 +22,16 @@
     methods: {
         goToProductDetail(productId) {
                 this.$router.push({ path: `/product/${productId}` });
-            },
-        async fetchProducts() {
-          try {
-            const response = await axios.get('http://localhost:8080/api/v1/product/list/');
-            this.products = response.data.map(product => {
-              return {
-                id: product.id,
-                name: product.name,
-                description: product.description,
-                price: product.price,
-                image: require(`@/assets/${product.image}`)
-              };
-            });
-          } catch (error) {
-            console.error('Error fetching products:', error);
-          }
-        }
+            }
     },
     data() {
       return {
-        products: []
+        products: [],
+        store: useCompleteStore()
       };
     },
     mounted() {
-      this.fetchProducts();
+      this.products = this.store.getAllProducts; 
     }
   };
   </script>

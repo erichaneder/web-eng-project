@@ -21,6 +21,7 @@ import CustomButton from '@/components/atoms/Button.vue';
 import FormComponent from "@/components/molecules/FormComponent.vue";
 import NormalHeading from "@/components/atoms/NormalHeading.vue";
 import ErrorModal from '@/components/atoms/ErrorModal.vue'
+import { useCompleteStore } from '@/store/store';
 
 export default {
   components: {
@@ -32,7 +33,8 @@ export default {
   data() {
     return {
       isErrorModalVisible: false,
-      errorMessage: ''
+      errorMessage: '',
+      store: useCompleteStore()
     }
   },
   methods: {
@@ -45,6 +47,7 @@ export default {
         email: formData.email,
         role: "ROLE_CUSTOMER",
         phonenumber: "+4322342234",
+        country: formData.country,
         address: {
             street: formData.address, 
             zipcode: formData.zip,
@@ -70,9 +73,7 @@ export default {
           const responseData = await response.json();
           
           localStorage.setItem("token", responseData.token);
-          localStorage.setItem("userId", responseData.userid);
-          localStorage.setItem("role", responseData.role);
-
+          this.store.login({email: formData.email, role: responseData.role, userId: responseData.userid});
           // Redirect to the home page
           this.$router.push({ path: '/' });
         } else {

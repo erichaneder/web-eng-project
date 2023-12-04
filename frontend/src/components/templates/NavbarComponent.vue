@@ -26,7 +26,7 @@
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
               <router-link
-                v-for="item in navigation"
+                v-for="item in filteredNavigation"
                 :key="item.name"
                 :to="item.href"
                 :class="[
@@ -64,7 +64,7 @@
               </MenuButton>
             </div>
               <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div v-if="isLoggedIn">
+                <div v-if="isLoggedIn()">
                   <MenuItem v-slot="{ active }">
                     <router-link
                       to="/profile"
@@ -76,7 +76,7 @@
                     >
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
-                    <span :class="[active ? 'bg-gray-100' : '','block px-4 py-2 text-sm text-gray-700']" @click="logout()"
+                    <span :class="[active ? 'bg-gray-100 logout' : '','block px-4 py-2 text-sm text-gray-700 logout']" @click="logout()"
                       >Logout
                     </span>
                 </MenuItem>
@@ -133,6 +133,7 @@
 <script>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem,  MenuItems} from "@headlessui/vue";
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon, UserIcon} from "@heroicons/vue/24/outline";
+import { useCompleteStore } from "@/store/store";
 
 export default {
   name: "NavbarComponent",
@@ -153,43 +154,30 @@ export default {
         { name: "Users", href: "/users", current: false, requiresAdmin: true },
         { name: "Orders", href: "/orders", current: false, requiresAdmin: true },
       ],
-      isloggedIn: false,
-      isAdmin: false
+      store: useCompleteStore()
     };
   },
   methods: {
-    checkLoggedIn() {
-      return localStorage.getItem("userId") != null;
+    isLoggedIn() {
+      return this.store.isLoggedIn;
     },
     logout() {
-      localStorage.removeItem("userId");
-      localStorage.removeItem("role");
       localStorage.removeItem("token");
-      this.isloggedIn = false;
+      this.store.logout();
       this.$router.push("/");
     },
-    checkIsAdmin() {
-      return localStorage.getItem("role") === "ROLE_ADMIN";
+    isAdmin() {
+      return this.store.isAdmin;
     }
-  },
-  mounted() {
-    this.isLoggedIn = this.checkLoggedIn();
-    this.isAdmin = this.checkIsAdmin();
   },
   computed: {
     filteredNavigation() {
-      return this.navigation.filter(item => !item.requiresAdmin || this.isAdmin);
+      return this.navigation.filter(item => !item.requiresAdmin || this.isAdmin());
     }
-  },
-  watch: {
-    $route() {
-      this.navigation.forEach(item => {
-        item.current = item.href === this.$route.path;
-      });
-      this.isLoggedIn = this.checkLoggedIn();
-      this.isAdmin = this.checkIsAdmin();
-      this.$forceUpdate(); //maybe useless, should force the component to re-render
-    }
-  },
+  }
 };
 </script>
+
+<style>
+  .logout {cursor: pointer; color: red; font-weight: bold;}
+</style>

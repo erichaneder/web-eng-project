@@ -1,14 +1,14 @@
 <template>
   <div class="mb-4">
     <label :for="id" class="block text-sm mb-1">{{ label }}:</label>
-    <input
-      :type="type"
-      :id="id"
-      :value="modelValue"
-      @blur="handleBlur"
-      :placeholder="placeholder"
-      class="w-full h-10 px-2 border rounded"
-    />
+    <!-- Render a select dropdown for 'select' type -->
+    <select v-if="type === 'select'" :id="id" @blur="handleBlur" :value="modelValue" @change="$emit('update:modelValue', $event.target.value)" class="w-full h-10 px-2 border rounded">
+      <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
+    </select>
+
+    <!-- Render an input field for other types -->
+    <input v-else :type="type" :id="id" @blur="handleBlur" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" :placeholder="placeholder" class="w-full h-10 px-2 border rounded" />
+
     <div class="text-red-500" v-if="error">{{ error }}</div>
   </div>
 </template>
@@ -22,7 +22,8 @@ export default {
     type: String,
     placeholder: String,
     validateField: Function,
-    error: String
+    error: String,
+    options: Array
   },
   methods: {
     handleBlur(event) {
