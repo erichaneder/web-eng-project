@@ -52,9 +52,12 @@ export const useCompleteStore = defineStore('complete', {
         }
       },
       async fetchUsers() {
-        console.log("Fetching all Users...");
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
         try {
-          const response = await axios.get('http://localhost:8080/api/v1/user/list/'); 
+          const response = await axios.get('http://localhost:8080/api/v1/user/list/', config); 
           this.users = response.data;
           console.log("Setting users to: " + response.data);
         } catch (error) {
@@ -62,8 +65,12 @@ export const useCompleteStore = defineStore('complete', {
         }
       },
       async fetchProfileData() {
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
         try {
-          const response = await axios.get('http://localhost:8080/api/v1/user/' + this.user.userId);
+          const response = await axios.get('http://localhost:8080/api/v1/user/' + this.user.userId, config);
           const userData = response.data;
           this.profile = {
           ...userData, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird das image dann umgsetzt und es werden noch extras hinzugefügt
@@ -78,8 +85,12 @@ export const useCompleteStore = defineStore('complete', {
         }
       },
       async updateProfileData(userId, payload) {
+        const token = localStorage.getItem('token');
+        const config = {
+        headers: { Authorization: `Bearer ${token}` }
+        };
         try {
-          const response = await axios.put('http://localhost:8080/api/v1/user/update/' + userId, payload);
+          const response = await axios.put('http://localhost:8080/api/v1/user/update/' + userId, payload, config);
           if (response.status === 200) {
               console.log('User updated successfully:', response.data);
               this.profile = {...response.data };
@@ -93,8 +104,12 @@ export const useCompleteStore = defineStore('complete', {
         }
       },
       async fetchOrders() {
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
         try {
-          const response = await axios.get('http://localhost:8080/api/v1/order/list/'); 
+          const response = await axios.get('http://localhost:8080/api/v1/order/list/', config); 
           this.orders = response.data;
         } catch (error) {
           console.error('Error fetching orders:', error);
@@ -105,8 +120,8 @@ export const useCompleteStore = defineStore('complete', {
         this.user.username = 'User-' + payload.email.split('@')[0];
         this.user.userId = payload.userId;
         this.user.role = payload.role;
-        console.log("Email stored: " + this.email);
-        console.log("UserName stored: " + this.username);
+        console.log("Email stored: " + this.user.email);
+        console.log("UserName stored: " + this.user.username);
         console.log("UserId stored: " + this.user.userId);
         console.log("Role stored: " + this.user.role);
       },
@@ -130,8 +145,12 @@ export const useCompleteStore = defineStore('complete', {
           return; //deleting yourself is not handled now
         }
         console.log("Trying to delete user: " + userId);
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
         try {
-          const response = await axios.delete('http://localhost:8080/api/v1/user/delete/' + userId); 
+          const response = await axios.delete('http://localhost:8080/api/v1/user/delete/' + userId, config); 
           console.log("Deleting successful: Response: " + response);
         } catch (error) {
           console.error('Error deleting user:', error);

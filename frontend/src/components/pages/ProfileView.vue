@@ -24,6 +24,10 @@
             <input v-model="user.name" type="text" id="name" class="w-full h-10 px-2 border rounded">
           </div>
           <div class="mb-4">
+            <label for="salutation" class="block text-sm mb-1 text-gray-600">Salutation:</label>
+            <input v-model="user.salutation" type="text" id="salutation" class="w-full h-10 px-2 border rounded">
+          </div>
+          <div class="mb-4">
             <label for="email" class="block text-sm mb-1 text-gray-600">Email:</label>
             <input v-model="user.email" type="email" id="email" class="w-full h-10 px-2 border rounded">
           </div>
@@ -113,6 +117,7 @@ export default {
         const payload = {
             name: this.user.name,
             email: this.user.email,
+            salutation: this.user.salutation,
             ...(this.user.newPassword && { password: this.newPassword }), // Include password if it's not empty
             address: {
                 street: this.user.street,

@@ -40,11 +40,15 @@ public class UserService {
         userRepository.deleteById(userId);
     }
     @Transactional
-    public void updateUserData(Long userId, String name, String password, String mail, Role role, String phonenumber) {
+    public void updateUserData(Long userId, String name, String salutation, String password, String mail, Role role, String phonenumber) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id "+userId+ "does not exist"));
 
         if (name != null && !name.trim().isEmpty() && !Objects.equals(user.getName(), name)) {
             user.setName(name);
+        }
+
+        if (salutation != null && !salutation.trim().isEmpty()) {
+            user.setSalutation(salutation);
         }
 
         if (password != null && !password.trim().isEmpty()) {
@@ -62,7 +66,6 @@ public class UserService {
         if (phonenumber != null && !phonenumber.trim().isEmpty()) {
             user.setPhonenumber(phonenumber);
         }
-
     }
 
     // patch

@@ -51,7 +51,7 @@ public class UserController {
 
     @PutMapping(path= AllowedPaths.User.UPDATE)
     public ResponseEntity<?> updateUser(@PathVariable("userId") Long userId,@RequestBody User user) {
-        userService.updateUserData(userId,user.getName(),user.getPassword(),user.getEmail(),user.getRole(),user.getPhonenumber());
+        userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(),user.getEmail(),user.getRole(),user.getPhonenumber());
         return ResponseEntity.ok().build();
     }
 

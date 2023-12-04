@@ -79,9 +79,9 @@ const routes = [
     meta: { requiresAdmin: true } // This route requires admin access
   },
   {
-    path: '/profile/:id',
-    name: 'profile1',
-    component: () => import(/* webpackChunkName: "profile1" */ '@/components/pages/ProfileView.vue'),
+    path: '/user/:userId',
+    name: 'user',
+    component: () => import(/* webpackChunkName: "user" */ '@/components/pages/EditUserView.vue'),
     meta: { requiresAdmin: true } // This route requires admin access
   },
   {

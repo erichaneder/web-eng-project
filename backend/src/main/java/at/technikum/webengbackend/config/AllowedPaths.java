@@ -15,7 +15,7 @@ public class AllowedPaths {
     public static class User {
         public static final String USER_BASE = "user/";
 
-        public static final String SIGNIN = API_BASE + "signin"; // POST
+        public static final String SIGNIN = API_BASE + USER_BASE + "signin"; // POST
         public static final String SIGNUP = API_BASE + USER_BASE + "signup"; // POST
         public static final String LIST = API_BASE + USER_BASE + "list/"; // GET
         public static final String GET_ONE = API_BASE + USER_BASE + "{userId}"; // GET

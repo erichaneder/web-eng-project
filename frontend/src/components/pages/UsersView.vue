@@ -5,28 +5,16 @@
         <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
           <thead>
             <tr class="text-center">
-              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">
-                ID
-              </th>
-              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">
-                Salutation
-              </th>
-              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">
-                Name
-              </th>
-              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">
-                Email
-              </th>
-              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">
-                Country
-              </th>
-              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">
-                Actions
-              </th>
+              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">ID</th>
+              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">Salutation</th>
+              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">Name</th>
+              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">Email</th>
+              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">Country</th>
+              <th class="py-2 px-3 sticky top-0 border-b bg-teal-700 text-white">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in this.store.getAllUsers" :key="user.id" class="hover:bg-gray-100">
+            <tr v-for="user in users" :key="user.id" class="hover:bg-gray-100">
               <td class="py-2 px-3 border-b border-gray-200">{{ user.id }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ user.salutation }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ user.name }}</td>
@@ -67,20 +55,17 @@
       };
     },
     methods: {
-        deleteUser(userId) {
-            this.store.deleteUser(userId);
+        async deleteUser(userId) {
+            await this.store.deleteUser(userId);
+            this.users = this.store.getAllUsers;
         },
         editUser(userId) {
-            this.$router.push({ path: '/profile/' + userId });
+            this.$router.push({ path: '/user/' + userId });
         }
     },
-    mounted() {
-      this.store.fetchUsers();
-      //to ensure that the assignment happens after Vue has updated the DOM, 
-      //which is necessary bc the fetching of users leads to immediate changes in the DOM
-      this.$nextTick(() => {
-        this.users = this.store.getAllUsers; 
-      });
+    async mounted() {
+      await this.store.fetchUsers();
+      this.users = this.store.getAllUsers; 
     }
   };
   </script>
