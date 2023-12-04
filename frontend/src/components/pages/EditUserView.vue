@@ -62,8 +62,8 @@
                 </optgroup>
               </select>
             </div>
-            <CustomButton @click="updateProfile()" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
-            <CustomButton @click="cancel()" customButtonStyle="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 ml-4">Cancel</CustomButton>
+            <CustomButton @clicked="updateProfile()" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
+            <CustomButton @clicked="cancel()" customButtonStyle="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 ml-4">Cancel</CustomButton>
           </div>
         </div>
       </div>
@@ -114,6 +114,7 @@
         };
         await this.updateUserData(userId, payload);
         this.isEditing = false;
+        await this.getUserData(userId);
       },
       async cancel() {
         this.isEditing = false;
@@ -123,18 +124,18 @@
         try {
           const token = localStorage.getItem('token');
           const config = {
-          headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${token}` }
           };
           const response = await axios.get('http://localhost:8080/api/v1/user/' + userId, config);
           const userData = response.data;
           this.user = {
-          ...userData, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird das image dann umgsetzt und es werden noch extras hinzugefügt
-          phone: userData.phonenumber,
-          zipcode: userData.address.zipcode,
-          street: userData.address.street,
-          city: userData.address.city,
-          country: userData.address.country,
-        };
+            ...userData, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird das image dann umgsetzt und es werden noch extras hinzugefügt
+            phone: userData.phonenumber,
+            zipcode: userData.address.zipcode,
+            street: userData.address.street,
+            city: userData.address.city,
+            country: userData.address.country,
+          }; 
         } catch (error) {
           console.error('Error fetching user:', error);
         }
@@ -149,14 +150,6 @@
           if (response.status === 200) {
               const data = await response.data;
               console.log('User updated successfully:', data);
-              this.user = {
-                ...payload,
-                phone: payload.phonenumber,
-                zipcode: payload.address.zipcode,
-                street: payload.address.street,
-                city: payload.address.city,
-                country: payload.address.country,
-             };
           } else {
               console.error('Error updating user:', response.status, response.statusText);
               this.errorMessage = "Error updating user: " + response.status + " " +response.statusText;
@@ -164,6 +157,8 @@
           }
         } catch (error) {
             console.error('Network error:', error);
+            this.errorMessage = error.message;
+            this.isErrorModalVisible = true;
         }
       }
     },

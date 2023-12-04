@@ -20,9 +20,9 @@
       ProductTile
     },
     methods: {
-        goToProductDetail(productId) {
-                this.$router.push({ path: `/product/${productId}` });
-            }
+      goToProductDetail(productId) {
+        this.$router.push({ path: `/product/${productId}` });
+      }
     },
     data() {
       return {

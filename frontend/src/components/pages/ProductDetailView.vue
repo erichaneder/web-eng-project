@@ -22,7 +22,7 @@
           <input type="number" class="form-control block w-40 border border-gray-200 text-gray-700 py-3 px-4 rounded" id="quantityInput" v-model="quantity" min="1">
         </div>
 
-        <CustomButton @click="addToCart" customButtonStyle="btn btn-primary w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500 mb-2">In den Warenkorb</CustomButton>
+        <CustomButton @clicked="addToCart" customButtonStyle="btn btn-primary w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500 mb-2">In den Warenkorb</CustomButton>
         <p class="text-gray-500 mt-3">Lieferzeit: 3-5 Werktage</p>
         <hr class="my-4">
         <p class="text-gray-600">Bitte beachten Sie das sich die Lieferzeit aufgrund ihres Standorts ändern kann. Bei Fragen zu diesem oder anderen Produkten können Sie sich an unseren Support wenden.</p>
@@ -53,15 +53,8 @@ export default {
   },
   methods: {
     addToCart() {
-      if(localStorage.getItem("userId") != null) {
-        //logic to add the product to the cart
-        this.store.addToBasket({
-          id: this.product.id,
-          productName: this.product.name,
-          productDescription: this.product.description,
-          price: this.product.price,
-          image: this.product.image
-        });
+      if(this.store.isLoggedIn) {
+        this.store.addToBasket(this.product);
         this.$router.push({ path: '/basket' });
       } else {
         this.$router.push({ path: '/login' });
@@ -70,10 +63,10 @@ export default {
     fetchProduct() {
       const productId = parseInt(this.$route.params.id);
       const product = this.store.getProductById(productId);
+      console.log("Product: " + JSON.stringify(product));
       if (product) {
         this.product = {
         ...product, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird das image dann umgsetzt und es werden noch extras hinzugefügt
-        image: require(`@/assets/${product.image}`),
         sku: 309030,
         sizes: ["XS", "S", "M", "L", "XL"],
         price: product.price + ",00 €"

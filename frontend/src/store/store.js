@@ -21,13 +21,14 @@ export const useCompleteStore = defineStore('complete', {
     },
     actions: {
       addToBasket(item) {
+        console.log(JSON.stringify(item));
         this.basketItems.push(item);
       },
       removeFromBasket(itemId) {
-          const index = this.basketItems.findIndex(item => item.id === itemId);
-          if (index !== -1) {
-              this.basketItems.splice(index, 1);
-          } 
+        const index = this.basketItems.findIndex(item => item.id === itemId);
+        if (index !== -1) {
+            this.basketItems.splice(index, 1);
+        } 
       },
       async fetchProducts() {
         if (this.isProductsFetched) return;
@@ -131,15 +132,6 @@ export const useCompleteStore = defineStore('complete', {
         this.user.userId = null;
         this.user.role = '';
       },
-      getProductById(id) {
-        return this.products.find(product => product.id === id);
-      },
-      basketTotal() {
-        return this.basketItems.reduce((total, item) => total + item.price, 0).toFixed(2);
-      },
-      getBasketItems() {
-        return this.basketItems;
-      },
       async deleteUser(userId) {
         if(userId == this.user.userId) {
           return; //deleting yourself is not handled now
@@ -149,19 +141,19 @@ export const useCompleteStore = defineStore('complete', {
         const config = {
           headers: { Authorization: `Bearer ${token}` }
         };
+        console.log("Trying to delete wit this token: " + token);
         try {
           const response = await axios.delete('http://localhost:8080/api/v1/user/delete/' + userId, config); 
-          console.log("Deleting successful: Response: " + response);
+          console.log("Deleting successful: Response: " + response.data);
         } catch (error) {
           console.error('Error deleting user:', error);
         }
         const index = this.users.findIndex(item => item.userId === userId);
-          if (index !== -1) {
-              this.users.splice(index, 1);
-          } 
+        if (index !== -1) {
+            this.users.splice(index, 1);
+        } 
       },
       async deleteOrder(orderId) {
-        console.log("test " + orderId);
           try {
               const response = await axios.delete('http://localhost:8080/api/v1/order/delete/' + orderId); 
               //logic here when delete successful
@@ -169,7 +161,10 @@ export const useCompleteStore = defineStore('complete', {
           } catch (error) {
               console.error('Error deleting order:', error);
           }
-      }
+      },
+      getProductById(id) {
+        return this.products.find(product => product.id === id);
+      },
     },
     getters: {
       isLoggedIn () {
@@ -200,6 +195,13 @@ export const useCompleteStore = defineStore('complete', {
       },
       getProfileData() {
         return this.profile;
-      }
+      },
+      getBasketItems() {
+        return this.basketItems;
+      },
+      getBasketTotal() {
+        console.log(this.basketItems);
+        return this.basketItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
+      },
     },
 });

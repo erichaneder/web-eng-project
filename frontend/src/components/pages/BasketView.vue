@@ -14,7 +14,7 @@
                     <p class="text-gray-600">{{ item.productDescription }}</p>
                     <p class="text-teal-700 mt-2">${{ item.price }}</p>
                 </div>
-                <CustomButton @click="removeItem(item.id)" customButtonStyle="p-2 hover:bg-red-500">
+                <CustomButton @clicked="removeItem(item.id)" customButtonStyle="p-2 hover:bg-red-500">
                     <TrashIcon class="h-5 w-5 text-red-400 hover:text-white"/>
                 </CustomButton>
             </div>
@@ -27,8 +27,8 @@
         
         <!-- Basket Total -->
         <div v-if="basketItems.length" class="mt-4 text-right">
-            <p class="text-xl">Total: ${{ basketTotal }}</p>
-            <CustomButton @click="orderBasket()" customButtonStyle="mt-4 w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Proceed to Checkout</CustomButton>
+            <p class="text-xl">Total: ${{ this.store.getBasketTotal }}</p>
+            <CustomButton @clicked="orderBasket()" customButtonStyle="mt-4 w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Proceed to Checkout</CustomButton>
         </div>
         </div>
     </div>
@@ -49,7 +49,6 @@
     },
     data() {
         return {
-            basketTotal: "",
             basketItems: [],
             store: useCompleteStore()
         }
@@ -62,8 +61,8 @@
             console.log("test ");
             const payload = {
                 orderNo: "RANDOM_ORDERNO_2423423",
-                totalAmount: this.getBasketTotal(),
-                userId: localStorage.getItem("userId"),
+                totalAmount: this.store.getBasketTotal,
+                userId: this.store.getUserId,
             };
             try {
                 const response = await axios.post('http://localhost:8080/api/v1/order/add/', payload); 
@@ -77,6 +76,6 @@
     mounted() {
         this.basketItems = this.store.getBasketItems;
     }
-    }
+}
 </script>
   

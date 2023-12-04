@@ -21,10 +21,10 @@
               <td class="py-2 px-3 border-b border-gray-200">{{ user.email }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ user.address.country }}</td>
               <td class="py-2 px-3 border-b border-gray-200">
-                <CustomButton @click="editUser(user.id)" customButtonStyle="p-2 hover:bg-green-500">
+                <CustomButton @clicked="editUser(user.id)" customButtonStyle="p-2 hover:bg-green-500">
                     <PencilIcon class="h-5 w-5 text-green-400 hover:text-white" />
                 </CustomButton>
-                <CustomButton @click="deleteUser(user.id)" customButtonStyle="p-2 hover:bg-red-500">
+                <CustomButton @clicked="deleteUser(user.id)" customButtonStyle="p-2 hover:bg-red-500">
                     <TrashIcon class="h-5 w-5 text-red-400 hover:text-white" />
                 </CustomButton>
               </td>

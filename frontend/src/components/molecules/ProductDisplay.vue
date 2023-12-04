@@ -4,7 +4,7 @@
         <h3 class="text-lg font-semibold text-gray-700 mb-2">{{ product.name }}</h3>
         <p class="text-gray-600 mb-2">{{ product.description }}</p>
         <p class="text-pink-800 font-bold">${{ product.price }}</p>
-        <CustomButton @click="goToProductDetail(product.id)">
+        <CustomButton @clicked="goToProductDetail(product.id)">
             <div class="flex flex-col items-center">
                 <ChevronDoubleRightIcon class="h-6 w-6" />
             </div>

@@ -25,7 +25,7 @@
       <p>For commonly asked questions, visit our Frequently Asked Questions (FAQ) page.</p>
     
       <!-- Test Button to trigger Error Modal -->
-      <CustomButton @click="showErrorModal" customButtonStyle="mt-4 p-2 bg-red-600 text-white rounded">Contact Support</CustomButton>
+      <CustomButton @clicked="showErrorModal" customButtonStyle="mt-4 p-2 bg-red-600 text-white rounded">Contact Support</CustomButton>
     </div>
       
 

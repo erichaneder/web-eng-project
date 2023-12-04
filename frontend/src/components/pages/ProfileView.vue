@@ -68,8 +68,8 @@
             <label for="password" class="block text-sm mb-1 text-gray-600">New Password:</label>
             <input v-model="user.newPassword" type="password" id="password" class="w-full h-10 px-2 border rounded">
           </div>
-          <CustomButton @click="updateProfile()" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
-          <CustomButton @click="cancel()" customButtonStyle="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 ml-4">Cancel</CustomButton>
+          <CustomButton @clicked="updateProfile()" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
+          <CustomButton @clicked="cancel()" customButtonStyle="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 ml-4">Cancel</CustomButton>
         </div>
       </div>
 

@@ -4,7 +4,7 @@
     <h3 class="text-lg font-semibold text-gray-700 mb-2">{{ product.name }}</h3>
     <p class="text-gray-600 mb-2">{{ product.description }}</p>
     <p class="text-pink-800 font-bold">${{ product.price }}</p>
-    <CustomButton @click="goToProductDetail" customButtonStyle="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500 mt-3">View Details</CustomButton>
+    <CustomButton @clicked="goToProductDetail" customButtonStyle="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500 mt-3">View Details</CustomButton>
   </div>
 </template>
 

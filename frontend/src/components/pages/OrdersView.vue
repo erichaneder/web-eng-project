@@ -21,10 +21,10 @@
               <td class="py-2 px-3 border-b border-gray-200">{{ order.totalAmount }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ order.totalQuantity }}</td>
               <td class="py-2 px-3 border-b border-gray-200">
-                <CustomButton @click="editOrder(order.id)" customButtonStyle="p-2 hover:bg-green-500">
+                <CustomButton @clicked="editOrder(order.id)" customButtonStyle="p-2 hover:bg-green-500">
                     <PencilIcon class="h-5 w-5 text-green-400 hover:text-white" />
                 </CustomButton>
-                <CustomButton @click="deleteOrder(order.id)" customButtonStyle="p-2 hover:bg-red-500">
+                <CustomButton @clicked="deleteOrder(order.id)" customButtonStyle="p-2 hover:bg-red-500">
                     <TrashIcon class="h-5 w-5 text-red-400 hover:text-white" />
                 </CustomButton>
               </td>
