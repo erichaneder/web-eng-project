@@ -22,23 +22,41 @@ public class ProductController {
 
     @GetMapping(path= AllowedPaths.Product.LIST)
     @PreAuthorize("isAnonymous()")
-    public ResponseEntity<List<Product>> getProducts() {return ResponseEntity.ok(productService.getProducts());}
+    public ResponseEntity<List<Product>> getProducts() {
+        try {
+            return ResponseEntity.ok(productService.getProducts());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Aufrufen der Produkte: ");
+        }
+    }
 
     @PostMapping(path=AllowedPaths.Product.ADD)
     public ResponseEntity<?> registerNewProduct(@RequestBody Product product) {
-       productService.addNewProduct(product);
-       return ResponseEntity.ok().build();
+        try {
+            productService.addNewProduct(product);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Anlegen eines neuen Produktes: ");
+        }
     }
 
     @DeleteMapping(path=AllowedPaths.Product.DELETE)
     public ResponseEntity<?> deleteProduct(@PathVariable("productId") Long productId) {
-        productService.deleteProduct(productId);
-        return ResponseEntity.ok().build();
+        try {
+            productService.deleteProduct(productId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Löschen eines Produktes: ");
+        }
     }
 
     @PutMapping(path = AllowedPaths.Product.UPDATE)
     public ResponseEntity<?> updateProduct(@PathVariable("productId") Long productId,@RequestBody Product product) {
-        productService.updateProduct(productId,product.getName(),product.getPrice(),product.getAmount());
-        return ResponseEntity.ok().build();
+        try {
+            productService.updateProduct(productId,product.getName(),product.getPrice(),product.getAmount());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Ändern des Produktes: ");
+        }
     }
 }
