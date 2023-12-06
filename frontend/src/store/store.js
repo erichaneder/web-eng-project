@@ -133,9 +133,6 @@ export const useCompleteStore = defineStore('complete', {
         this.user.role = '';
       },
       async deleteUser(userId) {
-        if(userId == this.user.userId) {
-          return; //deleting yourself is not handled now
-        }
         console.log("Trying to delete user: " + userId);
         const token = localStorage.getItem('token');
         const config = {

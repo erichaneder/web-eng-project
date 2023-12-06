@@ -9,9 +9,9 @@
             <div v-for="item in basketItems" :key="item.id" class="flex items-center mb-4">
                 <img :src="item.image" alt="Item image" class="w-40 h-40 object-cover mr-4">
                 <div>
-                    <h2 class="text-lg font-bold">{{ item.productName }}</h2>
+                    <h2 class="text-lg font-bold">{{ item.name }}</h2>
                     <br>
-                    <p class="text-gray-600">{{ item.productDescription }}</p>
+                    <p class="text-gray-600">{{ item.description }}</p>
                     <p class="text-teal-700 mt-2">${{ item.price }}</p>
                 </div>
                 <CustomButton @clicked="removeItem(item.id)" customButtonStyle="p-2 hover:bg-red-500">
