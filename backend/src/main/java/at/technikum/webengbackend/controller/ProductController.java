@@ -26,7 +26,7 @@ public class ProductController {
         try {
             return ResponseEntity.ok(productService.getProducts());
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Aufrufen der Produkte: ");
+            throw new IllegalArgumentException("Fehler beim Aufrufen der Produkte: " + e.getMessage());
         }
     }
 
@@ -36,7 +36,7 @@ public class ProductController {
             productService.addNewProduct(product);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Anlegen eines neuen Produktes: ");
+            throw new IllegalArgumentException("Fehler beim Anlegen eines neuen Produktes: " + e.getMessage());
         }
     }
 
@@ -46,7 +46,7 @@ public class ProductController {
             productService.deleteProduct(productId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Löschen eines Produktes: ");
+            throw new IllegalArgumentException("Fehler beim Löschen eines Produktes: " + e.getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ public class ProductController {
             productService.updateProduct(productId,product.getName(),product.getPrice(),product.getAmount());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Ändern des Produktes: ");
+            throw new IllegalArgumentException("Fehler beim Ändern des Produktes: " + e.getMessage());
         }
     }
 }
