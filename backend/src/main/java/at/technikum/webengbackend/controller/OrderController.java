@@ -22,7 +22,7 @@ public class OrderController {
         try {
             return ResponseEntity.ok(orderService.getOrders());
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Lesen der Bestellungen: ");
+            throw new IllegalArgumentException("Fehler beim Lesen der Bestellungen: " + e.getMessage());
         }
     }
 
@@ -31,7 +31,7 @@ public class OrderController {
         try {
             return ResponseEntity.ok(orderService.getOrder(orderId));
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Lesen der Bestellung: ");
+            throw new IllegalArgumentException("Fehler beim Lesen der Bestellung: " + e.getMessage());
         }
     }
 
@@ -41,7 +41,7 @@ public class OrderController {
             orderService.addNewOrder(order);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Erstellen der Bestellung: ");
+            throw new IllegalArgumentException("Fehler beim Erstellen der Bestellung: " + e.getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ public class OrderController {
             orderService.delete(orderId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Löschen der Bestellung: ");
+            throw new IllegalArgumentException("Fehler beim Löschen der Bestellung: " + e.getMessage());
         }
     }
 }

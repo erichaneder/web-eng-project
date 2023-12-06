@@ -26,7 +26,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.getUsers());
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Lesen der Benutzer: ");
+            throw new IllegalArgumentException("Fehler beim Lesen der Benutzer: " + e.getMessage());
         }
     }
 
@@ -35,7 +35,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.getUser(userId));
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Lesen des Benutzers: ");
+            throw new IllegalArgumentException("Fehler beim Lesen des Benutzers: " + e.getMessage());
         }
     }
 
@@ -45,7 +45,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(authenticationService.signup(request));
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler bei der Benutzerregistrierung: ");
+            throw new IllegalArgumentException("Fehler bei der Benutzerregistrierung: " + e.getMessage());
         }
     }
 
@@ -55,7 +55,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(authenticationService.signin(request));
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Login: ");
+            throw new IllegalArgumentException("Fehler beim Login: " + e.getMessage());
         }
     }
 
@@ -65,7 +65,7 @@ public class UserController {
             userService.delete(userID);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler beim Löschen des Benutzers: ");
+            throw new IllegalArgumentException("Fehler beim Löschen des Benutzers: " + e.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public class UserController {
             userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(),user.getEmail(),user.getRole(),user.getPhonenumber());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: ");
+            throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: " + e.getMessage());
         }
     }
 
