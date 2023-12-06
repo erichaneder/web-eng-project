@@ -16,25 +16,42 @@ public class OrderController {
     private final OrderService orderService;
     @Autowired
     public OrderController(OrderService orderService) { this.orderService = orderService; }
+
     @GetMapping(path= AllowedPaths.Order.LIST)
-    public ResponseEntity<List<CustomerOrder>> getOrders() {
-        return ResponseEntity.ok(orderService.getOrders());
+    public ResponseEntity<List<CustomerOrder>> getOrders(){
+        try {
+            return ResponseEntity.ok(orderService.getOrders());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Lesen der Bestellungen: ");
+        }
     }
 
     @GetMapping(path= AllowedPaths.Order.GET_ONE)
     public ResponseEntity<CustomerOrder> getOrder(@PathVariable("orderId") Long orderId) {
-        return ResponseEntity.ok(orderService.getOrder(orderId));
+        try {
+            return ResponseEntity.ok(orderService.getOrder(orderId));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Lesen der Bestellung: ");
+        }
     }
 
     @PostMapping(path=AllowedPaths.Order.ADD)
     public ResponseEntity<?> createNewOrder(@RequestBody CustomerOrder order) {
-        orderService.addNewOrder(order);
-        return ResponseEntity.ok().build();
+        try {
+            orderService.addNewOrder(order);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Erstellen der Bestellung: ");
+        }
     }
 
     @DeleteMapping(path=AllowedPaths.Order.DELETE)
     public ResponseEntity<?> deleteOrder(@PathVariable("orderId") Long orderId) {
-        orderService.delete(orderId);
-        return ResponseEntity.ok().build();
+        try {
+            orderService.delete(orderId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Löschen der Bestellung: ");
+        }
     }
 }

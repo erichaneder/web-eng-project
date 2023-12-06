@@ -23,36 +23,60 @@ public class UserController {
 
     @GetMapping(path= AllowedPaths.User.LIST)
     public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userService.getUsers());
+        try {
+            return ResponseEntity.ok(userService.getUsers());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Lesen der Benutzer: ");
+        }
     }
 
     @GetMapping(path= AllowedPaths.User.GET_ONE)
     public ResponseEntity<User> getUser(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(userService.getUser(userId));
+        try {
+            return ResponseEntity.ok(userService.getUser(userId));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Lesen des Benutzers: ");
+        }
     }
 
     @PostMapping(path= AllowedPaths.User.SIGNUP)
     @PreAuthorize("isAnonymous()")
     public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
-        return ResponseEntity.ok(authenticationService.signup(request));
+        try {
+            return ResponseEntity.ok(authenticationService.signup(request));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler bei der Benutzerregistrierung: ");
+        }
     }
 
     @PostMapping(path=AllowedPaths.User.SIGNIN)
     @PreAuthorize("isAnonymous()")
     public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest request) {
-        return ResponseEntity.ok(authenticationService.signin(request));
+        try {
+            return ResponseEntity.ok(authenticationService.signin(request));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Login: ");
+        }
     }
 
     @DeleteMapping(path=AllowedPaths.User.DELETE)
     public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userID) {
-        userService.delete(userID);
-        return ResponseEntity.ok().build();
+        try {
+            userService.delete(userID);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler beim Löschen des Benutzers: ");
+        }
     }
 
     @PutMapping(path= AllowedPaths.User.UPDATE)
     public ResponseEntity<?> updateUser(@PathVariable("userId") Long userId,@RequestBody User user) {
-        userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(),user.getEmail(),user.getRole(),user.getPhonenumber());
-        return ResponseEntity.ok().build();
+        try {
+            userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(),user.getEmail(),user.getRole(),user.getPhonenumber());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: ");
+        }
     }
 
     // patch
