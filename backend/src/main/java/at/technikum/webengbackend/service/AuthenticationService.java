@@ -3,13 +3,11 @@ package at.technikum.webengbackend.service;
 import at.technikum.webengbackend.dto.JwtAuthenticationResponse;
 import at.technikum.webengbackend.dto.SignUpRequest;
 import at.technikum.webengbackend.dto.SignInRequest;
-import at.technikum.webengbackend.model.Role;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.repository.UserRepository;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +35,8 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid password. Please ensure it has at least 8 characters, numbers, and both lowercase and uppercase letters.");
         }
         // Validate country code
-        if(!ISO_COUNTRIES.contains(request.getAddress().getCountry())) {
-            throw new IllegalArgumentException(request.getAddress().getCountry() +" -> Invalid country. Please provide a valid country");
+        if (!ISO_COUNTRIES.contains(request.getAddress().getCountry())) {
+            throw new IllegalArgumentException(request.getAddress().getCountry() + " -> Invalid country. Please provide a valid country");
         }
 
         // Fill in the rest if the password was valid
@@ -61,14 +59,19 @@ public class AuthenticationService {
     }
 
     public JwtAuthenticationResponse signin(SignInRequest request) {
-            // Authenticate user
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-            // If authentication is successful, retrieve the user from the database
-            var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
-            // Generate JWT token
-            var jwt = jwtService.generateToken(user);
-            // Return the authentication response
-            return JwtAuthenticationResponse.builder().token(jwt).userid(user.getId()).role(user.getRole()).build();
+        // Authenticate user
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        // If authentication is successful, retrieve the user from the database
+        User user;
+        if (request.getUsername().contains("@")) {
+            user = userRepository.findByEmail(request.getUsername()).orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
+        } else {
+            user = userRepository.findByName(request.getUsername()).orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
+        }
+        // Generate JWT token
+        var jwt = jwtService.generateToken(user);
+        // Return the authentication response
+        return JwtAuthenticationResponse.builder().token(jwt).userid(user.getId()).role(user.getRole()).build();
     }
 
     private boolean isValidPassword(String password) {

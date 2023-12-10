@@ -8,12 +8,9 @@ import at.technikum.webengbackend.model.Role;
 
 import jakarta.transaction.Transactional;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +20,7 @@ import java.util.Objects;
 public class UserService {
     private final UserRepository userRepository;
     public UserService(UserRepository userRepository) { this.userRepository = userRepository; }
-    
+
     public List<User> getUsers() { return userRepository.findAll(); }
 
     public User getUser(Long userId) {
@@ -35,7 +32,7 @@ public class UserService {
     }
 
     public void addNewUser(User user) {userRepository.save(user);}
-    
+
     public void delete(Long userId) {
         boolean exists = userRepository.existsById(userId);
         if(!exists) {
@@ -78,7 +75,11 @@ public class UserService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+                if(username.contains("@")) {
+                    return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+                } else {
+                    return userRepository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+                }
             }
         };
     }
