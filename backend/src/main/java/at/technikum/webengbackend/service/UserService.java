@@ -1,5 +1,6 @@
 package at.technikum.webengbackend.service;
 
+import at.technikum.webengbackend.config.PasswordConfig;
 import at.technikum.webengbackend.model.Address;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.repository.UserRepository;
@@ -7,9 +8,12 @@ import at.technikum.webengbackend.model.Role;
 
 import jakarta.transaction.Transactional;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +22,6 @@ import java.util.Objects;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
     public UserService(UserRepository userRepository) { this.userRepository = userRepository; }
     
     public List<User> getUsers() { return userRepository.findAll(); }
@@ -53,7 +56,7 @@ public class UserService {
         }
 
         if (password != null && !password.trim().isEmpty()) {
-            user.setPassword(password);
+            user.setPassword(PasswordConfig.passwordEncoder().encode(password));
         }
 
         if (mail != null && !mail.trim().isEmpty() && !Objects.equals(user.getEmail(), mail)) {
