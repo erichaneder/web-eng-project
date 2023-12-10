@@ -30,6 +30,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_CUSTOMER') OR hasRole('ROLE_ADMIN')")
     @GetMapping(path= AllowedPaths.User.GET_ONE)
     public ResponseEntity<User> getUser(@PathVariable("userId") Long userId) {
         try {
