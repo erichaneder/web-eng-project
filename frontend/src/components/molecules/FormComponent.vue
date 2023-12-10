@@ -89,7 +89,7 @@ data() {
           "FR", "IT", "ES", "JP", "AU", "IN", "BR"
         ]},
         { id: "email", type: "text", label: "Email", placeholder: "Your Email" },
-        { id: "password", type: "password", label: "Passowrd", placeholder: "Your Password" },
+        { id: "password", type: "password", label: "Password", placeholder: "Your Password" },
         { id: "password2", type: "password", label: "Repeat Passowrd", placeholder: "Repeat Password" }
       ]
   };

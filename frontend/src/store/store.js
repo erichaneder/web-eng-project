@@ -17,6 +17,7 @@ export const useCompleteStore = defineStore('complete', {
         users: [],
         orders: [],
         profile: null,
+        profileError: null
       }
     },
     actions: {
@@ -97,11 +98,11 @@ export const useCompleteStore = defineStore('complete', {
               this.profile = {...response.data };
           } else {
               console.error('Error updating user:', response.status, response.statusText);
-              this.errorMessage = "Error updating user: " + response.status + " " +response.statusText;
-              this.isErrorModalVisible = true;
+              this.profileError = "Error updating user: " + response.status + " " +response.statusText;
           }
         } catch (error) {
             console.error('Network error:', error);
+            this.profileError = "Error updating user: " + error.message;
         }
       },
       async fetchOrders() {
@@ -162,6 +163,14 @@ export const useCompleteStore = defineStore('complete', {
       getProductById(id) {
         return this.products.find(product => product.id === id);
       },
+      checkforProfileError() {
+        if(this.profileError) {
+          var error = this.profileError;
+          this.profileError = null;
+          return error;
+        }
+        return null;
+      }
     },
     getters: {
       isLoggedIn () {
@@ -199,6 +208,6 @@ export const useCompleteStore = defineStore('complete', {
       getBasketTotal() {
         console.log(this.basketItems);
         return this.basketItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
-      },
+      }
     },
 });

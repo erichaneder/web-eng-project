@@ -111,7 +111,8 @@ export default {
           }
         })
         .catch((err) => {
-          console.error("Error occurred:", err.message);
+          this.errorMessage = "Error registering user: " + err.message;
+          this.isErrorModalVisible = true;
           if (err.inner && Array.isArray(err.inner)) {
             err.inner.forEach((error) => {
               if (this.form.errors[error.path]) {

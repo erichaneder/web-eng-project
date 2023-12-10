@@ -1,5 +1,6 @@
 package at.technikum.webengbackend.service;
 
+import at.technikum.webengbackend.model.Address;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.repository.UserRepository;
 import at.technikum.webengbackend.model.Role;
@@ -40,7 +41,7 @@ public class UserService {
         userRepository.deleteById(userId);
     }
     @Transactional
-    public void updateUserData(Long userId, String name, String salutation, String password, String mail, Role role, String phonenumber) {
+    public void updateUserData(Long userId, String name, String salutation, String password, String mail, Role role, Address address) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id "+userId+ "does not exist"));
 
         if (name != null && !name.trim().isEmpty() && !Objects.equals(user.getName(), name)) {
@@ -63,8 +64,8 @@ public class UserService {
             user.setRole(role);
         }
 
-        if (phonenumber != null && !phonenumber.trim().isEmpty()) {
-            user.setPhonenumber(phonenumber);
+        if (address != null) {
+            user.setAddress(address);
         }
     }
 

@@ -118,7 +118,7 @@ export default {
             name: this.user.name,
             email: this.user.email,
             salutation: this.user.salutation,
-            ...(this.user.newPassword && { password: this.newPassword }), // Include password if it's not empty
+            password: this.user.newPassword,
             address: {
                 street: this.user.street,
                 zipcode: this.user.zipcode,
@@ -127,6 +127,11 @@ export default {
             }
         };
         await this.store.updateProfileData(userId, payload);
+        let error = this.store.checkforProfileError();
+        if(error) {
+          this.errorMessage = error;
+          this.isErrorModalVisible = true;
+        }
         this.isEditing = false;
     },
     cancel() {
