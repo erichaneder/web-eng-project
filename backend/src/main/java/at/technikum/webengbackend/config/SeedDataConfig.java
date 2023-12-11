@@ -43,7 +43,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .email("admin@admin.com")
                     .role(Role.ROLE_ADMIN)
                     .phonenumber("06704546232")
-                    .address(new Address("Ferdestraße 31","1210","Vienna","Austria"))
+                    .address(new Address("Ferdestraße 31","1210","Vienna","AT"))
                     .build();
 
             User normal = User
@@ -54,7 +54,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .email("fred@fred.com")
                     .role(Role.ROLE_CUSTOMER)
                     .phonenumber("+43704546232")
-                    .address(new Address("Fredstrett 1","1220","Vienna","Austria"))
+                    .address(new Address("Fredstrett 1","1220","Vienna","AT"))
                     .build();
 
             User random1 = User
@@ -65,7 +65,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .email("julia@gmail.com")
                     .role(Role.ROLE_CUSTOMER)
                     .phonenumber("+4370456499")
-                    .address(new Address("Bahnstraße 2","98654","Berlin","Germany"))
+                    .address(new Address("Bahnstraße 2","98654","Berlin","DE"))
                     .build();
 
             User random2 = User
@@ -76,7 +76,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .email("heli@outlook.com")
                     .role(Role.ROLE_CUSTOMER)
                     .phonenumber("+43799546455")
-                    .address(new Address("Baumgasse 101","3344","Ferd","Ferdien"))
+                    .address(new Address("Baumgasse 101","3344","Ferd","FR"))
                     .build();
 
             User random3 = User
@@ -87,7 +87,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .email("bobcok@gmail.com")
                     .role(Role.ROLE_CUSTOMER)
                     .phonenumber("+43704589989")
-                    .address(new Address("Wallstreet 10","98797","New York","USA"))
+                    .address(new Address("Wallstreet 10","98797","New York","US"))
                     .build();
 
             User[] user = {admin,normal, random1, random2, random3};

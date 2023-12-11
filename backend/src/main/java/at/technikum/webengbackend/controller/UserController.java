@@ -72,10 +72,9 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER') OR hasRole('ROLE_ADMIN')")
     @PutMapping(path= AllowedPaths.User.UPDATE)
-    public ResponseEntity<?> updateUser(@PathVariable("userId") Long userId,@RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable("userId") Long userId,@RequestBody User user) {
         try {
-            userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(), user.getEmail(),user.getRole(), user.getAddress());
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(), user.getEmail(),user.getRole(), user.getAddress()));
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: " + e.getMessage());
         }

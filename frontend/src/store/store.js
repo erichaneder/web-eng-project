@@ -93,8 +93,8 @@ export const useCompleteStore = defineStore('complete', {
         try {
           const response = await axios.put('http://localhost:8080/api/v1/user/update/' + userId, payload, config);
           if (response.status === 200) {
-              console.log('User updated successfully:', response.data);
-              this.profile = {...response.data };
+              console.log('User updated successfully');
+              this.profile = {...response.data };  
           } else {
               console.error('Error updating user:', response.status, response.statusText);
               this.profileError = "Error updating user: " + response.status + " " +response.statusText;

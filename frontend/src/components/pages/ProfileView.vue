@@ -10,66 +10,24 @@
         <div v-if="!isEditing">
           <p class="text-gray-600 mb-4">Salutation: {{ user.salutation }}</p>
           <p class="text-gray-600 mb-4">Email: {{ user.email }}</p>
-          <p class="text-gray-600 mb-4">Street: {{ user.street }}</p>
-          <p class="text-gray-600 mb-4">Zip: {{ user.zipcode }}</p>
-          <p class="text-gray-600 mb-4">City: {{ user.city }}</p>
-          <p class="text-gray-600 mb-4">Country: {{ user.country }}</p>
-          <CustomButton @click="isEditing = true" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Edit Profile</CustomButton>
+          <p class="text-gray-600 mb-4">Street: {{ user.address.street }}</p>
+          <p class="text-gray-600 mb-4">Zip: {{ user.address.zipcode }}</p>
+          <p class="text-gray-600 mb-4">City: {{ user.address.city }}</p>
+          <p class="text-gray-600 mb-4">Country: {{ user.address.country }}</p>
+          <CustomButton @clicked="enableEditing()" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Edit Profile</CustomButton>
         </div>
         
         <!-- Editing Profile View -->
         <div v-else>
-          <div class="mb-4">
-            <label for="name" class="block text-sm mb-1 text-gray-600">Name:</label>
-            <input v-model="user.name" type="text" id="name" class="w-full h-10 px-2 border rounded">
-          </div>
-          <div class="mb-4">
-            <label for="salutation" class="block text-sm mb-1 text-gray-600">Salutation:</label>
-            <input v-model="user.salutation" type="text" id="salutation" class="w-full h-10 px-2 border rounded">
-          </div>
-          <div class="mb-4">
-            <label for="email" class="block text-sm mb-1 text-gray-600">Email:</label>
-            <input v-model="user.email" type="email" id="email" class="w-full h-10 px-2 border rounded">
-          </div>
-          <div class="mb-4">
-            <label for="street" class="block text-sm mb-1 text-gray-600">Street:</label>
-            <input v-model="user.street" type="text" id="street" class="w-full h-10 px-2 border rounded">
-          </div>
-          <div class="mb-4">
-            <label for="zip" class="block text-sm mb-1 text-gray-600">Zip:</label>
-            <input v-model="user.zipcode" type="text" id="zip" class="w-full h-10 px-2 border rounded">
-          </div>
-          <div class="mb-4">
-            <label for="city" class="block text-sm mb-1 text-gray-600">City:</label>
-            <input v-model="user.city" type="text" id="city" class="w-full h-10 px-2 border rounded">
-          </div>
-          <div class="mb-4">
-            <label for="country" class="block text-sm mb-1 text-gray-600">Country:</label>
-            <select v-model="user.country" id="country" class="w-full h-10 px-2 border rounded">
-              <option disabled value="">Please select one</option>
-              <option>Germany</option>
-              <option>Austria</option>
-              <option>Switzerland</option>
-              <optgroup label="Other Countries">
-                <option>United States</option>
-                <option>Canada</option>
-                <option>United Kingdom</option>
-                <option>France</option>
-                <option>Italy</option>
-                <option>Spain</option>
-                <option>Japan</option>
-                <option>Australia</option>
-                <option>India</option>
-                <option>Brazil</option>
-              </optgroup>
-            </select>
-          </div>
-          <div class="mb-4">
-            <label for="password" class="block text-sm mb-1 text-gray-600">New Password:</label>
-            <input v-model="user.newPassword" type="password" id="password" class="w-full h-10 px-2 border rounded">
-          </div>
-          <CustomButton @clicked="updateProfile()" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
-          <CustomButton @clicked="cancel()" customButtonStyle="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400 ml-4">Cancel</CustomButton>
+          <FormComponent
+            :initial-form-data="editableUserData"
+            :form-fields="profileFormFields"
+            :form-schema="profileValidationSchema"
+            @formSubmit="updateProfile"
+          >
+            <CustomButton type="submit" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
+          </FormComponent>
+          <CustomButton @clicked="cancel()" customButtonStyle="mt-4 bg-gray-300 text-black p-2 rounded hover:bg-gray-400">Cancel</CustomButton>
         </div>
       </div>
 
@@ -94,36 +52,72 @@
 import CustomButton from '@/components/atoms/Button.vue';
 import NormalHeading from '@/components/atoms/NormalHeading.vue';
 import ErrorModal from "@/components/atoms/ErrorModal.vue";
+import FormComponent from "@/components/molecules/FormComponent.vue";
 import { useCompleteStore } from "@/store/store";
+import { object, string } from "yup";
 
 export default {
   data() {
-      return {
-        user: null,
-        isEditing: false,
-        isErrorModalVisible: false,
-        errorMessage: "",
-        store: useCompleteStore()
-      };
+    return {
+      user: null,
+      isEditing: false,
+      isErrorModalVisible: false,
+      errorMessage: "",
+      store: useCompleteStore(),
+      profileFormFields: [
+        { id: "name", type: "text", label: "Name", placeholder: "Your Name" },
+        { id: "address", type: "text", label: "Address", placeholder: "Your Address" },
+        { id: "city", type: "text", label: "City", placeholder: "Your City" },
+        { id: "zip", type: "text", label: "Zip", placeholder: "Your Zip" },
+        { id: "country", type: "select", label: "Country", placeholder: "Your Country",
+          options: [
+            { label: "Austria (AT)", value: "AT" },
+            { label: "Germany (DE)", value: "DE" },
+            { label: "Switzerland (CH)", value: "CH" },
+            { label: "United States (US)", value: "US" },
+            { label: "Canada (CA)", value: "CA" },
+            { label: "United Kingdom (UK)", value: "UK" },
+            { label: "France (FR)", value: "FR" },
+            { label: "Spain (ES)", value: "ES" },
+            { label: "Japan (JP)", value: "JP" },
+          ]
+        },
+        { id: "email", type: "text", label: "Email", placeholder: "Your Email" }
+      ],
+      profileValidationSchema: object().shape({
+        name: string().required('Name is required'),
+        salutation: string().required('Salutation is required'),
+        otherInfo: string().when('salutation', {
+          is: (val) => val === "Other",
+          then: (schema) => schema.required('Please specify your salutation')
+        }),
+        address: string().required('Address is required'),
+        city: string().required('City is required'),
+        zip: string().required('ZIP code is required'),
+        country: string().required('Country is required'),
+        email: string().email('Invalid email format').required('Email is required')
+      }),
+      editableUserData: {}
+    };
   },
   components: { 
     NormalHeading,
     CustomButton, 
-    ErrorModal
+    ErrorModal,
+    FormComponent
   },
   methods: {
-    async updateProfile() {
+    async updateProfile(formData) {
         const userId = this.store.getUserId;
         const payload = {
-            name: this.user.name,
-            email: this.user.email,
-            salutation: this.user.salutation,
-            password: this.user.newPassword,
+            name: formData.name,
+            email: formData.email,
+            salutation: formData.salutation,
             address: {
-                street: this.user.street,
-                zipcode: this.user.zipcode,
-                city: this.user.city,
-                country: this.user.country
+                street: formData.address,
+                zipcode: formData.zip,
+                city: formData.city,
+                country: formData.country
             }
         };
         await this.store.updateProfileData(userId, payload);
@@ -133,6 +127,19 @@ export default {
           this.isErrorModalVisible = true;
         }
         this.isEditing = false;
+        this.user = this.store.getProfileData;
+    },
+    enableEditing() {
+      this.isEditing = true;
+      this.editableUserData = {
+        name: this.user.name,
+        salutation: this.user.salutation,
+        email: this.user.email,
+        address: this.user.address.street,
+        city: this.user.address.city,
+        zip: this.user.address.zipcode,
+        country: this.user.address.country
+      };
     },
     cancel() {
       this.isEditing = false;

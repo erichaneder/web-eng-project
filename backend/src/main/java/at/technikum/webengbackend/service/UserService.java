@@ -6,6 +6,7 @@ import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.repository.UserRepository;
 import at.technikum.webengbackend.model.Role;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,7 +42,7 @@ public class UserService {
         userRepository.deleteById(userId);
     }
     @Transactional
-    public void updateUserData(Long userId, String name, String salutation, String password, String mail, Role role, Address address) {
+    public User updateUserData(Long userId, String name, String salutation, String password, String mail, Role role, Address address) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id "+userId+ "does not exist"));
 
         if (name != null && !name.trim().isEmpty() && !Objects.equals(user.getName(), name)) {
@@ -65,8 +66,20 @@ public class UserService {
         }
 
         if (address != null) {
-            user.setAddress(address);
+            if(!StringUtils.isEmpty(address.getCountry())) {
+                user.getAddress().setCountry(address.getCountry());
+            }
+            if(!StringUtils.isEmpty(address.getCity())) {
+                user.getAddress().setCity(address.getCity());
+            }
+            if(!StringUtils.isEmpty(address.getZipcode())) {
+                user.getAddress().setZipcode(address.getZipcode());
+            }
+            if(!StringUtils.isEmpty(address.getStreet())) {
+                user.getAddress().setStreet(address.getStreet());
+            }
         }
+        return userRepository.save(user);
     }
 
     // patch

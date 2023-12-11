@@ -4,9 +4,9 @@
     <div class="mb-4">
       <label for="salutation" class="block text-sm mb-1">Salutation:</label>
       <select id="salutation" v-model="formData.salutation" @blur="validateField(formData.salutation, 'salutation')" class="w-full h-10 px-2 border rounded">
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
       </select>
       <div class="text-red-500" v-if="fieldErrors.salutation">{{ fieldErrors.salutation }}</div>
     </div>
@@ -38,84 +38,35 @@
 
 <script>
 import InputField from "@/components/atoms/InputField.vue";
-import { object, string, ref } from "yup";
-
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
-
-const formSchema = object().shape({
-  name: string().required('Name is required'),
-  salutation: string().required('Salutation is required'),
-  otherInfo: string().when('salutation', {
-    is: (val) => val === "other",
-    then: (schema) => schema.required('Please specify your salutation')
-  }),
-  address: string().required('Address is required'),
-  city: string().required('City is required'),
-  zip: string().required('ZIP code is required'),
-  country: string().required('Country is required'),
-  email: string().email('Invalid email format').required('Email is required'),
-  password: string().required('Password is required!').min(12, 'Password must be min. 12 characters long').matches(passwordRegex, 'Password must include uppercase, lowercase, numbers, and symbols'),
-  password2: string().oneOf([ref('password'), null], 'Passwords must match')
-});
 
 export default {
 components: {
   InputField
 },
+props: {
+    formFields: {
+      type: Array,
+      required: true
+    },
+    formSchema: {
+      type: Object,
+      required: true
+    },
+    initialFormData: {
+      type: Object,
+      required: true
+    }
+  },
 data() {
   return {
-    formData: {
-      salutation: '',
-      otherInfo: '',
-      name: '',
-      address: '',
-      city: '',
-      zip: '',
-      country: '',
-      email: '',
-      password: '',
-      password2: ''
-    },
-    fieldErrors: {
-      name: null,
-      salutation: null,
-      otherInfo: null,
-      address: null,
-      city: null,
-      zip: null,
-      country: null,
-      email: null,
-      password: null,
-      password2: null
-    },
-    formFields: [
-        { id: "name", type: "text", label: "Name", placeholder: "Your Name" },
-        { id: "address", type: "text", label: "Address", placeholder: "Your Address" },
-        { id: "city", type: "text", label: "City", placeholder: "Your City" },
-        { id: "zip", type: "text", label: "Zip", placeholder: "Your Zip" },
-        { id: "country", type: "select", label: "Country", placeholder: "Your Country",
-          options: [
-            { label: "Austria (AT)", value: "AT" },
-            { label: "Germany (DE)", value: "DE" },
-            { label: "Switzerland (CH)", value: "CH" },
-            { label: "United States (US)", value: "US" },
-            { label: "Canada (CA)", value: "CA" },
-            { label: "United Kingdom (UK)", value: "UK" },
-            { label: "France (FR)", value: "FR" },
-            { label: "Spain (ES)", value: "ES" },
-            { label: "Japan (JP)", value: "JP" },
-          ]
-        },
-        { id: "email", type: "text", label: "Email", placeholder: "Your Email" },
-        { id: "password", type: "password", label: "Password", placeholder: "Your Password" },
-        { id: "password2", type: "password", label: "Repeat Passowrd", placeholder: "Repeat Password" }
-      ]
+    formData: this.initialFormData,
+    fieldErrors: {}
   };
 },
 methods: {
   validateField(value, fieldName) {
     console.log("Field: " +fieldName+", Value: "+value);
-    formSchema.validateAt(fieldName, { ...this.formData, [fieldName]: value })
+    this.formSchema.validateAt(fieldName, { ...this.formData, [fieldName]: value })
         .then(() => {
           this.fieldErrors[fieldName] = null;
           // If the password field is updated, also validate password2 hack
@@ -135,7 +86,7 @@ methods: {
   },
   submit() {
     console.log("FormData: " + JSON.stringify(this.formData));
-    formSchema.validate(this.formData, { abortEarly: false })
+    this.formSchema.validate(this.formData, { abortEarly: false })
       .then(() => {
         this.$emit('formSubmit', this.formData);
       })

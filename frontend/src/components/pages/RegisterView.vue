@@ -3,7 +3,12 @@
     <div class="w-96 bg-white p-8 rounded shadow mt-20">
       <NormalHeading text="Register" />
       <div class="h-0.5 bg-gray-200 w-36 mx-auto mt-2.5 mb-4"></div>
-      <FormComponent @formSubmit="submit">
+      <FormComponent
+        :form-fields="formFields"
+        :form-schema="registerValidationSchema"
+        :initial-form-data="initialRegisterFormData"
+        @formSubmit="submit"
+      >
         <CustomButton type="sumbit" customButtonStyle="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Register</CustomButton>
       </FormComponent>
     </div>
@@ -22,6 +27,7 @@ import FormComponent from "@/components/molecules/FormComponent.vue";
 import NormalHeading from "@/components/atoms/NormalHeading.vue";
 import ErrorModal from '@/components/atoms/ErrorModal.vue'
 import { useCompleteStore } from '@/store/store';
+import { object, string, ref } from "yup";
 
 export default {
   components: {
@@ -34,7 +40,56 @@ export default {
     return {
       isErrorModalVisible: false,
       errorMessage: '',
-      store: useCompleteStore()
+      store: useCompleteStore(),
+      formFields: [
+        { id: "name", type: "text", label: "Name", placeholder: "Your Name" },
+        { id: "address", type: "text", label: "Address", placeholder: "Your Address" },
+        { id: "city", type: "text", label: "City", placeholder: "Your City" },
+        { id: "zip", type: "text", label: "Zip", placeholder: "Your Zip" },
+        { id: "country", type: "select", label: "Country", placeholder: "Your Country",
+          options: [
+            { label: "Austria (AT)", value: "AT" },
+            { label: "Germany (DE)", value: "DE" },
+            { label: "Switzerland (CH)", value: "CH" },
+            { label: "United States (US)", value: "US" },
+            { label: "Canada (CA)", value: "CA" },
+            { label: "United Kingdom (UK)", value: "UK" },
+            { label: "France (FR)", value: "FR" },
+            { label: "Spain (ES)", value: "ES" },
+            { label: "Japan (JP)", value: "JP" },
+          ]
+        },
+        { id: "email", type: "text", label: "Email", placeholder: "Your Email" },
+        { id: "password", type: "password", label: "Password", placeholder: "Your Password" },
+        { id: "password2", type: "password", label: "Repeat Passowrd", placeholder: "Repeat Password" }
+      ],
+      registerValidationSchema: object().shape({
+        name: string().required('Name is required'),
+        salutation: string().required('Salutation is required'),
+        otherInfo: string().when('salutation', {
+          is: (val) => val === "Other",
+          then: (schema) => schema.required('Please specify your salutation')
+        }),
+        address: string().required('Address is required'),
+        city: string().required('City is required'),
+        zip: string().required('ZIP code is required'),
+        country: string().required('Country is required'),
+        email: string().email('Invalid email format').required('Email is required'),
+        password: string().required('Password is required!').min(12, 'Password must be min. 12 characters long').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/, 'Password must include uppercase, lowercase, numbers, and symbols'),
+        password2: string().oneOf([ref('password'), null], 'Passwords must match')
+      }),
+      initialRegisterFormData: {
+        salutation: '',
+        otherInfo: '',
+        name: '',
+        address: '',
+        city: '',
+        zip: '',
+        country: '',
+        email: '',
+        password: '',
+        password2: ''
+      }
     }
   },
   methods: {
