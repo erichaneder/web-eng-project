@@ -9,7 +9,6 @@ export const useCompleteStore = defineStore('complete', {
         isProductsFetched: false,
         fetchError: null,
         user: {
-          email: '',
           username: '',
           userId: null,
           role: ''
@@ -118,17 +117,18 @@ export const useCompleteStore = defineStore('complete', {
         }
       },
       login (payload) {
-        this.user.email = payload.email;
-        this.user.username = 'User-' + payload.email.split('@')[0];
+        if(payload.username.includes("@")) {
+          this.user.username = payload.username.split('@')[0];
+        } else {
+          this.user.username = payload.username;
+        }
         this.user.userId = payload.userId;
         this.user.role = payload.role;
-        console.log("Email stored: " + this.user.email);
         console.log("UserName stored: " + this.user.username);
         console.log("UserId stored: " + this.user.userId);
         console.log("Role stored: " + this.user.role);
       },
       logout() {
-        this.user.email = '';
         this.user.username = '';
         this.user.userId = null;
         this.user.role = '';
@@ -174,7 +174,7 @@ export const useCompleteStore = defineStore('complete', {
     },
     getters: {
       isLoggedIn () {
-        return this.user.email !== '' && this.userId !== '';
+        return this.user.username !== '' && this.userId !== '';
       },
       isAdmin() {
         return this.user.role === "ROLE_ADMIN";

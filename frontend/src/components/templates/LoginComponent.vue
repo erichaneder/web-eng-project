@@ -5,16 +5,16 @@
       <div class="h-0.5 bg-gray-200 w-36 mx-auto mt-2.5 mb-4"></div>
       <form @submit.prevent="submit">
         <div class="mb-4">
-          <label for="email" class="block text-sm mb-1">Email:</label>
+          <label for="username" class="block text-sm mb-1">Username / Email:</label>
           <input
-            type="email"
-            id="email"
+            type="text"
+            id="username"
             class="w-full h-10 px-2 border rounded"
-            v-model="form.values.email"
-            @blur="validate('email')"
+            v-model="form.values.username"
+            @blur="validate('username')"
           />
-          <p class="text-red-500" v-if="!!form.errors.email">
-            {{ form.errors.email }}
+          <p class="text-red-500" v-if="!!form.errors.username">
+            {{ form.errors.username }}
           </p>
         </div>
         <div class="mb-6">
@@ -55,7 +55,7 @@ import { object, string } from "yup";
 import { useCompleteStore } from "@/store/store";
 
 const loginSchema = object().shape({
-  email: string().required("Please enter your email!").email("Please enter a valid email!"),
+  username: string().required("Please enter your Username or Email!"),
   password: string().required("Please enter your password!"),
 });
 
@@ -72,7 +72,7 @@ export default {
         .validate(this.form.values, { abortEarly: false })
         .then(async () => {
           this.form.errors = {
-            email: "",
+            username: "",
             password: "",
           };
           //client validation successful
@@ -91,7 +91,7 @@ export default {
             const responseData = await response.json();
             // save the token in the browser for reuse
             localStorage.setItem("token", responseData.token);
-            this.store.login({email: this.form.values.email, role: responseData.role, userId: responseData.userid});
+            this.store.login({username: this.form.values.username, role: responseData.role, userId: responseData.userid});
             this.$router.push({ path: "/" });
           } else {
             if (Object.keys(response).length === 0) {
@@ -140,8 +140,8 @@ export default {
   data() {
     return {
       form: {
-        values: { email: "", password: "" },
-        errors: { email: "", password: "" },
+        values: { username: "", password: "" },
+        errors: { username: "", password: "" },
       },
       isErrorModalVisible: false,
       errorMessage: "",

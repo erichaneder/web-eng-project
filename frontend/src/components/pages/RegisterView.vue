@@ -41,7 +41,7 @@ export default {
     async submit(formData) {
 
       const payload = {
-        salutation: formData.salutation?formData.salutation:formData.otherInfo,
+        salutation: formData.salutation==="other"?formData.otherInfo:formData.salutation,
         name: formData.name,
         password: formData.password,
         email: formData.email,
@@ -72,7 +72,7 @@ export default {
           const responseData = await response.json();
           
           localStorage.setItem("token", responseData.token);
-          this.store.login({email: formData.email, role: responseData.role, userId: responseData.userid});
+          this.store.login({username: formData.email, role: responseData.role, userId: responseData.userid});
           // Redirect to the home page
           this.$router.push({ path: '/' });
         } else {

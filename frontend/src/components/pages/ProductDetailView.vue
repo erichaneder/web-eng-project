@@ -53,12 +53,7 @@ export default {
   },
   methods: {
     addToCart() {
-      if(this.store.isLoggedIn) {
-        this.store.addToBasket(this.product);
-        this.$router.push({ path: '/basket' });
-      } else {
-        this.$router.push({ path: '/login' });
-      }
+      this.store.addToBasket(this.product);
     },
     fetchProduct() {
       const productId = parseInt(this.$route.params.id);

@@ -58,19 +58,23 @@
             this.store.removeFromBasket(itemId);
         },
         async orderBasket() {
-            console.log("test ");
-            const payload = {
+            if(this.store.isLoggedIn) {
+                const payload = {
                 orderNo: "RANDOM_ORDERNO_2423423",
                 totalAmount: this.store.getBasketTotal,
                 userId: this.store.getUserId,
-            };
-            try {
-                const response = await axios.post('http://localhost:8080/api/v1/order/add/', payload); 
-                //logic here when ordering basket successful
-                console.log("Response: " + response.data);
-            } catch (error) {
-                console.error('Error ordering basket:', error);
+                };
+                try {
+                    const response = await axios.post('http://localhost:8080/api/v1/order/add/', payload); 
+                    //logic here when ordering basket successful
+                    console.log("Response: " + response.data);
+                } catch (error) {
+                    console.error('Error ordering basket:', error);
+                }
+            } else {
+                this.$router.push({ path: '/login' });
             }
+            
         }
     },
     mounted() {

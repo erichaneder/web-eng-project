@@ -3,7 +3,7 @@
     <label :for="id" class="block text-sm mb-1">{{ label }}:</label>
     <!-- Render a select dropdown for 'select' type -->
     <select v-if="type === 'select'" :id="id" @blur="handleBlur" :value="modelValue" @change="$emit('update:modelValue', $event.target.value)" class="w-full h-10 px-2 border rounded">
-      <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
+      <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
     </select>
 
     <!-- Render an input field for other types -->

@@ -3,17 +3,19 @@
     <!-- Salutation Select Field -->
     <div class="mb-4">
       <label for="salutation" class="block text-sm mb-1">Salutation:</label>
-      <select id="salutation" v-model="formData.salutation" class="w-full h-10 px-2 border rounded">
+      <select id="salutation" v-model="formData.salutation" @blur="validateField(formData.salutation, 'salutation')" class="w-full h-10 px-2 border rounded">
         <option value="male">Male</option>
         <option value="female">Female</option>
         <option value="other">Other</option>
       </select>
+      <div class="text-red-500" v-if="fieldErrors.salutation">{{ fieldErrors.salutation }}</div>
     </div>
 
     <!-- Detailed Information Field (Shown if Salutation is 'other') -->
     <div v-if="formData.salutation === 'other'" class="mb-4">
       <label for="otherInfo" class="block text-sm mb-1">Other Information:</label>
-      <input type="text" id="otherInfo" v-model="formData.otherInfo" maxlength="30" class="w-full h-10 px-2 border rounded">
+      <input type="text" id="otherInfo" @blur="validateField(formData.otherInfo, 'otherInfo')" v-model="formData.otherInfo" maxlength="30" class="w-full h-10 px-2 border rounded">
+      <div class="text-red-500" v-if="fieldErrors.otherInfo">{{ fieldErrors.otherInfo }}</div>
     </div>
 
     <InputField
@@ -38,14 +40,21 @@
 import InputField from "@/components/atoms/InputField.vue";
 import { object, string, ref } from "yup";
 
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+
 const formSchema = object().shape({
   name: string().required('Name is required'),
+  salutation: string().required('Salutation is required'),
+  otherInfo: string().when('salutation', {
+    is: (val) => val === "other",
+    then: (schema) => schema.required('Please specify your salutation')
+  }),
   address: string().required('Address is required'),
   city: string().required('City is required'),
   zip: string().required('ZIP code is required'),
   country: string().required('Country is required'),
   email: string().email('Invalid email format').required('Email is required'),
-  password: string().required('Password is required and be min 12 characers').min(12, 'Password must be min. 12 characters long'),
+  password: string().required('Password is required!').min(12, 'Password must be min. 12 characters long').matches(passwordRegex, 'Password must include uppercase, lowercase, numbers, and symbols'),
   password2: string().oneOf([ref('password'), null], 'Passwords must match')
 });
 
@@ -56,7 +65,7 @@ components: {
 data() {
   return {
     formData: {
-      salutation: 'Male',
+      salutation: '',
       otherInfo: '',
       name: '',
       address: '',
@@ -69,6 +78,8 @@ data() {
     },
     fieldErrors: {
       name: null,
+      salutation: null,
+      otherInfo: null,
       address: null,
       city: null,
       zip: null,
@@ -84,10 +95,17 @@ data() {
         { id: "zip", type: "text", label: "Zip", placeholder: "Your Zip" },
         { id: "country", type: "select", label: "Country", placeholder: "Your Country",
           options: [
-          "DE", "AT", "CH", // DACH countries
-          "US", "CA", "UK", // Other countries
-          "FR", "IT", "ES", "JP", "AU", "IN", "BR"
-        ]},
+            { label: "Austria (AT)", value: "AT" },
+            { label: "Germany (DE)", value: "DE" },
+            { label: "Switzerland (CH)", value: "CH" },
+            { label: "United States (US)", value: "US" },
+            { label: "Canada (CA)", value: "CA" },
+            { label: "United Kingdom (UK)", value: "UK" },
+            { label: "France (FR)", value: "FR" },
+            { label: "Spain (ES)", value: "ES" },
+            { label: "Japan (JP)", value: "JP" },
+          ]
+        },
         { id: "email", type: "text", label: "Email", placeholder: "Your Email" },
         { id: "password", type: "password", label: "Password", placeholder: "Your Password" },
         { id: "password2", type: "password", label: "Repeat Passowrd", placeholder: "Repeat Password" }
