@@ -7,9 +7,10 @@
         :form-fields="formFields"
         :form-schema="registerValidationSchema"
         :initial-form-data="initialRegisterFormData"
+        :special-salutation="true"
         @formSubmit="submit"
       >
-        <CustomButton type="sumbit" customButtonStyle="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Register</CustomButton>
+        <CustomButton customButtonStyle="w-full bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Register</CustomButton>
       </FormComponent>
     </div>
   </div>

@@ -1,22 +1,26 @@
 <template>
   <form @submit.prevent="submit">
-    <!-- Salutation Select Field -->
-    <div class="mb-4">
-      <label for="salutation" class="block text-sm mb-1">Salutation:</label>
-      <select id="salutation" v-model="formData.salutation" @blur="validateField(formData.salutation, 'salutation')" class="w-full h-10 px-2 border rounded">
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
-      <div class="text-red-500" v-if="fieldErrors.salutation">{{ fieldErrors.salutation }}</div>
-    </div>
+    
+    <div v-if="specialSalutation">
+      <!-- Salutation Select Field -->
+      <div class="mb-4">
+        <label for="salutation" class="block text-sm mb-1">Salutation:</label>
+        <select id="salutation" v-model="formData.salutation" @blur="validateField(formData.salutation, 'salutation')" class="w-full h-10 px-2 border rounded">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="text-red-500" v-if="fieldErrors.salutation">{{ fieldErrors.salutation }}</div>
+      </div>
 
-    <!-- Detailed Information Field (Shown if Salutation is 'other') -->
-    <div v-if="formData.salutation === 'other'" class="mb-4">
-      <label for="otherInfo" class="block text-sm mb-1">Other Information:</label>
-      <input type="text" id="otherInfo" @blur="validateField(formData.otherInfo, 'otherInfo')" v-model="formData.otherInfo" maxlength="30" class="w-full h-10 px-2 border rounded">
-      <div class="text-red-500" v-if="fieldErrors.otherInfo">{{ fieldErrors.otherInfo }}</div>
+      <!-- Detailed Information Field (Shown if Salutation is 'other') -->
+      <div v-if="formData.salutation === 'other'" class="mb-4">
+        <label for="otherInfo" class="block text-sm mb-1">Other Information:</label>
+        <input type="text" id="otherInfo" @blur="validateField(formData.otherInfo, 'otherInfo')" v-model="formData.otherInfo" maxlength="30" class="w-full h-10 px-2 border rounded">
+        <div class="text-red-500" v-if="fieldErrors.otherInfo">{{ fieldErrors.otherInfo }}</div>
+      </div>
     </div>
+    
 
     <InputField
       v-for="field in formFields"
@@ -54,6 +58,10 @@ props: {
     },
     initialFormData: {
       type: Object,
+      required: true
+    },
+    specialSalutation: {
+      type: Boolean,
       required: true
     }
   },

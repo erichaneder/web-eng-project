@@ -14,7 +14,8 @@
           <p class="text-gray-600 mb-4">Zip: {{ user.address.zipcode }}</p>
           <p class="text-gray-600 mb-4">City: {{ user.address.city }}</p>
           <p class="text-gray-600 mb-4">Country: {{ user.address.country }}</p>
-          <CustomButton @clicked="enableEditing()" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Edit Profile</CustomButton>
+          <CustomButton @clicked="enableEditing()" customButtonStyle="mt-4 mr-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Edit Profile</CustomButton>
+          <CustomButton @clicked="showChangePasswordModal" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Change Password</CustomButton>
         </div>
         
         <!-- Editing Profile View -->
@@ -23,6 +24,7 @@
             :initial-form-data="editableUserData"
             :form-fields="profileFormFields"
             :form-schema="profileValidationSchema"
+            :special-salutation="false"
             @formSubmit="updateProfile"
           >
             <CustomButton type="submit" customButtonStyle="mt-4 bg-teal-700 text-white p-2 rounded hover:bg-teal-500">Save Changes</CustomButton>
@@ -41,6 +43,10 @@
     </div>
   </div>
 
+  <ChangePasswordModal 
+    :isVisible="isChangePasswordModalVisible" 
+    @update:isVisible="isChangePasswordModalVisible = $event" 
+    @changePassword="onPasswordChanged" />
   <ErrorModal
     :isVisible="isErrorModalVisible"
     :errorMessage="errorMessage"
@@ -52,6 +58,7 @@
 import CustomButton from '@/components/atoms/Button.vue';
 import NormalHeading from '@/components/atoms/NormalHeading.vue';
 import ErrorModal from "@/components/atoms/ErrorModal.vue";
+import ChangePasswordModal from "@/components/atoms/ChangePasswordModal.vue";
 import FormComponent from "@/components/molecules/FormComponent.vue";
 import { useCompleteStore } from "@/store/store";
 import { object, string } from "yup";
@@ -62,10 +69,12 @@ export default {
       user: null,
       isEditing: false,
       isErrorModalVisible: false,
+      isChangePasswordModalVisible: false,
       errorMessage: "",
       store: useCompleteStore(),
       profileFormFields: [
         { id: "name", type: "text", label: "Name", placeholder: "Your Name" },
+        { id: "salutation", type: "text", label: "Salutation", placeholder: "Your Salutation" },
         { id: "address", type: "text", label: "Address", placeholder: "Your Address" },
         { id: "city", type: "text", label: "City", placeholder: "Your City" },
         { id: "zip", type: "text", label: "Zip", placeholder: "Your Zip" },
@@ -87,10 +96,6 @@ export default {
       profileValidationSchema: object().shape({
         name: string().required('Name is required'),
         salutation: string().required('Salutation is required'),
-        otherInfo: string().when('salutation', {
-          is: (val) => val === "Other",
-          then: (schema) => schema.required('Please specify your salutation')
-        }),
         address: string().required('Address is required'),
         city: string().required('City is required'),
         zip: string().required('ZIP code is required'),
@@ -104,7 +109,8 @@ export default {
     NormalHeading,
     CustomButton, 
     ErrorModal,
-    FormComponent
+    FormComponent,
+    ChangePasswordModal
   },
   methods: {
     async updateProfile(formData) {
@@ -127,7 +133,13 @@ export default {
           this.isErrorModalVisible = true;
         }
         this.isEditing = false;
-        this.user = this.store.getProfileData;
+
+        //if user changed his name or email -> log them out because JWT token is no longer valid
+        if(formData.name !== this.user.name || formData.email !== this.user.email) {
+          this.logout();
+        } else {
+          this.user = this.store.getProfileData;
+        }
     },
     enableEditing() {
       this.isEditing = true;
@@ -144,7 +156,37 @@ export default {
     cancel() {
       this.isEditing = false;
       this.user = this.store.getProfileData;
-    }
+    },
+    showChangePasswordModal() {
+      this.isChangePasswordModalVisible = true;
+    },
+    async onPasswordChanged(newPassword) {
+      const userId = this.store.getUserId;
+      const payload = {
+            name: this.user.name,
+            email: this.user.email,
+            salutation: this.user.salutation,
+            address: {
+                street: this.user.address.street,
+                zipcode: this.user.address.zip,
+                city: this.user.address.city,
+                country: this.user.address.country
+            },
+            password: newPassword
+        };
+        await this.store.updateProfileData(userId, payload);
+        let error = this.store.checkforProfileError();
+        if(error) {
+          this.errorMessage = error;
+          this.isErrorModalVisible = true;
+        }
+      console.log('Password changed successfully');
+    },
+    logout() {
+      localStorage.removeItem("token");
+      this.store.logout();
+      this.$router.push("/");
+    },
   },
   async mounted() {
     if(this.store.isLoggedIn) {
