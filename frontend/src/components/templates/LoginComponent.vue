@@ -94,19 +94,8 @@ export default {
             this.store.login({username: this.form.values.username, role: responseData.role, userId: responseData.userid});
             this.$router.push({ path: "/" });
           } else {
-            if (Object.keys(response).length === 0) {
-              //Response is leer -> wsh 403 Forbidden
-              this.errorMessage =
-                "An error occurred. Please try again later. (" +
-                response.status +
-                " " +
-                response.statusText +
-                ")";
-            } else {
-              const errorData = response.json();
-              this.errorMessage =
-                "Error registering user: " + errorData.message;
-            }
+            const errorData = await response.json();
+            this.errorMessage = "Error registering user: "+errorData.message;
             this.isErrorModalVisible = true;
           }
         })
