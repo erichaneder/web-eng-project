@@ -45,20 +45,16 @@
               <label for="country" class="block text-sm mb-1 text-gray-600">Country:</label>
               <select v-model="user.country" id="country" class="w-full h-10 px-2 border rounded">
                 <option disabled value="">Please select one</option>
-                <option>Germany</option>
-                <option>Austria</option>
-                <option>Switzerland</option>
+                <option value="DE">Germany</option>
+                <option value="AT">Austria</option>
+                <option value="CH">Switzerland</option>
                 <optgroup label="Other Countries">
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>United Kingdom</option>
-                  <option>France</option>
-                  <option>Italy</option>
-                  <option>Spain</option>
-                  <option>Japan</option>
-                  <option>Australia</option>
-                  <option>India</option>
-                  <option>Brazil</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="FR">France</option>
+                  <option value="ES">Spain</option>
+                  <option value="JP">Japan</option>
                 </optgroup>
               </select>
             </div>
