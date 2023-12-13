@@ -59,7 +59,7 @@
     methods: {
         async deleteUser(userId) {
             await this.store.deleteUser(userId);
-            console.log("done deleting, now refreshing...");
+            console.log(`done deleting user with id: ${userId}, now refreshing ...`);
             await this.store.fetchUsers();
             this.users = this.store.getAllUsers;
         },

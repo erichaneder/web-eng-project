@@ -152,13 +152,22 @@ export const useCompleteStore = defineStore('complete', {
         } 
       },
       async deleteOrder(orderId) {
-          try {
-              const response = await axios.delete('http://localhost:8080/api/v1/order/delete/' + orderId); 
-              //logic here when delete successful
-              console.log("Response: " + response);
+        console.log("Trying to delete order: " + orderId);
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        try {
+          const response = await axios.delete('http://localhost:8080/api/v1/order/delete/' + orderId, config); 
+          //logic here when delete successful
+          console.log("Response: " + response);
           } catch (error) {
               console.error('Error deleting order:', error);
-          }
+        }
+        const index = this.orders.findIndex(item => item.orderId === orderId);
+        if (index !== -1) {
+            this.orders.splice(index, 1);
+        } 
       },
       getProductById(id) {
         return this.products.find(product => product.id === id);

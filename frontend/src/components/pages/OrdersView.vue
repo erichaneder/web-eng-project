@@ -55,8 +55,11 @@
       };
     },
     methods: {
-        deleteOrder(orderId) {
-            this.store.deleteOrder(orderId);
+        async deleteOrder(orderId) {
+          await this.store.deleteOrder(orderId);
+          console.log(`Done deleting order with id: ${orderId}, now refreshing ...`);
+          await this.store.fetchOrders();
+          this.orders = this.store.getAllOrders;
         },
         editOrder(orderId) {
             this.$router.push({ path: '/order/' + orderId });
