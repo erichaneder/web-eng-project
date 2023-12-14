@@ -40,6 +40,7 @@ export default {
         this.error = 'Password must be 12 characters long and must include uppercase, lowercase, numbers, and symbols';
       } else if (this.newPassword !== this.confirmPassword) {
         this.error = "Passwords do not match!";
+        console.log("PW1: " + this.newPassword + ", PW2: " + this.confirmPassword);
       } else {
         this.$emit('changePassword', this.newPassword);
         this.closeModal();

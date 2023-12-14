@@ -97,7 +97,7 @@ export default {
     async submit(formData) {
 
       const payload = {
-        salutation: formData.salutation==="other"?formData.otherInfo:formData.salutation,
+        salutation: formData.salutation==="Other"?formData.otherInfo:formData.salutation,
         name: formData.name,
         password: formData.password,
         email: formData.email,
