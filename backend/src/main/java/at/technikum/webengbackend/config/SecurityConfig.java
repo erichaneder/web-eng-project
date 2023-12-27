@@ -51,7 +51,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "http://localhost:8080"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","PATCH", "HEAD", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("X-Auth-Token"));
         configuration.setAllowCredentials(true);
@@ -74,6 +74,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, AllowedPaths.allowedPath_GET).permitAll()
                     .requestMatchers(HttpMethod.DELETE, AllowedPaths.allowedPath_DELETE).permitAll()
                     .requestMatchers(HttpMethod.PUT, AllowedPaths.allowedPath_PUT).permitAll()
+                    .requestMatchers(HttpMethod.PATCH, AllowedPaths.allowedPath_PATCH).permitAll()
                     .anyRequest().authenticated())
             .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -21,6 +21,7 @@ public class AllowedPaths {
         public static final String GET_ONE = API_BASE + USER_BASE + "{userId}"; // GET
         public static final String DELETE = API_BASE + USER_BASE + "delete/{userId}"; // DELETE
         public static final String UPDATE = API_BASE + USER_BASE + "update/{userId}"; // PUT
+        public static final String PATCH = API_BASE + USER_BASE + "patch/{userId}"; // PATCH
 
     }
 
@@ -66,4 +67,7 @@ public class AllowedPaths {
             Product.UPDATE
     };
 
+    public static final String[] allowedPath_PATCH = {
+            User.PATCH
+    };
 }

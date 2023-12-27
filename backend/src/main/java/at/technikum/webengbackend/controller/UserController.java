@@ -8,11 +8,13 @@ import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.service.AuthenticationService;
 import at.technikum.webengbackend.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -80,5 +82,14 @@ public class UserController {
         }
     }
 
-    // patch
+    @PreAuthorize("hasRole('ROLE_CUSTOMER') OR hasRole('ROLE_ADMIN')")
+    @PatchMapping(path= AllowedPaths.User.PATCH)
+    public ResponseEntity<?> patchUser(@PathVariable("userId") Long userId, @RequestBody Map<String,Object> fields) {
+        try {
+            User user = userService.patchUserData(userId,fields);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: " + e.getMessage());
+        }
+    }
 }

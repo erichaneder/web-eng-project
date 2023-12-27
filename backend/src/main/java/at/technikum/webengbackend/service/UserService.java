@@ -13,37 +13,48 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository) { this.userRepository = userRepository; }
 
-    public List<User> getUsers() { return userRepository.findAll(); }
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
 
     public User getUser(Long userId) {
         boolean exists = userRepository.existsById(userId);
-        if(!exists) {
+        if (!exists) {
             throw new IllegalStateException("user with id: " + userId + " does not exist.");
         }
         return userRepository.findById(userId).get();
     }
 
-    public void addNewUser(User user) {userRepository.save(user);}
+    public void addNewUser(User user) {
+        userRepository.save(user);
+    }
 
     public void delete(Long userId) {
         boolean exists = userRepository.existsById(userId);
-        if(!exists) {
-            throw new IllegalStateException("user with id: "+userId+ " does not exist.");
+        if (!exists) {
+            throw new IllegalStateException("user with id: " + userId + " does not exist.");
         }
         userRepository.deleteById(userId);
     }
+
     @Transactional
     public User updateUserData(Long userId, String name, String salutation, String password, String mail, Role role, Address address) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id "+userId+ "does not exist"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id " + userId + "does not exist"));
 
         if (name != null && !name.trim().isEmpty() && !Objects.equals(user.getName(), name)) {
             user.setName(name);
@@ -66,29 +77,78 @@ public class UserService {
         }
 
         if (address != null) {
-            if(!StringUtils.isEmpty(address.getCountry())) {
+            if (!StringUtils.isEmpty(address.getCountry())) {
                 user.getAddress().setCountry(address.getCountry());
             }
-            if(!StringUtils.isEmpty(address.getCity())) {
+            if (!StringUtils.isEmpty(address.getCity())) {
                 user.getAddress().setCity(address.getCity());
             }
-            if(!StringUtils.isEmpty(address.getZipcode())) {
+            if (!StringUtils.isEmpty(address.getZipcode())) {
                 user.getAddress().setZipcode(address.getZipcode());
             }
-            if(!StringUtils.isEmpty(address.getStreet())) {
+            if (!StringUtils.isEmpty(address.getStreet())) {
                 user.getAddress().setStreet(address.getStreet());
             }
         }
         return userRepository.save(user);
     }
 
-    // patch
+    @Transactional
+    public User patchUserData(Long userId, Map<String, Object> fields) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id " + userId + "does not exist"));
+
+        fields.forEach((key,value) -> {
+            validateField(key,value);
+            Field field = ReflectionUtils.findField(User.class,key);
+            if(field != null) {
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, user, value);
+            }
+        });
+        return userRepository.save(user);
+    }
+
+    private void validateField(String key, Object value) {
+        switch (key) {
+            case "name":
+                validateName((String) value);
+                break;
+            case "salutation":
+                validateSalutation((String) value);
+                break;
+            case "password":
+                validatePassword((String) value);
+                break;
+            case "email":
+                validateEmail((String) value);
+                break;
+            // Herwig du kannst hier die restliche Validation hinzufügen
+            default:
+                // Falls was unbekannt sein sollte oderso:
+                break;
+        }
+    }
+
+    private void validateName(String name) {
+
+    }
+
+    private void validateEmail(String value) {
+
+    }
+
+    private void validatePassword(String value) {
+    }
+
+    private void validateSalutation(String value) {
+    }
+
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                if(username.contains("@")) {
+                if (username.contains("@")) {
                     return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Email not found"));
                 } else {
                     return userRepository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
