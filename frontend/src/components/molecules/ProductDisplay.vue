@@ -3,7 +3,10 @@
         <img :src="product.image" :alt="product.name" class="w-full h-52 object-cover rounded mb-4" />
         <h3 class="text-lg font-semibold text-gray-700 mb-2">{{ product.name }}</h3>
         <p class="text-gray-600 mb-2">{{ product.description }}</p>
-        <p class="text-pink-800 font-bold">${{ product.price }}</p>
+        <p class="text-pink-800 font-bold">
+            <s class="text-black">€ 199.99 </s>
+            &nbsp; € {{ product.price }}
+        </p>
         <CustomButton @clicked="goToProductDetail(product.id)">
             <div class="flex flex-col items-center">
                 <ChevronDoubleRightIcon class="h-6 w-6" />

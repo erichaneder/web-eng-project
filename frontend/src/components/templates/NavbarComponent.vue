@@ -13,15 +13,11 @@
             <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
           </DisclosureButton>
         </div>
-        <div
-          class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
-        >
+        <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <div class="flex flex-shrink-0 items-center">
-            <img
-              class="h-16 w-auto -mt-6"
-              src="@/assets/shoes.svg"
-              alt="Sneaker Shop"
-            />
+            <router-link to="/">
+              <img class="h-16 w-auto -mt-6" src="@/assets/shoes.svg" alt="Sneaker Shop" />
+            </router-link>
           </div>
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
@@ -38,6 +34,48 @@
                 :aria-current="item.current ? 'page' : undefined"
                 >{{ item.name }}
               </router-link>
+              <!-- Conditional rendering for Admin Panel -->
+            <Menu v-if="isAdmin()" as="div" class="relative ml-3">
+              <MenuButton class="inline-flex items-center rounded-md px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none">
+                Admin Panel
+              </MenuButton>
+
+              <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <MenuItem v-slot="{ active }">
+                  <router-link
+                    to="/addProduct"
+                    :class="[
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      ]"
+                  >
+                    Add Product
+                  </router-link>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <router-link
+                    to="/users"
+                    :class="[
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      ]"
+                  >
+                    Users
+                  </router-link>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <router-link
+                    to="/orders"
+                    :class="[
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      ]"
+                  >
+                    Orders
+                  </router-link>
+                </MenuItem>
+              </MenuItems>
+            </Menu>
             </div>
           </div>
         </div>
@@ -50,8 +88,10 @@
           >
             <span class="absolute -inset-1.5"></span>
             <span class="sr-only">View shopping cart</span>
-            <ShoppingCartIcon class="h-8 w-8" aria-hidden="true">
-            </ShoppingCartIcon>
+            <ShoppingCartIcon class="h-8 w-8" aria-hidden="true"></ShoppingCartIcon>
+              <span v-if="store.basketItems.length" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                {{ store.basketItems.length }}
+              </span>
           </router-link>
 
           <!-- Profile dropdown -->
@@ -66,14 +106,10 @@
               <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div v-if="isLoggedIn()">
                   <MenuItem v-slot="{ active }">
-                    <router-link
-                      to="/profile"
-                      :class="[
-                        active ? 'bg-gray-100' : '',
-                        'block px-4 py-2 text-sm text-gray-700',
-                      ]"
-                      >Your Profile</router-link
-                    >
+                    <router-link to="/profile" :class="[active ? 'bg-gray-100' : '','block px-4 py-2 text-sm text-gray-700',]">Your Profile</router-link>
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <router-link to="/orders" :class="[active ? 'bg-gray-100' : '','block px-4 py-2 text-sm text-gray-700',]">Your Orders</router-link>
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
                     <span :class="[active ? 'bg-gray-100 logout' : '','block px-4 py-2 text-sm text-gray-700 logout']" @click="logout()"
@@ -150,9 +186,6 @@ export default {
         { name: "Contact", href: "/contact", current: false },
         { name: "Help", href: "/help", current: false },
         { name: "Imprint", href: "/imprint", current: false },
-        { name: "Add Product", href: "/addProduct", current: false, requiresAdmin: true },
-        { name: "Users", href: "/users", current: false, requiresAdmin: true },
-        { name: "Orders", href: "/orders", current: false, requiresAdmin: true },
       ],
       store: useCompleteStore()
     };

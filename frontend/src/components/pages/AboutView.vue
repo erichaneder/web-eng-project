@@ -26,6 +26,18 @@
           John is our marketing lead. When he's not creating campaigns, he loves hiking with his dog. Ever since he was a little boy he dreamt of selling shoes.
         </p>
       </div>
+      <div class="bg-white p-8 rounded-lg shadow-md w-full mb-8">
+        <h3 class="font-semibold text-lg mb-2 text-gray-700">Anja Jackson</h3>
+        <p class="text-gray-600">
+          Anja is our product genius. When he's not creating new shoes, she loves swimming with her dog. Ever since she was a little girl she dreamt of selling shoes.
+        </p>
+      </div>
+      <div class="bg-white p-8 rounded-lg shadow-md w-full mb-8">
+        <h3 class="font-semibold text-lg mb-2 text-gray-700">Tom Sawyer</h3>
+        <p class="text-gray-600">
+          Tom is our finance guy. When he's not hiding from the tax office, he loves hiking with his dog. Ever since he was a little boy he dreamt of selling shoes.
+        </p>
+      </div>
       <!-- Hier noch maybe weitere team member rein geben -->
     </div>
   </div>

@@ -20,15 +20,32 @@ export const useCompleteStore = defineStore('complete', {
       }
     },
     actions: {
-      addToBasket(item) {
-        console.log(JSON.stringify(item));
-        this.basketItems.push(item);
+      addToBasket(product) {
+        //check if this product is already in the basket, if yes just increase quantity
+        const existingProduct = this.basketItems.find(item => item.id === product.id && item.selectedSize === product.selectedSize);
+        if (existingProduct) {
+          existingProduct.quantity += product.quantity;
+        } else {
+          this.basketItems.push(product);
+        }
       },
       removeFromBasket(itemId) {
+        //get basketItem for that id and decrease that quantity or remove it from basket
         const index = this.basketItems.findIndex(item => item.id === itemId);
         if (index !== -1) {
+          if (this.basketItems[index].quantity > 1) {
+            this.basketItems[index].quantity -= 1;
+          } else {
             this.basketItems.splice(index, 1);
-        } 
+          }
+        }
+      },
+      increaseQuantity(itemId) {
+        //get basketItem for that id and increase that quantity
+        const index = this.basketItems.findIndex(item => item.id === itemId);
+        if (index !== -1) {
+          this.basketItems[index].quantity += 1;
+        }
       },
       async fetchProducts() {
         if (this.isProductsFetched) return;
@@ -215,8 +232,14 @@ export const useCompleteStore = defineStore('complete', {
         return this.basketItems;
       },
       getBasketTotal() {
-        console.log(this.basketItems);
-        return this.basketItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
+        return this.basketItems.reduce((total, item) => {
+          // Ensure the price is a number and multiply it by the item's quantity.
+          // The quantity should be part of your item object when added to the basket.
+          console.log("Price: " + item.price);
+          console.log("Quanity: " + item.quantity);
+          const itemTotal = parseFloat(item.price) * item.quantity;
+          return total + itemTotal;
+        }, 0).toFixed(2); // Convert the total to a string with 2 decimal places
       }
     },
 });
