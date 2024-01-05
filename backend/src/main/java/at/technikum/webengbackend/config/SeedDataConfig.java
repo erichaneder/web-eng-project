@@ -1,5 +1,7 @@
 package at.technikum.webengbackend.config;
 
+import at.technikum.webengbackend.dto.OrderDTO;
+import at.technikum.webengbackend.dto.ProductDTO;
 import at.technikum.webengbackend.model.*;
 import at.technikum.webengbackend.repository.OrderRepository;
 import at.technikum.webengbackend.repository.ProductRepository;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -110,12 +113,29 @@ public class SeedDataConfig implements CommandLineRunner {
             products.stream().forEach(prodService::addNewProduct);
         }
 
-        if(orderRepository.count()==0) {
-            List<CustomerOrder> orders = new ArrayList<>();
-            for(int i = 0; i<10; i++) {
-                orders.add(CustomerOrder.builder().orderNo("ORDER93287498").totalAmount(612.99f).build());
+        // Fetch real products from the database
+        List<Product> realProducts = productRepository.findAll();
+        List<ProductDTO> productDTOs = realProducts.stream().map(product ->
+                ProductDTO.builder()
+                        .id(product.getId())
+                        .quantity(2) // or any other logic to set quantity
+                        .price(119.99f)
+                        .build()
+        ).collect(Collectors.toList());
+
+        // Ensure there are some products to add to orders
+        if (!productDTOs.isEmpty() && orderRepository.count() == 0) {
+            List<OrderDTO> orderDTOs = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                OrderDTO orderDTO = OrderDTO.builder()
+                        .userId(i % 2 == 0 ? 1L : 2L) // Make sure these user IDs exist
+                        .products(productDTOs)
+                        .build();
+                orderDTOs.add(orderDTO);
             }
-            orders.stream().forEach(orderService::addNewOrder);
+
+            // Save each OrderDTO
+            orderDTOs.forEach(orderService::addNewOrder);
         }
     }
 }

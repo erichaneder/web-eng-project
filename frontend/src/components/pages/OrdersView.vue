@@ -17,8 +17,8 @@
             <tr v-for="order in orders" :key="order.id" class="hover:bg-gray-100">
               <td class="py-2 px-3 border-b border-gray-200">{{ order.id }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ order.orderNo }}</td>
-              <td class="py-2 px-3 border-b border-gray-200">{{ order.userId }}</td>
-              <td class="py-2 px-3 border-b border-gray-200">{{ order.totalAmount }}</td>
+              <td class="py-2 px-3 border-b border-gray-200">{{ order.user.id }}</td>
+              <td class="py-2 px-3 border-b border-gray-200">€ {{ order.totalAmount }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ order.totalQuantity }}</td>
               <td class="py-2 px-3 border-b border-gray-200">
                 <CustomButton @clicked="editOrder(order.id)" customButtonStyle="p-2 hover:bg-green-500">

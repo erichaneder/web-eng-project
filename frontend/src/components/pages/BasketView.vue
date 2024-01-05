@@ -1,5 +1,12 @@
 <template>
     <div class="min-h-screen flex flex-col items-center px-5 pt-20">
+
+       <!-- Success Alert -->
+        <div v-if="showAlert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-8" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline">Order successfully sent!.</span>
+        </div>
+
         <div class="w-xl bg-white p-8 rounded shadow">
         <NormalHeading text="Basket" />
         <div class="h-0.5 bg-gray-200 w-36 mx-auto mt-2.5 mb-4"></div>
@@ -41,7 +48,6 @@
     import CustomButton from '@/components/atoms/Button.vue';
     import NormalHeading from "@/components/atoms/NormalHeading.vue";
     import { TrashIcon, PlusIcon } from '@heroicons/vue/24/outline';
-    import axios from 'axios';
     import { useCompleteStore } from '@/store/store';
 
     export default {
@@ -54,7 +60,8 @@
     data() {
         return {
             basketItems: [],
-            store: useCompleteStore()
+            store: useCompleteStore(),
+            showAlert: false
         }
     },
     methods: {
@@ -66,22 +73,16 @@
         },
         async orderBasket() {
             if(this.store.isLoggedIn) {
-                const payload = {
-                orderNo: "RANDOM_ORDERNO_2423423",
-                totalAmount: this.store.getBasketTotal,
-                userId: this.store.getUserId,
-                };
-                try {
-                    const response = await axios.post('http://localhost:8080/api/v1/order/add/', payload); 
-                    //logic here when ordering basket successful
-                    console.log("Response: " + response.data);
-                } catch (error) {
-                    console.error('Error ordering basket:', error);
-                }
+                await this.store.orderBasket();
+                //set alert for 2 seconds
+                this.showAlert = true;
+                setTimeout(this.goToHome, 2000);    
             } else {
                 this.$router.push({ path: '/login' });
             }
-            
+        },
+        goToHome() {
+            this.$router.push({ path: '/' });
         }
     },
     mounted() {

@@ -1,5 +1,6 @@
 package at.technikum.webengbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -33,6 +34,10 @@ public class User implements UserDetails {
 
     @Size(min = 5, max = 50, message = "Name must be between 5 and 50 characters")
     private String name;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<CustomerOrder> orders;
 
     private String password;
 

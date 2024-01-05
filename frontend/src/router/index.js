@@ -51,6 +51,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "product" */ '@/components/pages/ProductDetailView.vue')
   },
   {
+    path: '/order/:id',
+    name: 'order',
+    component: () => import(/* webpackChunkName: "product" */ '@/components/pages/OrderDetailView.vue')
+  },
+  {
     path: '/products',
     name: 'products',
     component: () => import(/* webpackChunkName: "products" */ '@/components/pages/ProductsView.vue')
@@ -74,7 +79,7 @@ const routes = [
   },
   {
     path: '/orders',
-    name: 'order',
+    name: 'orders',
     component: () => import(/* webpackChunkName: "orders" */ '@/components/pages/OrdersView.vue'),
     meta: { requiresAdmin: true } // This route requires admin access
   },

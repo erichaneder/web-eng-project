@@ -1,6 +1,8 @@
 package at.technikum.webengbackend.controller;
 
 import at.technikum.webengbackend.config.AllowedPaths;
+import at.technikum.webengbackend.dto.CustomerOrderDTO;
+import at.technikum.webengbackend.dto.OrderDTO;
 import at.technikum.webengbackend.model.CustomerOrder;
 import at.technikum.webengbackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ public class OrderController {
     public OrderController(OrderService orderService) { this.orderService = orderService; }
 
     @GetMapping(path= AllowedPaths.Order.LIST)
-    public ResponseEntity<List<CustomerOrder>> getOrders(){
+    public ResponseEntity<List<CustomerOrderDTO>> getOrders(){
         try {
             return ResponseEntity.ok(orderService.getOrders());
         } catch (Exception e) {
@@ -27,7 +29,7 @@ public class OrderController {
     }
 
     @GetMapping(path= AllowedPaths.Order.GET_ONE)
-    public ResponseEntity<CustomerOrder> getOrder(@PathVariable("orderId") Long orderId) {
+    public ResponseEntity<CustomerOrderDTO> getOrder(@PathVariable("orderId") Long orderId) {
         try {
             return ResponseEntity.ok(orderService.getOrder(orderId));
         } catch (Exception e) {
@@ -36,7 +38,7 @@ public class OrderController {
     }
 
     @PostMapping(path=AllowedPaths.Order.ADD)
-    public ResponseEntity<?> createNewOrder(@RequestBody CustomerOrder order) {
+    public ResponseEntity<?> createNewOrder(@RequestBody OrderDTO order) {
         try {
             orderService.addNewOrder(order);
             return ResponseEntity.ok().build();

@@ -27,11 +27,11 @@ export default {
       products: [
         {
           id: 1,
-          name: "Nike Dunk Low Sneakers - Red",
-          image: require("@/assets/red1.jpg"),
+          name: "Nike Dunk Low Sneakers - Olive",
+          image: require("@/assets/green1.jpg"),
           description:
             "Stylish, comfortable, and durable. The Epic Sneaker is suitable for every adventure.",
-          price: 119.99,
+          price: 129.99,
         },
         {
           id: 2,
@@ -43,13 +43,12 @@ export default {
         },
         {
           id: 3,
-          name: "Nike Dunk Low Sneakers - Olive",
-          image: require("@/assets/green1.jpg"),
+          name: "Nike Dunk Low Sneakers - Retro",
+          image: require("@/assets/retro.jpg"),
           description:
             "Stylish, comfortable, and durable. The Epic Sneaker is suitable for every adventure.",
-          price: 99.99,
+          price: 165.99,
         },
-        // Additional stuff / product objects..
       ],
     };
   },

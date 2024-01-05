@@ -14,7 +14,13 @@ export const useCompleteStore = defineStore('complete', {
           role: ''
         },
         users: [],
-        orders: [],
+        orders: [{
+          id: null,
+          orderNo: null,
+          totalAmount: null,
+          user: null,
+          orderDetails: []
+        }],
         profile: null,
         profileError: null
       }
@@ -129,6 +135,7 @@ export const useCompleteStore = defineStore('complete', {
         try {
           const response = await axios.get('http://localhost:8080/api/v1/order/list/', config); 
           this.orders = response.data;
+          console.log(JSON.stringify(response.data));
         } catch (error) {
           console.error('Error fetching orders:', error);
         }
@@ -185,6 +192,39 @@ export const useCompleteStore = defineStore('complete', {
         if (index !== -1) {
             this.orders.splice(index, 1);
         } 
+      },
+      async getOrderById(orderId) {
+        console.log("Trying to get order: " + orderId);
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        try {
+          const response = await axios.get('http://localhost:8080/api/v1/order/' + orderId, config); 
+          //logic here when get successful
+          console.log("Response: " + JSON.stringify(response.data));
+          return response.data;
+          } catch (error) {
+              console.error('Error getting order:', error);
+        }
+      },
+      async orderBasket() {
+        const payload = {
+          products: this.basketItems,
+          userId: this.user.userId,
+        };
+        const token = localStorage.getItem('token');
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        try {
+            const response = await axios.post('http://localhost:8080/api/v1/order/add/', payload, config); 
+            //logic here when ordering basket successful
+            console.log("Response: " + response.data);
+            this.basketItems = [];
+        } catch (error) {
+            console.error('Error ordering basket:', error);
+        }
       },
       getProductById(id) {
         return this.products.find(product => product.id === id);
