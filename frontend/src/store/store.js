@@ -175,6 +175,24 @@ export const useCompleteStore = defineStore('complete', {
             this.users.splice(index, 1);
         } 
       },
+      async deleteProduct(productId) {
+        console.log("Trying to delete product: " + productId);
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        console.log("Trying to delete wit this token: " + token);
+        try {
+          const response = await axios.delete('http://localhost:8080/api/v1/product/delete/' + productId, config); 
+          console.log("Deleting successful: Response: " + response.data);
+        } catch (error) {
+          console.error('Error deleting product:', error);
+        }
+        const index = this.products.findIndex(item => item.id === productId);
+        if (index !== -1) {
+            this.products.splice(index, 1);
+        } 
+      },
       async deleteOrder(orderId) {
         console.log("Trying to delete order: " + orderId);
         const token = localStorage.getItem('token');
