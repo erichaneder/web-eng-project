@@ -1,6 +1,17 @@
 <template>
     <div class="container mx-auto my-8 px-4 mb-40">
       <NormalHeading text="All Users"/>
+
+      <!-- Search Field -->
+      <div class="mb-4">
+        <input 
+          type="text" 
+          v-model="searchQuery" 
+          placeholder="Search users..." 
+          class="w-full h-10 px-4 mb-2 border rounded"
+        />
+      </div>
+
       <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative">
         <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
           <thead>
@@ -14,7 +25,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in users" :key="user.id" class="hover:bg-gray-100">
+            <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-100">
               <td class="py-2 px-3 border-b border-gray-200">{{ user.id }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ user.salutation }}</td>
               <td class="py-2 px-3 border-b border-gray-200">{{ user.name }}</td>
@@ -53,8 +64,22 @@
     data() {
       return {
         users: [],
-        store: useCompleteStore()
+        store: useCompleteStore(),
+        searchQuery: ''
       };
+    },
+    computed: {
+      filteredUsers() {
+        if (!this.searchQuery) {
+          return this.users;
+        }
+        const searchLower = this.searchQuery.toLowerCase();
+        return this.users.filter(user => {
+          return Object.values(user).some(value =>
+            String(value).toLowerCase().includes(searchLower)
+          );
+        });
+      }
     },
     methods: {
         async deleteUser(userId) {
