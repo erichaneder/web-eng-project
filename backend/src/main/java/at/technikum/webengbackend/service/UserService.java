@@ -122,6 +122,7 @@ public class UserService {
             case "email":
                 validateEmail((String) value);
                 break;
+
             // Herwig du kannst hier die restliche Validation hinzufügen
             default:
                 // Falls was unbekannt sein sollte oderso:
@@ -130,17 +131,30 @@ public class UserService {
     }
 
     private void validateName(String name) {
-
+        if(name.length() < 5){
+            throw new IllegalStateException("Name must have at least 5 characters");
+        }
+        if(name.length() > 50){
+            throw new IllegalStateException("Name must have under 51 characters");
+        }
     }
 
     private void validateEmail(String value) {
-
+        if(value.isEmpty()){
+            throw new IllegalStateException("e-mail is mandatory");
+        }
     }
 
     private void validatePassword(String value) {
+        if(value.isEmpty()){
+            throw new IllegalStateException("password is mandatory");
+        }
     }
 
     private void validateSalutation(String value) {
+        if(value.length() > 30){
+            throw new IllegalStateException("Name must have under 31 characters");
+        }
     }
 
 
