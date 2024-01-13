@@ -1,6 +1,7 @@
 package at.technikum.webengbackend.controller;
 
 import at.technikum.webengbackend.config.AllowedPaths;
+import at.technikum.webengbackend.dto.ProductDTO;
 import at.technikum.webengbackend.model.Product;
 import at.technikum.webengbackend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ProductController {
     }
 
     @PostMapping(path=AllowedPaths.Product.ADD)
-    public ResponseEntity<?> registerNewProduct(@RequestBody Product product) {
+    public ResponseEntity<?> registerNewProduct(@RequestBody ProductDTO product) {
         try {
             productService.addNewProduct(product);
             return ResponseEntity.ok().build();
@@ -53,7 +54,7 @@ public class ProductController {
     @PutMapping(path = AllowedPaths.Product.UPDATE)
     public ResponseEntity<?> updateProduct(@PathVariable("productId") Long productId,@RequestBody Product product) {
         try {
-            productService.updateProduct(productId,product.getName(),product.getPrice(),product.getAmount());
+            productService.updateProduct(productId,product.getName(),product.getPrice(),product.getAmount(), product.getDescription());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler beim Ändern des Produktes: " + e.getMessage());

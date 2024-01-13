@@ -12,6 +12,10 @@
 <script>
 import ProductDisplay from "@/components/molecules/ProductDisplay.vue";
 
+import green from '@/assets/green1.webp';
+import blue from '@/assets/blue1.webp';
+import retro from '@/assets/retro.webp';
+
 export default {
   name: "FeaturedProducts",
   components: {
@@ -28,7 +32,7 @@ export default {
         {
           id: 1,
           name: "Nike Dunk Low Sneakers - Olive",
-          image: require("@/assets/green1.jpg"),
+          image: green,
           description:
             "Stylish, comfortable, and durable. The Epic Sneaker is suitable for every adventure.",
           price: 129.99,
@@ -36,7 +40,7 @@ export default {
         {
           id: 2,
           name: "Nike Dunk Low Sneakers - Blue",
-          image: require("@/assets/blue1.jpg"),
+          image: blue,
           description:
             "Stylish, comfortable, and durable. The Epic Sneaker is suitable for every adventure.",
           price: 119.99,
@@ -44,7 +48,7 @@ export default {
         {
           id: 3,
           name: "Nike Dunk Low Sneakers - Retro",
-          image: require("@/assets/retro.jpg"),
+          image: retro,
           description:
             "Stylish, comfortable, and durable. The Epic Sneaker is suitable for every adventure.",
           price: 165.99,

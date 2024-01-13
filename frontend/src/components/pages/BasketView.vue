@@ -4,7 +4,7 @@
        <!-- Success Alert -->
         <div v-if="showAlert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-8" role="alert">
             <strong class="font-bold">Success!</strong>
-            <span class="block sm:inline">Order successfully sent!.</span>
+            <span class="block sm:inline">Order successfully sent!</span>
         </div>
 
         <div class="w-xl bg-white p-8 rounded shadow">
@@ -14,7 +14,7 @@
         <!-- Basket Items -->
         <div v-if="basketItems.length">
             <div v-for="item in basketItems" :key="item.id" class="flex items-center mb-4">
-                <img :src="item.image" alt="Item image" class="w-40 h-40 object-contain mr-4">
+                <img :src="item.image" :alt="item.name" class="w-40 h-40 object-contain mr-4">
                 <div>
                     <h2 class="text-lg font-bold">{{ item.name }}</h2>
                     <br>

@@ -54,7 +54,7 @@ export const useCompleteStore = defineStore('complete', {
         }
       },
       async fetchProducts() {
-        if (this.isProductsFetched) return;
+        //if (this.isProductsFetched) return;
 
         try {
           const response = await axios.get('http://localhost:8080/api/v1/product/list/');
@@ -97,13 +97,14 @@ export const useCompleteStore = defineStore('complete', {
           const response = await axios.get('http://localhost:8080/api/v1/user/' + this.user.userId, config);
           const userData = response.data;
           this.profile = {
-          ...userData, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird das image dann umgsetzt und es werden noch extras hinzugefügt
+          ...userData, //-> ... = Spread Operator so kann man das object aufspreaden in individuelle Elemente, hier sagt man halt nimm alle Properties von product, und nacher wird was dann umgsetzt und es werden noch extras hinzugefügt
           phone: userData.phonenumber,
           zipcode: userData.address.zipcode,
           street: userData.address.street,
           city: userData.address.city,
           country: userData.address.country,
         };
+        console.log(JSON.stringify(userData));
         } catch (error) {
           console.error('Error fetching user:', error);
         }
@@ -242,6 +243,40 @@ export const useCompleteStore = defineStore('complete', {
             this.basketItems = [];
         } catch (error) {
             console.error('Error ordering basket:', error);
+        }
+      },
+      async addProduct(payload) {
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        try {
+          const response = await axios.post('http://localhost:8080/api/v1/product/add/', payload, config);
+          console.log("Response: " + response.data);
+          this.fetchProducts(); //renew products page
+          //return success
+          return true;
+        } catch (error) {
+          console.error('Error updating product:', error);
+          //return not success
+          return false;
+        }
+      },
+      async updateProduct(payload) {
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        try {
+          const response = await axios.put('http://localhost:8080/api/v1/product/update/' + payload.id, payload, config);
+          console.log("Response: " + response.data);
+          this.fetchProducts(); //renew products page
+          //return success
+          return true;
+        } catch (error) {
+          console.error('Error updating product:', error);
+          //return not success
+          return false;
         }
       },
       getProductById(id) {

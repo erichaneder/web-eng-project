@@ -49,6 +49,8 @@ public class User implements UserDetails {
 
     private String phonenumber;
 
+    @Lob  // means large objects, should fit the base64 string
+    @Column(name = "profile_picture", columnDefinition="MEDIUMTEXT")
     private String profilePicture;
 
     @Override

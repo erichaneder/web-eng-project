@@ -27,6 +27,7 @@ import CustomButton from '@/components/atoms/Button.vue';
 import FormComponent from "@/components/molecules/FormComponent.vue";
 import NormalHeading from "@/components/atoms/NormalHeading.vue";
 import ErrorModal from '@/components/atoms/ErrorModal.vue'
+import axios from 'axios';
 import { useCompleteStore } from '@/store/store';
 import { object, string, ref } from "yup";
 
@@ -61,7 +62,7 @@ export default {
           ]
         },
         { id: "email", type: "text", label: "Email", placeholder: "Your Email" },
-        { id: "password", type: "password", label: "Password", placeholder: "Your Password" },
+        { id: "password", type: "password", label: "Password", placeholder: "Your Password"  },
         { id: "password2", type: "password", label: "Repeat Passowrd", placeholder: "Repeat Password" }
       ],
       registerValidationSchema: object().shape({
@@ -114,25 +115,23 @@ export default {
 
       try {   
         // Send formData to backend using fetch 
-        const response = await fetch("http://localhost:8080/api/v1/user/signup", {
-          method: "POST",
+        const response = axios.post("http://localhost:8080/api/v1/user/signup", payload, {
           headers: {
             "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
+          }
         });
         
         // Check if the response is successful
-        if (response.ok) {
-          console.log("Registration was successful!");
-          const responseData = await response.json();
+        if (response.status == 200) {
+          const responseData = await response.data();
+          //console.log("Registration was successful! " + JSON.stringify(responseData));
           
           localStorage.setItem("token", responseData.token);
           this.store.login({username: formData.email, role: responseData.role, userId: responseData.userid});
           // Redirect to the home page
           this.$router.push({ path: '/' });
         } else {
-          const errorData = await response.json();
+          const errorData = await response.data();
           this.errorMessage = "Error registering user: "+errorData.message;
           this.isErrorModalVisible = true;
         }

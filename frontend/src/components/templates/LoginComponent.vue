@@ -49,7 +49,7 @@
 <script>
 import CustomButton from "@/components/atoms/Button.vue";
 import NormalHeading from "@/components/atoms/NormalHeading.vue";
-//import axios from 'axios';
+import axios from 'axios';
 import ErrorModal from "@/components/atoms/ErrorModal.vue";
 import { object, string } from "yup";
 import { useCompleteStore } from "@/store/store";
@@ -76,25 +76,19 @@ export default {
             password: "",
           };
           //client validation successful
+          const response = await axios.post("http://localhost:8080/api/v1/user/signin", this.form.values);
 
-          const response = await fetch("http://localhost:8080/api/v1/user/signin", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(this.form.values),
-          });
-
-          if (response.ok) {
-            console.log("Login successful!");
+          if (response.status == 200) {
             // get the token from the data from the server
-            const responseData = await response.json();
+            const responseData = await response.data;
+            console.log("Login successful! " + JSON.stringify(responseData));
             // save the token in the browser for reuse
             localStorage.setItem("token", responseData.token);
             this.store.login({username: this.form.values.username, role: responseData.role, userId: responseData.userid});
             this.$router.push({ path: "/" });
           } else {
-            const errorData = await response.json();
+            const errorData = await response.data;
+            console.log(JSON.stringify(errorData));
             this.errorMessage = "Error registering user: "+errorData.message;
             this.isErrorModalVisible = true;
           }
