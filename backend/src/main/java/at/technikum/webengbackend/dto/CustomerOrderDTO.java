@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,7 +15,8 @@ public class CustomerOrderDTO {
     private Long id;
     private String orderNo;
     private float totalAmount;
-    private Date upload_date;
+    private Instant createdOn;
+    private Instant lastUpdatedOn;
     private UserDTO user;
     private List<OrderDetailDTO> orderDetails;
     private int totalQuantity;

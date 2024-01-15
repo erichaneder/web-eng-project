@@ -32,7 +32,7 @@ public class OrderService {
     }
 
     private CustomerOrderDTO convertToDTO(CustomerOrder order) {
-        return CustomerOrderDTO.builder().orderNo(order.getOrderNo()).id(order.getId()).totalQuantity(order.getTotalQuantity()).upload_date(order.getUpload_date()).orderDetails(order.getOrderDetails().stream().map(this::convertToDTO).collect(Collectors.toList())).user(convertToDTO(order.getUser())).totalAmount(order.getTotalAmount()).build();
+        return CustomerOrderDTO.builder().orderNo(order.getOrderNo()).id(order.getId()).totalQuantity(order.getTotalQuantity()).createdOn(order.getCreatedOn()).lastUpdatedOn(order.getLastUpdatedOn()).orderDetails(order.getOrderDetails().stream().map(this::convertToDTO).collect(Collectors.toList())).user(convertToDTO(order.getUser())).totalAmount(order.getTotalAmount()).build();
     }
 
     private OrderDetailDTO convertToDTO(OrderDetail orderDetail) {
@@ -66,7 +66,6 @@ public class OrderService {
         CustomerOrder order = new CustomerOrder();
         order.setUser(user.get());
         order.setOrderNo(generateOrderNo());
-        order.setUpload_date(new Date());
 
         List<OrderDetail> orderDetails = new ArrayList<>();
         float orderTotal = 0f;

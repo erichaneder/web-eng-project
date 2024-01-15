@@ -1,6 +1,9 @@
 <template>
     <div class="bg-white p-5 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-lg">
-        <img :src="product.image" :alt="product.name" class="w-full h-52 object-cover rounded mb-4" />
+        <!-- Lazy load image implemented to lower LCP load time, but doesn't seem to do much -->    
+        <div class="w-full h-52 bg-white rounded mb-4 flex items-center justify-center">
+            <img v-lazy="product.image" :alt="product.name" class="object-cover rounded" />
+        </div>
         <h3 class="text-lg font-semibold text-gray-700 mb-2">{{ product.name }}</h3>
         <p class="text-gray-600 mb-2">{{ product.description }}</p>
         <p class="text-pink-800 font-bold">

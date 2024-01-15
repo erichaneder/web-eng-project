@@ -5,7 +5,10 @@
       
       <!-- Logged In View -->
       <div v-if="this.store.isLoggedIn && user">
-        <h2 class="text-xl mb-4">Welcome, {{ user.name }}</h2>
+        <div class="flex flex-col items-center space-x-4 mb-4">
+          <img :src="user.profilePicture" alt="Profile Picture" class="w-16 h-16 rounded-full border border-gray-300" />
+          <h2 class="text-xl">Welcome, {{ user.name }}</h2>
+        </div>
         
         <div v-if="!isEditing">
           <p class="text-gray-600 mb-4">Salutation: {{ user.salutation }}</p>

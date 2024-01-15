@@ -16,7 +16,7 @@
         <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <div class="flex flex-shrink-0 items-center">
             <router-link to="/">
-              <img class="h-16 w-auto -mt-6" src="@/assets/shoes.svg" alt="Sneaker Shop" />
+              <img class="h-16 w-auto -mt-6" src="@/assets/shoes.svg" alt="Sneaker Shop Logo" />
             </router-link>
           </div>
           <div class="hidden sm:ml-6 sm:block">

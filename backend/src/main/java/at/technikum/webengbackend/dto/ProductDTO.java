@@ -15,5 +15,9 @@ public class ProductDTO {
     private float price;
     @Getter
     private int quantity;
+    @Getter
+    private String description;
+    @Getter
+    private String image;
 }
 
