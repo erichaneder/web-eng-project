@@ -5,6 +5,7 @@ import at.technikum.webengbackend.model.Address;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.repository.UserRepository;
 import at.technikum.webengbackend.model.Role;
+import at.technikum.webengbackend.model.Address;
 
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
@@ -122,11 +123,26 @@ public class UserService {
             case "email":
                 validateEmail((String) value);
                 break;
-
-            // Herwig du kannst hier die restliche Validation hinzufügen
-            default:
-                // Falls was unbekannt sein sollte oderso:
+            case "address":
+                validateAddress((Address) value);
                 break;
+            case "role":
+                validateRole((Role) value);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void validateRole(Role value) {
+        if(value == null){
+            throw new IllegalStateException("No role given");
+        }
+    }
+
+    private void validateAddress(Address value) {
+        if(value == null){
+            throw new IllegalStateException("No address given");
         }
     }
 

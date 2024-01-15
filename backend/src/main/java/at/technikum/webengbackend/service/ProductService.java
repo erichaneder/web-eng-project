@@ -27,25 +27,27 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public void addNewProduct(ProductDTO request) {
+    public Product addNewProduct(ProductDTO request) {
         Product product = Product.builder().name(request.getName()).price(request.getPrice()).image(request.getImage()).description(request.getDescription()).amount(1).build();
-        productRepository.save(product);
+        return productRepository.save(product);
     }
 
-    public void addNewProduct(Product product) {
-        productRepository.save(product);
+    public Product addNewProduct(Product product) {
+
+        return productRepository.save(product);
     }
 
-    public void deleteProduct(Long productId) {
+    public Long deleteProduct(Long productId) {
         boolean exists = productRepository.existsById(productId);
         if(!exists) {
             throw new IllegalStateException("product with id: "+ productId + " does not exist!");
         }
         productRepository.deleteById(productId);
+        return productId;
     }
 
     @Transactional
-    public void updateProduct(Long productId, String name, float price, Integer amount, String description) {
+    public Product updateProduct(Long productId, String name, float price, Integer amount, String description) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("product with id "+productId+ "does not exist"));
 
         if(name != null && !name.isEmpty() && !Objects.equals(product.getName(),name)) {
@@ -64,6 +66,7 @@ public class ProductService {
         if(!StringUtils.isEmpty(description)) {
             product.setDescription(description);
         }
+        return product;
 
     }
 
