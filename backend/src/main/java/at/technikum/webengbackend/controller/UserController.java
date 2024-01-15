@@ -1,13 +1,11 @@
 package at.technikum.webengbackend.controller;
 
 import at.technikum.webengbackend.config.AllowedPaths;
-import at.technikum.webengbackend.dto.JwtAuthenticationResponse;
 import at.technikum.webengbackend.dto.SignInRequest;
 import at.technikum.webengbackend.dto.SignUpRequest;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.service.AuthenticationService;
 import at.technikum.webengbackend.service.UserService;
-import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

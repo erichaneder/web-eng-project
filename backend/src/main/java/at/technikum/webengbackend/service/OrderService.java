@@ -32,7 +32,7 @@ public class OrderService {
     }
 
     private CustomerOrderDTO convertToDTO(CustomerOrder order) {
-        return CustomerOrderDTO.builder().orderNo(order.getOrderNo()).id(order.getId()).totalQuantity(order.getTotalQuantity()).orderDetails(order.getOrderDetails().stream().map(this::convertToDTO).collect(Collectors.toList())).user(convertToDTO(order.getUser())).totalAmount(order.getTotalAmount()).build();
+        return CustomerOrderDTO.builder().orderNo(order.getOrderNo()).id(order.getId()).totalQuantity(order.getTotalQuantity()).createdOn(order.getCreatedOn()).lastUpdatedOn(order.getLastUpdatedOn()).orderDetails(order.getOrderDetails().stream().map(this::convertToDTO).collect(Collectors.toList())).user(convertToDTO(order.getUser())).totalAmount(order.getTotalAmount()).build();
     }
 
     private OrderDetailDTO convertToDTO(OrderDetail orderDetail) {

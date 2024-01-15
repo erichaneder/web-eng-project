@@ -3,7 +3,6 @@ package at.technikum.webengbackend.controller;
 import at.technikum.webengbackend.config.AllowedPaths;
 import at.technikum.webengbackend.dto.CustomerOrderDTO;
 import at.technikum.webengbackend.dto.OrderDTO;
-import at.technikum.webengbackend.model.CustomerOrder;
 import at.technikum.webengbackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
