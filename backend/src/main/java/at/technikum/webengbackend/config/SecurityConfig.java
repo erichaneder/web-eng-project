@@ -66,7 +66,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(CorsConfigurer::disable)  // Added this line for CORS
+            .cors().configurationSource(corsConfigurationSource())  // Added this line for CORS
+            .and()
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize

@@ -57,7 +57,7 @@ public class AuthenticationService {
         userService.addNewUser(user);
         // Add extra fields to the JWT (it aint the pretty way)
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("id",user.getId());
+        extraClaims.put("userId",user.getId());
         extraClaims.put("role",user.getRole());
         // Generate a new JWT
         var jwt = jwtService.generateToken(extraClaims,user);
@@ -77,7 +77,7 @@ public class AuthenticationService {
         }
         // Add extra fields to the JWT
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("id",user.getId());
+        extraClaims.put("userId",user.getId());
         extraClaims.put("role",user.getRole());
         // Generate JWT token
         var jwt = jwtService.generateToken(extraClaims,user);

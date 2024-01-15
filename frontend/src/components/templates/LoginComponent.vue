@@ -53,6 +53,7 @@ import axios from 'axios';
 import ErrorModal from "@/components/atoms/ErrorModal.vue";
 import { object, string } from "yup";
 import { useCompleteStore } from "@/store/store";
+import { jwtDecode } from "jwt-decode";
 
 const loginSchema = object().shape({
   username: string().required("Please enter your Username or Email!"),
@@ -84,7 +85,8 @@ export default {
             console.log("Login successful! " + JSON.stringify(responseData));
             // save the token in the browser for reuse
             localStorage.setItem("token", responseData.token);
-            this.store.login({username: this.form.values.username, role: responseData.role, userId: responseData.userid});
+            const decodedToken = jwtDecode(responseData.token);
+            this.store.login({username: this.form.values.username, role: decodedToken.role, userId: decodedToken.userId});
             this.$router.push({ path: "/" });
           } else {
             const errorData = await response.data;
