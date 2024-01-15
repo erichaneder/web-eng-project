@@ -28,6 +28,7 @@ public class OrderController {
         }
     }
 
+    @PreAuthorize("(hasRole('ROLE_CUSTOMER') and #userId == authentication.principal.id) OR hasRole('ROLE_ADMIN') ")
     @GetMapping(path= AllowedPaths.Order.GET_ONE)
     public ResponseEntity<CustomerOrderDTO> getOrder(@PathVariable("orderId") Long orderId) {
         try {

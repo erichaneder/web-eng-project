@@ -30,15 +30,10 @@ public class ProductService {
 
     public void addNewProduct(ProductDTO request) {
         Product product = Product.builder().name(request.getName()).price(request.getPrice()).image(request.getImage()).description(request.getDescription()).amount(1).build();
-
-        // Uploaddate must be set here
-        product.setUpload_date(new Date());
         productRepository.save(product);
     }
 
     public void addNewProduct(Product product) {
-        // Uploaddate must be set here
-        product.setUpload_date(new Date());
         productRepository.save(product);
     }
 
