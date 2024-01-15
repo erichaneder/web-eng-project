@@ -6,6 +6,7 @@ import at.technikum.webengbackend.dto.OrderDTO;
 import at.technikum.webengbackend.model.CustomerOrder;
 import at.technikum.webengbackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class OrderController {
     public ResponseEntity<?> createNewOrder(@RequestBody OrderDTO order) {
         try {
             orderService.addNewOrder(order);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler beim Erstellen der Bestellung: " + e.getMessage());
         }
@@ -52,7 +53,7 @@ public class OrderController {
     public ResponseEntity<?> deleteOrder(@PathVariable("orderId") Long orderId) {
         try {
             orderService.delete(orderId);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler beim Löschen der Bestellung: " + e.getMessage());
         }

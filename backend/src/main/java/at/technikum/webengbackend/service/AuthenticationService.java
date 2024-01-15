@@ -3,6 +3,7 @@ package at.technikum.webengbackend.service;
 import at.technikum.webengbackend.dto.JwtAuthenticationResponse;
 import at.technikum.webengbackend.dto.SignUpRequest;
 import at.technikum.webengbackend.dto.SignInRequest;
+import at.technikum.webengbackend.model.Role;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.repository.UserRepository;
 
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -46,16 +49,20 @@ public class AuthenticationService {
                 .salutation(request.getSalutation())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
-                .role(request.getRole())
+                .role(Role.ROLE_CUSTOMER) // all registered users will be customers. Change it in the DB.
                 .phonenumber(request.getPhonenumber())
                 .address(request.getAddress())
                 .build();
         // Add the user
         userService.addNewUser(user);
+        // Add extra fields to the JWT (it aint the pretty way)
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("id",user.getId());
+        extraClaims.put("role",user.getRole());
         // Generate a new JWT
-        var jwt = jwtService.generateToken(user);
+        var jwt = jwtService.generateToken(extraClaims,user);
         // Return it with the help of the DTO JwtAuthenticationResponse
-        return JwtAuthenticationResponse.builder().token(jwt).userid(user.getId()).role(user.getRole()).build();
+        return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 
     public JwtAuthenticationResponse signin(SignInRequest request) {
@@ -68,10 +75,14 @@ public class AuthenticationService {
         } else {
             user = userRepository.findByName(request.getUsername()).orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
         }
+        // Add extra fields to the JWT
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("id",user.getId());
+        extraClaims.put("role",user.getRole());
         // Generate JWT token
-        var jwt = jwtService.generateToken(user);
+        var jwt = jwtService.generateToken(extraClaims,user);
         // Return the authentication response
-        return JwtAuthenticationResponse.builder().token(jwt).userid(user.getId()).role(user.getRole()).build();
+        return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 
     private boolean isValidPassword(String password) {

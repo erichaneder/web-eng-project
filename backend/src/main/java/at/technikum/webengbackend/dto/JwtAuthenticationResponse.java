@@ -12,6 +12,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JwtAuthenticationResponse {
     String token;
-    Long userid;
-    Role role;
 }

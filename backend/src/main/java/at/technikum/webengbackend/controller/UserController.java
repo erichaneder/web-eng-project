@@ -7,10 +7,12 @@ import at.technikum.webengbackend.dto.SignUpRequest;
 import at.technikum.webengbackend.model.User;
 import at.technikum.webengbackend.service.AuthenticationService;
 import at.technikum.webengbackend.service.UserService;
+import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,7 +46,7 @@ public class UserController {
 
     @PostMapping(path= AllowedPaths.User.SIGNUP)
     @PreAuthorize("isAnonymous()")
-    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
+    public ResponseEntity<?> signup(@RequestBody SignUpRequest request) {
         try {
             return ResponseEntity.ok(authenticationService.signup(request));
         } catch (Exception e) {
@@ -54,9 +56,11 @@ public class UserController {
 
     @PostMapping(path=AllowedPaths.User.SIGNIN)
     @PreAuthorize("isAnonymous()")
-    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest request) {
+    public ResponseEntity<?> signin(@RequestBody SignInRequest request) {
         try {
             return ResponseEntity.ok(authenticationService.signin(request));
+        } catch (AuthenticationException e) {
+           return new ResponseEntity<>("Fehler beim Login: Ungültige Anmeldeinformationen", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler beim Login: " + e.getMessage());
         }
@@ -66,7 +70,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userID) {
         try {
             userService.delete(userID);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler beim Löschen des Benutzers: " + e.getMessage());
         }
@@ -74,9 +78,10 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER') OR hasRole('ROLE_ADMIN')")
     @PutMapping(path= AllowedPaths.User.UPDATE)
-    public ResponseEntity<User> updateUser(@PathVariable("userId") Long userId,@RequestBody User user) {
+    public ResponseEntity<?> updateUser(@PathVariable("userId") Long userId,@RequestBody User user) {
         try {
-            return ResponseEntity.ok(userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(), user.getEmail(),user.getRole(), user.getAddress()));
+            userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(), user.getEmail(),user.getRole(), user.getAddress());
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: " + e.getMessage());
         }
@@ -86,8 +91,8 @@ public class UserController {
     @PatchMapping(path= AllowedPaths.User.PATCH)
     public ResponseEntity<?> patchUser(@PathVariable("userId") Long userId, @RequestBody Map<String,Object> fields) {
         try {
-            User user = userService.patchUserData(userId,fields);
-            return ResponseEntity.ok(user);
+            userService.patchUserData(userId,fields);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: " + e.getMessage());
         }

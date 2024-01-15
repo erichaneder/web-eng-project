@@ -5,6 +5,7 @@ import at.technikum.webengbackend.dto.ProductDTO;
 import at.technikum.webengbackend.model.Product;
 import at.technikum.webengbackend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class ProductController {
     public ResponseEntity<?> registerNewProduct(@RequestBody ProductDTO product) {
         try {
             productService.addNewProduct(product);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler beim Anlegen eines neuen Produktes: " + e.getMessage());
         }
@@ -45,7 +46,7 @@ public class ProductController {
     public ResponseEntity<?> deleteProduct(@PathVariable("productId") Long productId) {
         try {
             productService.deleteProduct(productId);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler beim Löschen eines Produktes: " + e.getMessage());
         }
@@ -55,7 +56,7 @@ public class ProductController {
     public ResponseEntity<?> updateProduct(@PathVariable("productId") Long productId,@RequestBody Product product) {
         try {
             productService.updateProduct(productId,product.getName(),product.getPrice(),product.getAmount(), product.getDescription());
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler beim Ändern des Produktes: " + e.getMessage());
         }
