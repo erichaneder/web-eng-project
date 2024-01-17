@@ -14,3 +14,6 @@ Notes:
 ##########
 
 Random Key generieren: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+-> If its the first time starting the apllication, set the "spring.jpa.hibernate.ddl-auto" propery in the application.properties to "create"
+-> Afterwards "update" is sufficient
