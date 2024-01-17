@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
 
@@ -47,7 +48,6 @@ class ProductServiceTest {
         Product p = productService.addNewProduct(new Product());
         //then
         assertNotNull(p);
-
     }
 
     @Test
@@ -63,8 +63,6 @@ class ProductServiceTest {
         Long id = productService.deleteProduct(1L);
         //then
         assertEquals(1L,id);
-
-
     }
 
     @Test

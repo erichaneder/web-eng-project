@@ -5,20 +5,20 @@ import at.technikum.webengbackend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -26,26 +26,65 @@ class UserServiceTest {
     private UserService userService;
 
     @BeforeEach
-    void setUp() {
-        userService = new UserService(userRepository);
+    public void setUp() {
+       userService = new UserService(userRepository);
     }
 
     @Test
-    void getUsers() {
-        // given
-        User user = new User(); //
-        Mockito.when(userRepository.findAll()).thenReturn(Collections.singletonList(user));
-
-        // when
+    public void testGetUsers() {
+        when(userRepository.findAll()).thenReturn(List.of(new User()));
         List<User> users = userService.getUsers();
-
-        // then
-        assertFalse(users.isEmpty());
-        assertEquals(user, users.get(0));
+        assertNotNull(users, "Users list should not be null");
+        assertFalse(users.isEmpty(), "Users list should not be empty");
     }
 
     @Test
-    void getUser() {
+    public void testGetUser() {
+        Long userId = 1L;
+        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(new User()));
+
+        User user = userService.getUser(userId);
+        assertNotNull(user, "User should not be null");
+    }
+
+    @Test
+    public void testAddNewUser() {
+        User user = new User();
+        userService.addNewUser(user);
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void testDeleteUser() {
+        Long userId = 1L;
+        when(userRepository.existsById(userId)).thenReturn(true);
+        userService.delete(userId);
+        verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    @Test
+    public void testUpdateUserData() {
+        Long userId = 1L;
+        User existingUser = new User();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+        when(userRepository.save(any(User.class))).thenReturn(existingUser);
+
+        User updatedUser = userService.updateUserData(userId, "newName", "salutation", "password", "email", null, null);
+        assertNotNull(updatedUser, "Updated user should not be null");
+        assertEquals("newName", updatedUser.getName(), "User name should be updated");
+    }
+
+    @Test
+    public void testPatchUserData() {
+        Long userId = 1L;
+        User existingUser = new User();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+        when(userRepository.save(any(User.class))).thenReturn(existingUser);
+
+        User patchedUser = userService.patchUserData(userId, Map.of("name", "patchedName"));
+        assertNotNull(patchedUser, "Patched user should not be null");
+        assertEquals("patchedName", patchedUser.getName(), "User name should be patched");
     }
 
     public List<User> buildUserList(){
