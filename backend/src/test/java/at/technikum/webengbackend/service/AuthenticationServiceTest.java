@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Locale;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -45,7 +44,6 @@ public class AuthenticationServiceTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialize any necessary data here
     }
 
     @Test
@@ -57,7 +55,6 @@ public class AuthenticationServiceTest {
         signUpRequest.setAddress(a);
         signUpRequest.setRole(Role.ROLE_CUSTOMER);
 
-        // Populate signUpRequest with valid data
 
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(userService.addNewUser(any(User.class))).thenReturn(new User());
@@ -72,7 +69,6 @@ public class AuthenticationServiceTest {
     public void testSignin() {
         SignInRequest signInRequest = new SignInRequest();
         signInRequest.setUsername("test");
-        // Populate signInRequest with valid data
 
         User mockUser = new User();
         mockUser.setId(1L);
@@ -84,5 +80,4 @@ public class AuthenticationServiceTest {
         assertEquals("mockToken", response.getToken(), "Token should match the mock token");
     }
 
-    // Additional tests can be written to cover more scenarios like invalid signup/signin, password validation, etc.
 }

@@ -4,11 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -61,11 +59,8 @@ public class JwtServiceTest {
     public void testTokenExpiration() {
         Mockito.when(jwtService.generateToken(ArgumentMatchers.any())).thenReturn("test");
         Mockito.when(jwtService.isTokenValid(ArgumentMatchers.any(),ArgumentMatchers.any())).thenReturn(false);
-        // You might need to manipulate the token expiration time or use a predefined expired token
         String token = jwtService.generateToken(userDetails);
-        // Simulate time passage or use a predefined expired token
         assertFalse(jwtService.isTokenValid(token, userDetails), "Expired token should not be valid");
     }
 
-    // Additional tests can be written to cover more scenarios
 }
