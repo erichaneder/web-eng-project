@@ -14,7 +14,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -74,7 +73,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_CUSTOMER') OR hasRole('ROLE_ADMIN')")
+    @PreAuthorize("(hasRole('ROLE_CUSTOMER') and #userId == authentication.principal.id) OR hasRole('ROLE_ADMIN') ")
     @PutMapping(path= AllowedPaths.User.UPDATE)
     public ResponseEntity<?> updateUser(@PathVariable("userId") Long userId,@RequestBody User user) {
         try {
