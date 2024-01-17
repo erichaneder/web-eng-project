@@ -39,6 +39,9 @@ This should then run at http://localhost:8081
 
     run the SpringApplication -> WebEngBackendApplication.java
 
+    -> If its the first time starting the apllication, set the "spring.jpa.hibernate.ddl-auto" propery in the application.properties to "create"
+    -> Afterwards "update" is sufficient
+
 # Database Setup:
 
     <insert sql script to setup the tables>
