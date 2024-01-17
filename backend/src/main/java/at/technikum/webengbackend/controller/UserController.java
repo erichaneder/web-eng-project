@@ -84,15 +84,4 @@ public class UserController {
             throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: " + e.getMessage());
         }
     }
-
-    @PreAuthorize("hasRole('ROLE_CUSTOMER') OR hasRole('ROLE_ADMIN')")
-    @PatchMapping(path= AllowedPaths.User.PATCH)
-    public ResponseEntity<?> patchUser(@PathVariable("userId") Long userId, @RequestBody Map<String,Object> fields) {
-        try {
-            userService.patchUserData(userId,fields);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: " + e.getMessage());
-        }
-    }
 }

@@ -75,18 +75,6 @@ public class UserServiceTest {
         assertEquals("newName", updatedUser.getName(), "User name should be updated");
     }
 
-    @Test
-    public void testPatchUserData() {
-        Long userId = 1L;
-        User existingUser = new User();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
-        when(userRepository.save(any(User.class))).thenReturn(existingUser);
-
-        User patchedUser = userService.patchUserData(userId, Map.of("name", "patchedName"));
-        assertNotNull(patchedUser, "Patched user should not be null");
-        assertEquals("patchedName", patchedUser.getName(), "User name should be patched");
-    }
-
     public List<User> buildUserList(){
         User u = new User();
         u.setId(1L);
