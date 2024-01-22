@@ -55,7 +55,7 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUserData(Long userId, String name, String salutation, String password, String mail, Role role, Address address) {
+    public User updateUserData(Long userId, String name, String salutation, String password, String mail, Role role, Address address, String profilepicture) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id " + userId + "does not exist"));
 
         if (name != null && !name.trim().isEmpty() && !Objects.equals(user.getName(), name)) {
@@ -72,6 +72,10 @@ public class UserService {
 
         if (mail != null && !mail.trim().isEmpty() && !Objects.equals(user.getEmail(), mail)) {
             user.setEmail(mail);
+        }
+
+        if(!StringUtils.isEmpty(profilepicture)) {
+            user.setProfilePicture(profilepicture);
         }
 
         if (role != null) {

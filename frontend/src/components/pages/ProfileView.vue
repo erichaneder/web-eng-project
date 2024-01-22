@@ -5,8 +5,11 @@
       
       <!-- Logged In View -->
       <div v-if="this.store.isLoggedIn && user">
-        <div class="flex flex-col items-center space-x-4 mb-4">
+        <div class="relative flex flex-col items-center space-x-4 mb-4">
           <img :src="user.profilePicture" alt="Profile Picture" class="w-16 h-16 rounded-full border border-gray-300" />
+          <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 cursor-pointer" @click="showProfilePictureModal">
+            <PencilIcon class="h-6 w-6 text-white" />
+          </div>
           <h2 class="text-xl">Welcome, {{ user.name }}</h2>
         </div>
         
@@ -50,6 +53,11 @@
     :isVisible="isChangePasswordModalVisible" 
     @update:isVisible="isChangePasswordModalVisible = $event" 
     @changePassword="onPasswordChanged" />
+  <ProfilePictureModal 
+    :isVisible="isProfilePictureModalVisible" 
+    @update:isVisible="isProfilePictureModalVisible = $event" 
+    @updateProfilePicture="onProfilePictureChanged"
+  />
   <ErrorModal
     :isVisible="isErrorModalVisible"
     :errorMessage="errorMessage"
@@ -61,8 +69,10 @@
 import CustomButton from '@/components/atoms/Button.vue';
 import NormalHeading from '@/components/atoms/NormalHeading.vue';
 import ErrorModal from "@/components/atoms/ErrorModal.vue";
-import ChangePasswordModal from "@/components/atoms/ChangePasswordModal.vue";
+import ChangePasswordModal from "@/components/molecules/ChangePasswordModal.vue";
+import ProfilePictureModal from "@/components/molecules/ProfilePictureModal.vue";
 import FormComponent from "@/components/molecules/FormComponent.vue";
+import { PencilIcon } from '@heroicons/vue/24/outline';
 import { useCompleteStore } from "@/store/store";
 import { object, string } from "yup";
 
@@ -73,6 +83,7 @@ export default {
       isEditing: false,
       isErrorModalVisible: false,
       isChangePasswordModalVisible: false,
+      isProfilePictureModalVisible: false,
       errorMessage: "",
       store: useCompleteStore(),
       profileFormFields: [
@@ -113,7 +124,9 @@ export default {
     CustomButton, 
     ErrorModal,
     FormComponent,
-    ChangePasswordModal
+    ChangePasswordModal,
+    ProfilePictureModal,
+    PencilIcon
   },
   methods: {
     async updateProfile(formData) {
@@ -184,6 +197,19 @@ export default {
           this.isErrorModalVisible = true;
         }
       console.log('Password changed successfully');
+    },
+    showProfilePictureModal() {
+      this.isProfilePictureModalVisible = true;
+    },
+    async onProfilePictureChanged(newProfilePicture) {
+      const userId = this.store.getUserId;
+      const payload = {
+        profilePicture: newProfilePicture
+      };
+      await this.store.updateProfileData(userId, payload);
+      // Handle response and errors
+      this.isProfilePictureModalVisible = false;
+      this.user.profilePicture = newProfilePicture;
     },
     logout() {
       localStorage.removeItem("token");

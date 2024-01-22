@@ -4,9 +4,7 @@
       <div class="relative flex h-6 items-center justify-between">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
           <!-- Mobile menu button-->
-          <DisclosureButton
-            class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-          >
+          <DisclosureButton class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
             <span class="absolute -inset-0.5"></span>
             <span class="sr-only">Open main menu</span>
             <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
@@ -22,7 +20,7 @@
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
               <router-link
-                v-for="item in filteredNavigation"
+                v-for="item in navigation"
                 :key="item.name"
                 :to="item.href"
                 :class="[
@@ -41,50 +39,13 @@
               </MenuButton>
 
               <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <MenuItem v-slot="{ active }">
-                  <router-link
-                    to="/adminProducts"
-                    :class="[
-                        active ? 'bg-gray-100' : '',
-                        'block px-4 py-2 text-sm text-gray-700',
-                      ]"
-                  >
-                    Maintain Products
-                  </router-link>
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <router-link
-                    to="/addProduct"
-                    :class="[
-                        active ? 'bg-gray-100' : '',
-                        'block px-4 py-2 text-sm text-gray-700',
-                      ]"
-                  >
-                    Add Product
-                  </router-link>
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <router-link
-                    to="/users"
-                    :class="[
-                        active ? 'bg-gray-100' : '',
-                        'block px-4 py-2 text-sm text-gray-700',
-                      ]"
-                  >
-                    Users
-                  </router-link>
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <router-link
-                    to="/orders"
-                    :class="[
-                        active ? 'bg-gray-100' : '',
-                        'block px-4 py-2 text-sm text-gray-700',
-                      ]"
-                  >
-                    Orders
-                  </router-link>
-                </MenuItem>
+                <MenuItem v-for="item in adminNavigation" :key="item.name" v-slot="{ active }">
+                <router-link
+                  :to="item.href"
+                  :class="[active ? 'bg-gray-100' : '','block px-4 py-2 text-sm text-gray-700',]">
+                  {{ item.name }}
+                </router-link>
+              </MenuItem>
               </MenuItems>
             </Menu>
             </div>
@@ -159,19 +120,28 @@
     <DisclosurePanel class="sm:hidden">
       <div class="space-y-1 px-2 pb-3 pt-2">
         <DisclosureButton
-          v-for="item in navigation"
-          :key="item.name"
-          as="a"
-          :href="item.href"
-          :class="[
-            item.current
-              ? 'bg-gray-900 text-white'
+          v-for="item in navigation" :key="item.name" as="a" :href="item.href" :class="[item.current ? 'bg-gray-900 text-white'
               : 'text-gray-300 hover:bg-gray-700 hover:text-white',
             'block rounded-md px-3 py-2 text-base font-medium',
           ]"
           :aria-current="item.current ? 'page' : undefined"
-          >{{ item.name }}</DisclosureButton
-        >
+          >{{ item.name }}
+        </DisclosureButton>
+
+        <!-- Admin Stuff-->
+        <div v-if="isAdmin()" class="pt-4 pb-2 border-t border-gray-700">
+          <div class="px-2 space-y-1">
+            <DisclosureButton
+              v-for="item in adminNavigation"
+              :key="item.name"
+              as="a"
+              :href="item.href"
+              class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >
+              {{ item.name }}
+            </DisclosureButton>
+          </div>
+        </div>
       </div>
     </DisclosurePanel>
   </Disclosure>
@@ -198,6 +168,12 @@ export default {
         { name: "Help", href: "/help", current: false },
         { name: "Imprint", href: "/imprint", current: false },
       ],
+      adminNavigation: [
+        { name: "Maintain Products", href: "/adminProducts" },
+        { name: "Add Product", href: "/addProduct" },
+        { name: "Users", href: "/users" },
+        { name: "Orders", href: "/orders" },
+      ],
       store: useCompleteStore()
     };
   },
@@ -214,11 +190,6 @@ export default {
       return this.store.isAdmin;
     }
   },
-  computed: {
-    filteredNavigation() {
-      return this.navigation.filter(item => !item.requiresAdmin || this.isAdmin());
-    }
-  }
 };
 </script>
 

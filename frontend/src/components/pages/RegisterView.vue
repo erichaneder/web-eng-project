@@ -66,7 +66,9 @@ export default {
         { id: "password2", type: "password", label: "Repeat Passowrd", placeholder: "Repeat Password" }
       ],
       registerValidationSchema: object().shape({
-        name: string().required('Name is required'),
+        name: string().required('Name is required')
+        .min(5, 'Name must be at least 5 characters long')
+        .max(50, 'Name must be less than 50 characters long'),
         salutation: string().required('Salutation is required'),
         otherInfo: string().when('salutation', {
           is: (val) => val === "Other",
@@ -114,8 +116,8 @@ export default {
       console.log("Sending this data:", JSON.stringify(payload));
 
       try {   
-        // Send formData to backend using fetch 
-        const response = axios.post("http://localhost:8080/api/v1/user/signup", payload, {
+        // Send formData to backend using axios 
+        const response = await axios.post("http://localhost:8080/api/v1/user/signup", payload, {
           headers: {
             "Content-Type": "application/json",
           }
@@ -123,7 +125,7 @@ export default {
         
         // Check if the response is successful
         if (response.status == 200) {
-          const responseData = await response.data();
+          const responseData = await response.data;
           //console.log("Registration was successful! " + JSON.stringify(responseData));
           
           localStorage.setItem("token", responseData.token);
@@ -131,12 +133,15 @@ export default {
           // Redirect to the home page
           this.$router.push({ path: '/' });
         } else {
-          const errorData = await response.data();
+          const errorData = await response.data;
+          console.log(JSON.stringify(errorData));
           this.errorMessage = "Error registering user: "+errorData.message;
           this.isErrorModalVisible = true;
         }
       } catch (error) {
           console.error("Network error: "+ error);
+          this.errorMessage = "Error registering user: "+error.message;
+          this.isErrorModalVisible = true;
       }
     }
   },

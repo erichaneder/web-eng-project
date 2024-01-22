@@ -70,7 +70,7 @@ public class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(User.class))).thenReturn(existingUser);
 
-        User updatedUser = userService.updateUserData(userId, "newName", "salutation", "password", "email", null, null);
+        User updatedUser = userService.updateUserData(userId, "newName", "salutation", "password", "email", null, null, null);
         assertNotNull(updatedUser, "Updated user should not be null");
         assertEquals("newName", updatedUser.getName(), "User name should be updated");
     }

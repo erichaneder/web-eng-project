@@ -47,7 +47,8 @@ public class UserController {
         try {
             return ResponseEntity.ok(authenticationService.signup(request));
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fehler bei der Benutzerregistrierung: " + e.getMessage());
+            throw e;
+            //throw new IllegalArgumentException("Fehler bei der Benutzerregistrierung: " + e.getMessage());
         }
     }
 
@@ -77,7 +78,7 @@ public class UserController {
     @PutMapping(path= AllowedPaths.User.UPDATE)
     public ResponseEntity<?> updateUser(@PathVariable("userId") Long userId,@RequestBody User user) {
         try {
-            userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(), user.getEmail(),user.getRole(), user.getAddress());
+            userService.updateUserData(userId,user.getName(), user.getSalutation(), user.getPassword(), user.getEmail(),user.getRole(), user.getAddress(), user.getProfilePicture());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             throw new IllegalArgumentException("Fehler bei der Benutzerdatenänderung: " + e.getMessage());
