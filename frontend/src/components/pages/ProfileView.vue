@@ -5,10 +5,12 @@
       
       <!-- Logged In View -->
       <div v-if="this.store.isLoggedIn && user">
-        <div class="relative flex flex-col items-center space-x-4 mb-4">
-          <img :src="user.profilePicture" alt="Profile Picture" class="w-16 h-16 rounded-full border border-gray-300" />
-          <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 cursor-pointer" @click="showProfilePictureModal">
-            <PencilIcon class="h-6 w-6 text-white" />
+        <div class="flex flex-col items-center space-x-4 mb-4">
+          <div class="relative inline-block">
+            <img :src="user.profilePicture" alt="Profile Picture" class="w-16 h-16 rounded-full border border-gray-300" />
+            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 cursor-pointer" @click="showProfilePictureModal">
+              <PencilIcon class="h-6 w-6 text-white" />
+            </div>
           </div>
           <h2 class="text-xl">Welcome, {{ user.name }}</h2>
         </div>

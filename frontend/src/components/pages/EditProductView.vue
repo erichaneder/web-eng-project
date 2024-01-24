@@ -4,7 +4,7 @@
       <!-- Success Alert -->
       <div v-if="showAlert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-8" role="alert">
         <strong class="font-bold">Success!</strong>
-        <span class="block sm:inline">Product successfully added!</span>
+        <span class="block sm:inline">Product successfully changed!</span>
       </div>
       
       <NormalHeading text="Edit Product"/>
